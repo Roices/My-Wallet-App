@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>550771893005-5qqebsvudtf3mtcdn6iufgi65uiq6t5l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.550771893005-5qqebsvudtf3mtcdn6iufgi65uiq6t5l</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCbGJS0sWpkXtoX99Tg34eQIXNYAaWIFQQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>550771893005</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Myapp.MyWalletApp.main</string>
+	<key>PROJECT_ID</key>
+	<string>mywallet-c06cf</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mywallet-c06cf.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:550771893005:ios:9293c483b178a4cae08644</string>
+</dict>
+</plist>

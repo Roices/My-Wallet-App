@@ -1,0 +1,6 @@
+framework module ImageTextField {
+  umbrella header "ImageTextField-umbrella.h"
+
+  export *
+  module * { export * }
+}

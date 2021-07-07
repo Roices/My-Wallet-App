@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UkA-1d-Djp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -16,10 +16,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="blM-FR-jJI">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blM-FR-jJI">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7TY-6z-Ij0" userLabel="ContentView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7TY-6z-Ij0" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="-157" width="414" height="1053"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FqR-7W-2dV">
@@ -31,17 +31,27 @@
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WY8-sa-kcj">
                                                 <rect key="frame" x="184" y="815" width="46" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" systemColor="systemTealColor"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="Button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eKW-Mn-WGB"/>
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IYT-1M-ero">
-                                                <rect key="frame" x="39" y="171" width="351" height="34"/>
+                                                <rect key="frame" x="39" y="608" width="351" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zv-kh-kPT">
+                                                <rect key="frame" x="147" y="892" width="128" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                                <state key="normal" title="sua"/>
+                                                <connections>
+                                                    <action selector="Edittt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6dh-Zg-L1o"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemPurpleColor"/>
                                         <constraints>
@@ -53,6 +63,7 @@
                                     <constraint firstItem="7TY-6z-Ij0" firstAttribute="leading" secondItem="blM-FR-jJI" secondAttribute="leading" id="6ZD-A7-qWA"/>
                                     <constraint firstAttribute="trailing" secondItem="7TY-6z-Ij0" secondAttribute="trailing" id="6yE-qV-A9l"/>
                                     <constraint firstAttribute="bottom" secondItem="7TY-6z-Ij0" secondAttribute="bottom" id="IDp-Mc-1Od"/>
+                                    <constraint firstItem="7TY-6z-Ij0" firstAttribute="top" secondItem="blM-FR-jJI" secondAttribute="top" constant="-157" id="xns-aW-9G4"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="fZR-ZX-N5D"/>
@@ -70,6 +81,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="Edit" destination="3zv-kh-kPT" id="CdX-FI-Dbu"/>
                         <outlet property="ScrollView" destination="blM-FR-jJI" id="gcf-71-WJF"/>
                         <outlet property="TF2" destination="IYT-1M-ero" id="j6b-Ma-KgV"/>
                         <outlet property="TField" destination="FqR-7W-2dV" id="0XW-1C-5Cp"/>
@@ -107,7 +119,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="padding">
                                         <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="fieldImage" value="textField:BVG-oo-QoQ:value" catalog="system"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="fieldImage" value="textField:BVG-oo-QoQ:value"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wHp-TT-QcW">
@@ -440,33 +452,13 @@
             <point key="canvasLocation" x="440.57971014492756" y="132.58928571428572"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="BVG-oo-QoQ">
-            <size key="intrinsicContentSize" width="118.5" height="34"/>
-        </designable>
-        <designable name="F8K-EV-AxB">
-            <size key="intrinsicContentSize" width="96.5" height="34"/>
-        </designable>
-        <designable name="H5m-rZ-yKI">
-            <size key="intrinsicContentSize" width="128" height="34"/>
-        </designable>
-        <designable name="JIb-95-sMA">
-            <size key="intrinsicContentSize" width="118.5" height="34"/>
-        </designable>
-        <designable name="Nol-Cg-54E">
-            <size key="intrinsicContentSize" width="122" height="34"/>
-        </designable>
-        <designable name="a55-iK-lW7">
-            <size key="intrinsicContentSize" width="173.5" height="34"/>
-        </designable>
-    </designables>
     <resources>
         <image name="BacktoLogin" width="96" height="96"/>
         <image name="lock.fill" catalog="system" width="128" height="128"/>
         <image name="mail" catalog="system" width="128" height="93"/>
         <image name="mail.fill" catalog="system" width="128" height="93"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="textField:BVG-oo-QoQ:value" catalog="system" width="128" height="128">
+        <image name="textField:BVG-oo-QoQ:value" width="128" height="128">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05T
 S2V5ZWRBcmNoaXZlctEICVRyb290gAGvEBELDBscIRkmKywzNjlDS0xQU1UkbnVsbNcNDg8QERITFBUW
@@ -18101,6 +18093,12 @@ IXsAECGDABAhhgAQIYsAECGTAAAAAAAABAEAAAAAAAAAVgAAAAAAAAAAAAAAAAAQIZY
         </systemColor>
         <systemColor name="systemPurpleColor">
             <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

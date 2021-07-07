@@ -7,6 +7,8 @@ target 'MyWalletApp' do
   pod 'ImageTextField','~> 1.0.0'
    pod 'Firebase/Auth'
    pod 'Firebase/Core'
+   pod 'Firebase/Database'
+   pod 'Charts'
    
   use_frameworks!
 

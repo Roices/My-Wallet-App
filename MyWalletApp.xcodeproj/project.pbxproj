@@ -18,7 +18,12 @@
 		172A947F268DC10900774926 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A947E268DC10900774926 /* LoginViewController.swift */; };
 		172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9480268DC11600774926 /* RegistrationViewController.swift */; };
 		172A9483268DC12800774926 /* ResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9482268DC12800774926 /* ResetViewController.swift */; };
+		1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */; };
+		1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */; };
+		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
+		1759C8D326A2891300DFB7F8 /* AccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8D226A2891300DFB7F8 /* AccountTest.swift */; };
 		1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */; };
+		17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B2C6F52698485D004C7D4F /* HomeView.swift */; };
 		A5A72895A4EF5191D049C040 /* Pods_MyWalletApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D88CD549C3C2B2B748E043 /* Pods_MyWalletApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +62,12 @@
 		172A947E268DC10900774926 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		172A9480268DC11600774926 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		172A9482268DC12800774926 /* ResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetViewController.swift; sourceTree = "<group>"; };
+		1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAssetsCell.swift; sourceTree = "<group>"; };
+		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
+		1759C8D226A2891300DFB7F8 /* AccountTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTest.swift; sourceTree = "<group>"; };
 		1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		17B2C6F52698485D004C7D4F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		450B719A17E06360CE461D15 /* Pods-MyWalletApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.release.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.release.xcconfig"; sourceTree = "<group>"; };
 		99D371FF6708110710ACDF89 /* Pods-MyWalletApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.debug.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A7D88CD549C3C2B2B748E043 /* Pods_MyWalletApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyWalletApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +124,7 @@
 		172A944C268DC09D00774926 /* MyWalletApp */ = {
 			isa = PBXGroup;
 			children = (
+				17B2C6F42698482C004C7D4F /* MainsView */,
 				172A947D268DC0ED00774926 /* Login and Registration */,
 				172A944D268DC09D00774926 /* AppDelegate.swift */,
 				172A944F268DC09D00774926 /* SceneDelegate.swift */,
@@ -153,6 +164,26 @@
 				172A9482268DC12800774926 /* ResetViewController.swift */,
 			);
 			path = "Login and Registration";
+			sourceTree = "<group>";
+		};
+		1759C8CD26A26C4C00DFB7F8 /* ExtraView */ = {
+			isa = PBXGroup;
+			children = (
+				1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */,
+				1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */,
+				1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */,
+			);
+			path = ExtraView;
+			sourceTree = "<group>";
+		};
+		17B2C6F42698482C004C7D4F /* MainsView */ = {
+			isa = PBXGroup;
+			children = (
+				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
+				17B2C6F52698485D004C7D4F /* HomeView.swift */,
+				1759C8D226A2891300DFB7F8 /* AccountTest.swift */,
+			);
+			path = MainsView;
 			sourceTree = "<group>";
 		};
 		21E946A6C4DE26D6512E9A21 /* Pods */ = {
@@ -281,6 +312,7 @@
 				1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */,
 				172A9457268DC09F00774926 /* Assets.xcassets in Resources */,
 				172A9455268DC09D00774926 /* Main.storyboard in Resources */,
+				1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,11 +380,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				172A947F268DC10900774926 /* LoginViewController.swift in Sources */,
+				17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */,
 				172A9452268DC09D00774926 /* ViewController.swift in Sources */,
 				172A944E268DC09D00774926 /* AppDelegate.swift in Sources */,
 				172A9450268DC09D00774926 /* SceneDelegate.swift in Sources */,
+				1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */,
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
+				1759C8D326A2891300DFB7F8 /* AccountTest.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
+				1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

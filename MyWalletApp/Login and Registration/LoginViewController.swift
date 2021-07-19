@@ -181,7 +181,35 @@ extension UIColor {
     }
 }
 
+extension UITextField {
 
+enum Direction {
+    case Left
+    case Right
+}
 
+// add image to textfield
+func withImage(direction: Direction, image: UIImage){
 
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: 58, height: 45))
+    let imageView = UIImageView(image: image)
 
+    if(Direction.Left == direction){ // image left
+        self.leftViewMode = .always
+        self.leftView = view
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 20.0, y: 10.0, width: 24.0, height: 24.0)
+        view.addSubview(imageView)
+    } else { // image right
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 10.0, y: 10.0, width: 24.0, height: 24.0)
+        view.addSubview(imageView)
+        self.rightViewMode = .always
+        self.rightView = view
+    }
+
+}
+    
+   
+
+}

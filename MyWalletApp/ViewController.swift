@@ -54,6 +54,12 @@ var pieChart = PieChartView()
         return Label
     }()
 
+    
+    let TextFld : UITextField = {
+        let textF = UITextField()
+        textF.frame = CGRect(x: 20, y: 190, width: 200, height: 50)
+        return textF
+    }()
 
 
     let players = ["All Assets", "Loan", "Cash"]
@@ -149,6 +155,7 @@ var pieChart = PieChartView()
         view.addSubview(pieChart)
         view.addSubview(AssetLabel)
         view.addSubview(MoneyLabel)
+        ViewTo.addSubview(TextFld)
     }
     //
 

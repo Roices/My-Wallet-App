@@ -170,13 +170,7 @@ class HomeView: UIViewController,ChartViewDelegate{
         super.viewDidLayoutSubviews()
        
         view.addSubview(BackGroundImage)
-//        print(MainView.frame.height)
-//        print(ViewForChart.frame.height)
-//        print(codeSegmented.frame.height)
-//        print(searchController.frame.height)
-       // view.addSubview(PieChartView)
         view.addSubview(MainView)
-        //view.addSubview(ViewForChart)
         view.addSubview(pieChart)
         view.addSubview(codeSegmented)
         view.addSubview(searchController)

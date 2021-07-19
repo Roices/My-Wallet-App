@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-import ImageTextField
+
 
 
 class ResetView: UIViewController,UITextFieldDelegate {

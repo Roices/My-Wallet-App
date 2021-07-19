@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ImageTextField
+
 import Firebase
 
 class RegistrationViewcontroller: UIViewController,UITextFieldDelegate {

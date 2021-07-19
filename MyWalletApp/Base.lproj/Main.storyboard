@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jju-fA-ete">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jMJ-fO-Bmi">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -421,6 +421,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="W9v-h2-nxq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IXO-Xe-Xfl">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -450,45 +451,22 @@
             </objects>
             <point key="canvasLocation" x="3810" y="887"/>
         </scene>
-        <!--Account Test-->
-        <scene sceneID="LaV-Dl-woB">
+        <!--First View-->
+        <scene sceneID="eOy-7s-61q">
             <objects>
-                <viewController id="jju-fA-ete" customClass="AccountTest" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2KQ-bu-Loi">
+                <viewController id="jMJ-fO-Bmi" customClass="FirstView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6kc-JN-uGM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="gxV-Bj-GSm"/>
+                        <viewLayoutGuide key="safeArea" id="YPt-qh-zJz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BuA-Hk-ZJn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VfO-S6-rw0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5610" y="1026"/>
+            <point key="canvasLocation" x="5565.217391304348" y="1009.8214285714286"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="BVG-oo-QoQ">
-            <size key="intrinsicContentSize" width="124.5" height="34"/>
-        </designable>
-        <designable name="F8K-EV-AxB">
-            <size key="intrinsicContentSize" width="96.5" height="34"/>
-        </designable>
-        <designable name="H5m-rZ-yKI">
-            <size key="intrinsicContentSize" width="128" height="34"/>
-        </designable>
-        <designable name="JIb-95-sMA">
-            <size key="intrinsicContentSize" width="118.5" height="34"/>
-        </designable>
-        <designable name="L0r-zh-b05">
-            <size key="intrinsicContentSize" width="222" height="34"/>
-        </designable>
-        <designable name="Nol-Cg-54E">
-            <size key="intrinsicContentSize" width="122" height="34"/>
-        </designable>
-        <designable name="a55-iK-lW7">
-            <size key="intrinsicContentSize" width="173.5" height="34"/>
-        </designable>
-    </designables>
     <resources>
         <image name="Background" width="375" height="812"/>
         <image name="BacktoLogin" width="96" height="96"/>

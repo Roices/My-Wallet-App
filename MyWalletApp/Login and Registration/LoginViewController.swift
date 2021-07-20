@@ -187,10 +187,11 @@ enum Direction {
     case Left
     case Right
 }
+    
 
 // add image to textfield
-func withImage(direction: Direction, image: UIImage){
-
+    func withImage(direction: Direction, image: UIImage){
+    
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 58, height: 45))
     let imageView = UIImageView(image: image)
 

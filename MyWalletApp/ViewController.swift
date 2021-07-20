@@ -24,7 +24,7 @@ var pieChart = PieChartView()
     }()
     let TestView:UIView = {
         let View = UIView()
-       View.backgroundColor = .white
+       View.backgroundColor = .purple
         View.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 150)/2)
 
         return View
@@ -38,19 +38,21 @@ var pieChart = PieChartView()
         Label.font = Label.font.withSize(13)
         Label.textColor = .darkGray
         let ScreenW = UIScreen.main.bounds.width
-        Label.frame = CGRect(x: ScreenW/2 - 38, y: UIScreen.main.bounds.height/4 - 70, width: 80, height: 50)
+        let ScreenH = UIScreen.main.bounds.height
+        Label.frame = CGRect(x: ScreenW/2 - 38, y: (150+(ScreenH - 150)/2)/2, width: 80, height: 50)
         return Label
     }()
 
     let MoneyLabel:UILabel = {
         let Label = UILabel()
-        Label.text = "$1,000.00"
+        Label.text = "100.000.000đ"
 //        Label.font = UIFont(name: "System-Bold", size: 15)
-        Label.font = UIFont.boldSystemFont(ofSize: 19.0)
+        Label.font = UIFont.boldSystemFont(ofSize: 17.0)
 //        Label.textColor = .darkGray
-
+        Label.textAlignment = .center
         let ScreenW = UIScreen.main.bounds.width
-        Label.frame = CGRect(x: ScreenW/2 - 50, y: UIScreen.main.bounds.height/4 - 45, width: 100, height: 55)
+        let ScreenH = UIScreen.main.bounds.height
+        Label.frame = CGRect(x: ScreenW/2 - 60, y: (150+(ScreenH - 150)/2)/2 + 22, width: 120, height: 55)
         return Label
     }()
 
@@ -132,6 +134,8 @@ var pieChart = PieChartView()
       //  pieChart.center = TestView.center
         pieChart.holeRadiusPercent = 0.65
          pieChart.drawEntryLabelsEnabled = false
+      //  pieChart.centerText = "SEPTEMBER"
+    
 
 
 
@@ -148,13 +152,13 @@ var pieChart = PieChartView()
 //        view.addSubview(label2)
 //        view.addSubview(label3)
         view.addSubview(ViewTo)
-     //   view.addSubview(TestView)
+        view.addSubview(TestView)
         pieChart.center = TestView.center
-        AssetLabel.center = TestView.center
-        MoneyLabel.center = TestView.center
+     //   AssetLabel.center = TestView.center
+    //  MoneyLabel.center = TestView.center
         view.addSubview(pieChart)
-        view.addSubview(AssetLabel)
-        view.addSubview(MoneyLabel)
+      view.addSubview(AssetLabel)
+      view.addSubview(MoneyLabel)
         ViewTo.addSubview(TextFld)
     }
     //

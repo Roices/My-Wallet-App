@@ -23,6 +23,9 @@
 		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
 		1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */; };
 		17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B2C6F52698485D004C7D4F /* HomeView.swift */; };
+		17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177A26A7BA770043FEE7 /* DetailSpending.swift */; };
+		17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177C26A7BC420043FEE7 /* SpendingCell.swift */; };
+		17D0177F26A7BC420043FEE7 /* SpendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D0177D26A7BC420043FEE7 /* SpendingCell.xib */; };
 		17E9BF3726A5C7DE00E6155B /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E9BF3626A5C7DE00E6155B /* FirstView.swift */; };
 		A5A72895A4EF5191D049C040 /* Pods_MyWalletApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D88CD549C3C2B2B748E043 /* Pods_MyWalletApp.framework */; };
 /* End PBXBuildFile section */
@@ -67,6 +70,9 @@
 		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
 		1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		17B2C6F52698485D004C7D4F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		17D0177A26A7BA770043FEE7 /* DetailSpending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSpending.swift; sourceTree = "<group>"; };
+		17D0177C26A7BC420043FEE7 /* SpendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingCell.swift; sourceTree = "<group>"; };
+		17D0177D26A7BC420043FEE7 /* SpendingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpendingCell.xib; sourceTree = "<group>"; };
 		17E9BF3626A5C7DE00E6155B /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
 		450B719A17E06360CE461D15 /* Pods-MyWalletApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.release.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.release.xcconfig"; sourceTree = "<group>"; };
 		99D371FF6708110710ACDF89 /* Pods-MyWalletApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.debug.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -172,6 +178,8 @@
 				1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */,
 				1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */,
 				1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */,
+				17D0177C26A7BC420043FEE7 /* SpendingCell.swift */,
+				17D0177D26A7BC420043FEE7 /* SpendingCell.xib */,
 			);
 			path = ExtraView;
 			sourceTree = "<group>";
@@ -179,9 +187,10 @@
 		17B2C6F42698482C004C7D4F /* MainsView */ = {
 			isa = PBXGroup;
 			children = (
-				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
-				17B2C6F52698485D004C7D4F /* HomeView.swift */,
 				17E9BF3626A5C7DE00E6155B /* FirstView.swift */,
+				17B2C6F52698485D004C7D4F /* HomeView.swift */,
+				17D0177A26A7BA770043FEE7 /* DetailSpending.swift */,
+				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
 			);
 			path = MainsView;
 			sourceTree = "<group>";
@@ -309,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				172A945A268DC09F00774926 /* LaunchScreen.storyboard in Resources */,
+				17D0177F26A7BC420043FEE7 /* SpendingCell.xib in Resources */,
 				1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */,
 				172A9457268DC09F00774926 /* Assets.xcassets in Resources */,
 				172A9455268DC09D00774926 /* Main.storyboard in Resources */,
@@ -388,6 +398,8 @@
 				1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */,
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
+				17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */,
+				17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */,
 				1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

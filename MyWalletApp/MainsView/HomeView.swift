@@ -169,6 +169,7 @@ class HomeView: UIViewController,ChartViewDelegate{
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
        
+        
         view.addSubview(BackGroundImage)
         view.addSubview(MainView)
         view.addSubview(pieChart)
@@ -237,4 +238,19 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filterData.count
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
+        self.navigationController?.pushViewController(mapView, animated: true)
+    }
 }
+
+
+//extension UITabBar {
+//
+//     override open func sizeThatFits(_ size: CGSize) -> CGSize {
+//     var sizeThatFits = super.sizeThatFits(size)
+//     sizeThatFits.height = 15 // adjust your size here
+//     return sizeThatFits
+//    }
+// }

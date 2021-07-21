@@ -30,7 +30,37 @@ var pieChart = PieChartView()
         return View
     }()
 
+    
+    let Segment:UISegmentedControl = {
+        let Segment = UISegmentedControl()
+        Segment.frame = CGRect(x: 0, y: 700, width: UIScreen.main.bounds.width, height: 70)
+      //  Segment.backgroundColor = .white
+        
+     //   Segment.selectedSegmentTintColor = .white
+        Segment.insertSegment(withTitle: "1", at: 0, animated: true)
+        Segment.insertSegment(withTitle: "2", at: 1, animated: true)
+        Segment.insertSegment(withTitle: "3", at: 2, animated: true)
+        Segment.selectedSegmentIndex = 0
+        Segment.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
+        return Segment
+    }()
 
+    let codeSegmented : CustomSegmentedControl = {
+        let y = (UIScreen.main.bounds.height - 200)/2 + 250
+        let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: y, width: UIScreen.main.bounds.width, height: 50), buttonTitle: ["All Assets","Cash","Loan"])
+        
+        let color = UIColor(hexString: "797979")
+        let colorForLine = UIColor(hexString: "C0C0C0")
+        let blue = UIColor(hexString: "116AEE")
+        
+        codeSegmented.backgroundColor = .clear
+        codeSegmented.textColor = color
+        codeSegmented.selectorViewColor = blue
+        codeSegmented.selectorTextColor = blue
+        codeSegmented.LineViewColor = colorForLine
+        return codeSegmented
+    }()
+    
     let AssetLabel:UILabel = {
         let Label = UILabel()
         Label.text = "ALL ASSETS"
@@ -159,6 +189,8 @@ var pieChart = PieChartView()
         view.addSubview(pieChart)
       view.addSubview(AssetLabel)
       view.addSubview(MoneyLabel)
+        view.addSubview(codeSegmented)
+        view.addSubview(Segment)
         ViewTo.addSubview(TextFld)
     }
     //

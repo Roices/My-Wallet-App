@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9v-h2-nxq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -24,6 +24,22 @@
             </objects>
             <point key="canvasLocation" x="4755.072463768116" y="109.82142857142857"/>
         </scene>
+        <!--Report-->
+        <scene sceneID="3O5-OC-gWV">
+            <objects>
+                <viewController storyboardIdentifier="ReportViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fx0-rr-a4h" customClass="ReportViewController" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="y3m-62-XuM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="T9j-R7-rJV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Report" image="icons8-report-file-96" id="uCq-1T-hXu"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cKl-k7-9Qu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4755" y="887"/>
+        </scene>
         <!--Detail Spending-->
         <scene sceneID="KBx-1R-Gd5">
             <objects>
@@ -37,7 +53,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3tc-e4-0nb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5506" y="68"/>
+            <point key="canvasLocation" x="5565" y="110"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -309,7 +325,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Dh-oi-ugU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2686.9565217391305" y="87.723214285714278"/>
+            <point key="canvasLocation" x="1351" y="874"/>
         </scene>
         <!--Reset View-->
         <scene sceneID="Arf-Ar-WyJ">
@@ -407,7 +423,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zN2-tC-JAq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="767" y="-571"/>
+            <point key="canvasLocation" x="1351" y="-574"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="E1k-bQ-9t2">
@@ -449,23 +465,24 @@
                     <connections>
                         <segue destination="wLh-Jp-WUO" kind="relationship" relationship="viewControllers" id="wQO-us-0Ab"/>
                         <segue destination="RbG-9H-yBj" kind="relationship" relationship="viewControllers" id="1at-Ft-v00"/>
+                        <segue destination="fx0-rr-a4h" kind="relationship" relationship="viewControllers" id="FNO-Am-voS"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bNA-P4-PA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3844.9275362318845" y="109.82142857142857"/>
         </scene>
-        <!--Item-->
+        <!--Wallet-->
         <scene sceneID="ys5-BA-FOF">
             <objects>
-                <viewController id="RbG-9H-yBj" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WalletViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RbG-9H-yBj" customClass="WalletViewController" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tVw-G0-tE0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="w23-d9-n8b"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="kRw-2P-RE7"/>
+                    <tabBarItem key="tabBarItem" title="Wallet" image="icons8-wallet-24" id="kRw-2P-RE7"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a8l-cu-Xsf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -484,13 +501,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VfO-S6-rw0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5565.217391304348" y="1009.8214285714286"/>
+            <point key="canvasLocation" x="2822" y="139"/>
         </scene>
     </scenes>
     <resources>
         <image name="Background" width="375" height="812"/>
         <image name="BacktoLogin" width="96" height="96"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="icons8-report-file-96" width="20" height="20"/>
+        <image name="icons8-wallet-24" width="20" height="20"/>
         <image name="lock.fill" catalog="system" width="128" height="128"/>
         <image name="mail" catalog="system" width="128" height="93"/>
         <image name="mail.fill" catalog="system" width="128" height="93"/>

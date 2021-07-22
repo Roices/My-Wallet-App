@@ -41,7 +41,7 @@ var pieChart = PieChartView()
         Segment.insertSegment(withTitle: "2", at: 1, animated: true)
         Segment.insertSegment(withTitle: "3", at: 2, animated: true)
         Segment.selectedSegmentIndex = 0
-        Segment.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
+     //   Segment.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
         return Segment
     }()
 

@@ -46,6 +46,7 @@ class HomeView: UIViewController,ChartViewDelegate{
     let colors:[UIColor] = [color1,color2,color3]
     let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
     pieChartDataSet.colors = colors
+    
       // 3. Set ChartData
     let pieChartData = PieChartData(dataSet: pieChartDataSet)
     let pFormatter = NumberFormatter()
@@ -53,11 +54,13 @@ class HomeView: UIViewController,ChartViewDelegate{
         pFormatter.maximumFractionDigits = 1
         pFormatter.multiplier = 1
         pFormatter.percentSymbol = "%"
+    //
         pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Light", size: 12)!)
         pieChartData.setValueTextColor(.white)
         pieChartDataSet.sliceSpace = 3
         pieChart.data = pieChartData
+    
       // 4. Assign it to the chart’s data
     let legend = pieChart.legend
         legend.horizontalAlignment = .center

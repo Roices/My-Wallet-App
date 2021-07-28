@@ -307,6 +307,53 @@ class ReportViewController: UIViewController {
         return line
     }()
     
+    
+    //Report 12 month
+    
+    lazy var MonthBarChart : BarChartView = {
+        let BarChart = BarChartView()
+        BarChart.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 700, width: UIScreen.main.bounds.width - 50, height: UIScreen.main.bounds.height/4)
+      //  BarChart.frame = CGRect(x: 25, y: 300, width: UIScreen.main.bounds.width/2, height: UIScreen.main.bounds.height/2)
+        
+        var dataEntries: [BarChartDataEntry] = []
+        let dataPoints = players
+        let values = goals.map{ Double($0) }
+        for i in 1...12{
+            let dataEntry = BarChartDataEntry(x: Double(i), y: Double.random(in: 0...30))
+            dataEntries.append(dataEntry)
+          }
+        
+//        BarChart.leftAxis.axisMinimum = 1
+//        BarChart.rightAxis.axisMinimum =
+//        BarChart.leftAxis.drawAxisLineEnabled = false
+//        BarChart.rightAxis.drawAxisLineEnabled = false
+    //    BarChart.dragXEnabled = false
+     
+        
+//        BarChart.xAxis.enabled = false
+//        BarChart.leftAxis.enabled = false
+//        BarChart.rightAxis.enabled = false
+//        BarChart.drawBordersEnabled = false
+        BarChart.minOffset = 0
+        BarChart.legend.enabled = false
+//
+        
+        let red = UIColor(hexString: "E64947")
+        let green = UIColor(hexString: "5CDD5B")
+        let BarChartDataSet = BarChartDataSet(entries: dataEntries, label: nil)
+        BarChartDataSet.drawValuesEnabled = false
+        BarChartDataSet.valueFont = UIFont.systemFont(ofSize: 12)
+        BarChartDataSet.colors = [.systemPink]
+        
+        
+        
+        let BarChartData = BarChartData(dataSet: BarChartDataSet)
+        BarChart.data = BarChartData
+        
+        
+        return BarChart
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -346,6 +393,9 @@ class ReportViewController: UIViewController {
         scrollView.addSubview(AccProgress)
         scrollView.addSubview(Target)
         scrollView.addSubview(line4)
+        
+        //report12Month
+        scrollView.addSubview(MonthBarChart)
     }
     
 

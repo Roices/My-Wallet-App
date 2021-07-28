@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fx0-rr-a4h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9v-h2-nxq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -469,12 +469,44 @@
                     <connections>
                         <segue destination="wLh-Jp-WUO" kind="relationship" relationship="viewControllers" id="wQO-us-0Ab"/>
                         <segue destination="RbG-9H-yBj" kind="relationship" relationship="viewControllers" id="1at-Ft-v00"/>
+                        <segue destination="aqa-Ds-BQm" kind="relationship" relationship="viewControllers" id="EVW-sc-2LD"/>
                         <segue destination="fx0-rr-a4h" kind="relationship" relationship="viewControllers" id="FNO-Am-voS"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bNA-P4-PA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3844.9275362318845" y="109.82142857142857"/>
+        </scene>
+        <!--Add-->
+        <scene sceneID="UXV-j6-K65">
+            <objects>
+                <viewController storyboardIdentifier="AddViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aqa-Ds-BQm" customClass="AddViewController" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="d1J-qz-ESZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="nNc-0Q-cud"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Add" image="Add" id="8Pb-Zf-EfZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="05i-AL-CFw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3493" y="887"/>
+        </scene>
+        <!--Add Detail View-->
+        <scene sceneID="X2o-LA-GzW">
+            <objects>
+                <viewController storyboardIdentifier="AddDetailView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="W1k-Nu-SgR" customClass="AddDetailView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6si-pA-ctM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="zhn-l7-nf6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pla-hb-Vir" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3478" y="1615"/>
         </scene>
         <!--Wallet-->
         <scene sceneID="ys5-BA-FOF">
@@ -490,7 +522,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a8l-cu-Xsf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3808.6956521739135" y="886.60714285714278"/>
+            <point key="canvasLocation" x="2403" y="874"/>
         </scene>
         <!--First View-->
         <scene sceneID="eOy-7s-61q">
@@ -509,6 +541,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Add" width="20" height="20"/>
         <image name="Background" width="375" height="812"/>
         <image name="BacktoLogin" width="96" height="96"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>

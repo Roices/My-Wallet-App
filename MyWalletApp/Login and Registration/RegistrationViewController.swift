@@ -10,7 +10,7 @@ import UIKit
 
 import Firebase
 
-class RegistrationViewcontroller: UIViewController,UITextFieldDelegate {
+class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     
     //cmt
     
@@ -93,7 +93,7 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate {
     
    @IBAction func backtoLogin(){
         let mapview = (self.storyboard?.instantiateViewController(identifier: "LoginViewController"))! as LoginViewController
-        self.navigationController?.pushViewController(mapview, animated: true)
+       self.navigationController?.pushViewController(mapview, animated: true)
     }
     
     

@@ -33,6 +33,7 @@
 		17D0178B26B0475A0043FEE7 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0178A26B047590043FEE7 /* AddViewController.swift */; };
 		17D0178F26B051FE0043FEE7 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0178D26B051FD0043FEE7 /* AddCell.swift */; };
 		17D0179226B1A2AE0043FEE7 /* AddDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */; };
+		17D0179426B3E6AD0043FEE7 /* PopUpTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */; };
 		17E9BF3726A5C7DE00E6155B /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E9BF3626A5C7DE00E6155B /* FirstView.swift */; };
 		A5A72895A4EF5191D049C040 /* Pods_MyWalletApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D88CD549C3C2B2B748E043 /* Pods_MyWalletApp.framework */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 		17D0178A26B047590043FEE7 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		17D0178D26B051FD0043FEE7 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
 		17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailView.swift; sourceTree = "<group>"; };
+		17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpTable.swift; sourceTree = "<group>"; };
 		17E9BF3626A5C7DE00E6155B /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
 		450B719A17E06360CE461D15 /* Pods-MyWalletApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.release.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.release.xcconfig"; sourceTree = "<group>"; };
 		99D371FF6708110710ACDF89 /* Pods-MyWalletApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWalletApp.debug.xcconfig"; path = "Target Support Files/Pods-MyWalletApp/Pods-MyWalletApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				17D0178A26B047590043FEE7 /* AddViewController.swift */,
 				17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */,
 				17D0178826A9BF780043FEE7 /* ReportViewController.swift */,
+				17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */,
 				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
 			);
 			path = MainsView;
@@ -435,6 +438,7 @@
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
 				17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */,
+				17D0179426B3E6AD0043FEE7 /* PopUpTable.swift in Sources */,
 				17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */,
 				1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */,
 			);

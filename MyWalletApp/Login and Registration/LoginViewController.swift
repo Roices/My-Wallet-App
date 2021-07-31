@@ -35,7 +35,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         CustomUI()
         if FirebaseAuth.Auth.auth().currentUser != nil{
             //Change ->View
-            
+            let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
+            self.navigationController?.pushViewController(mapview, animated: true)
             
             
             //

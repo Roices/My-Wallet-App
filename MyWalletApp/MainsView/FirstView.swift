@@ -71,6 +71,8 @@ extension FirstView{
             self.present(alert, animated: true, completion: nil)
         }else{
             // Go to SecondView
+            let mapView = (self.storyboard?.instantiateViewController(identifier: "MainsView"))! as UITabBarController
+            self.navigationController?.pushViewController(mapView, animated: true)
         }
         
     }

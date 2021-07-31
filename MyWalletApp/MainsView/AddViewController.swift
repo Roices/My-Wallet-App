@@ -73,6 +73,11 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         return cell
 
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
+        self.navigationController?.pushViewController(mapview, animated: true)
+    }
 
 
 }

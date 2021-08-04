@@ -76,7 +76,8 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
-        self.navigationController?.pushViewController(mapview, animated: true)
+        mapview.modalPresentationStyle = .popover
+        present(mapview, animated: true, completion: nil)
     }
 
 

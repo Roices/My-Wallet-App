@@ -104,8 +104,6 @@ var pieChart = PieChartView()
 //        let path = "User"
 //        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path)
 
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillHideNotification, object: nil)
 
 
 
@@ -114,85 +112,7 @@ var pieChart = PieChartView()
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        var dataEntries: [ChartDataEntry] = []
-        let dataPoints = players
-        let values = goals.map{ Double($0) }
-          for i in 0..<dataPoints.count {
-            let dataEntry = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i] as AnyObject)
-            dataEntries.append(dataEntry)
-          }
-          // 2. Set ChartDataSet
-        let color1 = UIColor(hexString: "FF6E2E")
-        let color2 = UIColor(hexString: "00B358")
-        let color3 = UIColor(hexString: "137FEC")
-        let colors:[UIColor] = [color1,color2,color3]
-        let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
-        pieChartDataSet.colors = colors
-
-
-
-          // 3. Set ChartData
-
-        let pieChartData = PieChartData(dataSet: pieChartDataSet)
-        let pFormatter = NumberFormatter()
-            pFormatter.numberStyle = .percent
-            pFormatter.maximumFractionDigits = 1
-            pFormatter.multiplier = 1
-            pFormatter.percentSymbol = "%"
-            pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Light", size: 12)!)
-            pieChartData.setValueTextColor(.white)
-            pieChartDataSet.sliceSpace = 3
-            pieChart.data = pieChartData
-
-
-          // 4. Assign it to the chart’s data
-
-        let legend = pieChart.legend
-//        legend.xEntrySpace = 80
-               legend.horizontalAlignment = .center
-//        legend.verticalAlignment  = .bottom
-//        legend.orientation = .horizontal
-        legend.font = UIFont.systemFont(ofSize: 14)
-
-
-        legend.xEntrySpace = 170
-//        legend.yOffset = 0
-//        legend.xOffset = 0////
-        pieChart.frame.size.width = 310 // 0.75 * UIScreen.main.bounds.width
-        pieChart.frame.size.height =  310 //0.4 * UIScreen.main.bounds.height
-      //  pieChart.center = TestView.center
-        pieChart.holeRadiusPercent = 0.65
-         pieChart.drawEntryLabelsEnabled = false
-      //  pieChart.centerText = "SEPTEMBER"
-    
-
-
-
-      //  pieChart.setExtraOffsets(left: 0, top: 0, right: 0, bottom: 0)
-//     pieChart.transparentCircleRadiusPercent = 100
-//
-//
-//       pieChart.center = view.center
-//
-        pieChart.chartDescription?.text = ""
-//
-//        TestView.addSubview(pieChart)
-//        view.addSubview(label)
-//        view.addSubview(label2)
-//        view.addSubview(label3)
-        view.addSubview(ViewTo)
-        view.addSubview(TestView)
-        pieChart.center = TestView.center
-     //   AssetLabel.center = TestView.center
-    //  MoneyLabel.center = TestView.center
-        view.addSubview(pieChart)
-      view.addSubview(AssetLabel)
-      view.addSubview(MoneyLabel)
-        view.addSubview(codeSegmented)
-        view.addSubview(Segment)
-        ViewTo.addSubview(TextFld)
-    }
+            }
     //
 
 
@@ -202,68 +122,51 @@ var pieChart = PieChartView()
          return false
     }
 
-//   @objc func keyboardWillShow(notification: Notification) {
-//            guard let userInfo = notification.userInfo,
-//                  let frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-//                    return
-//            }
-//    if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
-//
-//        ScrollView.frame.origin.y = -frame.height
-//
-//    }else{
-//        ScrollView.frame.origin.y = 0
-//    }
-//        }
+
+    @IBOutlet var TF2:UITextField!
+    @IBOutlet var TField: UITextField!
 
 
     @IBAction func Edittt(_ sender: Any) {
-        let path = "Teen User"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
-        ref.child(path).childByAutoId().setValue(["Food": "20000k"])
+                let path2 = "User"
+                let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path2)
+                ref.observe(.value, with: { (snapshot) in
+                  // cập nhật data
+        
+                  for children in snapshot.children {
+                    if let postSnapshot = children as? DataSnapshot {
+        //              let key = postSnapshot.key
+                        if let Food = postSnapshot.childSnapshot(forPath: "TestA").value as? String{
+                       print(children)
+                      }
+                    }
+                  }
+                })
     }
 
     @IBAction func Button(_ sender: Any) {
-//        guard let subject = self.TF2.text,
-//          let content = self.TField.text,
-//          let email = Auth.auth().currentUser?.email else {
-//          return
-//        }
-//
-//        // tạo ref tới dữ liệu cha
-//        let path = "User"
-//        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path)
-//
-//        // tạo ref đến dữ liệu mới
-//        let newRef = ref.childByAutoId()
-//
-//        // tạo value cho dữ liệu mới
-//        let val: [String : Any] = [
-//          "contentA": content,
-//          "subjectA": subject,
-//          "ownerA": email,
-//          "timestampA": Date().timeIntervalSince1970,
-//            "testA": "ayxz",
-//            "TestA": "Testt"
-//        ]
-//
-//        // đẩy dữ liệu
-//        newRef.setValue(val)
+        guard let subject = self.TF2.text,
+          let content = self.TField.text,
+          let email = Auth.auth().currentUser?.email else {
+          return
+        }
 
-        let path2 = "Teen User"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path2)
-        ref.observe(.value, with: { (snapshot) in
-          // cập nhật data
+        // tạo ref tới dữ liệu cha
+        let path = "NewUser"
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path)
 
-          for children in snapshot.children {
-            if let postSnapshot = children as? DataSnapshot {
-//              let key = postSnapshot.key
-                if let Food = postSnapshot.childSnapshot(forPath: "Food").value as? String{
-               print(Food)
-              }
-            }
-          }
-        })
+        // tạo ref đến dữ liệu mới
+        let newRef = ref.child("contentA")
+
+        // tạo value cho dữ liệu mới
+        let val: [String : Any] = [
+          "contentA": content,
+          "subjectA": subject,
+            "sotietkiem1": content
+        ]
+
+        // đẩy dữ liệu
+        newRef.setValue(val)
     }
 
 }

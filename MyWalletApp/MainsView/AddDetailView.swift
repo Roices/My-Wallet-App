@@ -12,6 +12,9 @@ class AddDetailView: UIViewController{
 //    let ScreenH = UIScreen.main.bounds.height
 //    let ScreenW = UIScreen.main.bounds.width
     
+    
+
+    
     let backGround : UIImageView = {
         let Image = UIImageView(image: UIImage(named: "Background"))
         Image.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -29,9 +32,10 @@ class AddDetailView: UIViewController{
     
     let ListDetail : UITableView = {
         let tableview = UITableView()
-        tableview.frame = CGRect(x: 0, y: 240, width: UIScreen.main.bounds.width - 100, height: 150)
+        tableview.frame = CGRect(x: 30, y: 0.3*UIScreen.main.bounds.height + 70, width: UIScreen.main.bounds.width - 60, height: 200)
         tableview.layer.borderWidth = 0.25
         tableview.layer.cornerRadius = 15.0
+        tableview.backgroundColor = .purple
         return tableview
     }()
     
@@ -40,25 +44,26 @@ class AddDetailView: UIViewController{
         Tf.frame = CGRect(x: 30, y: 0.2*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 70)
         Tf.layer.borderWidth = 0.5
         Tf.layer.cornerRadius = 15.0
-        
+        let image = UIImage(named: "USD")
+        let VND = UIImage(named: "VND")
+        Tf.withImage(direction: .Right, image: VND!)
+        Tf.withImage(direction: .Left, image: image!)
+        Tf.keyboardType = .numberPad
+        Tf.placeholder = "Value"
         return Tf
     }()
-    
-    let MoneyInputLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Value"
-        label.frame = CGRect(x: 50, y: 0.2*UIScreen.main.bounds.height - 10, width: 60, height: 20)
-        label.backgroundColor = .white
-        label.textAlignment = .center
-        return label
-    }()
+
     
     
     let ButtonList : UIButton = {
         let button = UIButton()
+        let down = UIImage(named: "Down")
+        let QuestionMark = UIImage(named: "MarkQuestion")
         button.frame = CGRect(x: 30, y: 0.3*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 70)
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
+        button.setImages(right: QuestionMark, left: down)
+      //  button.setImages(direction: .left, image: QuestionMark!)
         button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
         return button
     }()
@@ -68,23 +73,23 @@ class AddDetailView: UIViewController{
         Tf.frame = CGRect(x: 30, y: 0.4*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 70)
         Tf.layer.borderWidth = 0.5
         Tf.layer.cornerRadius = 15.0
+        Tf.placeholder = "Note"
+        let image = UIImage(named: "Note")
+        Tf.withImage(direction: .Left, image: image!)
+        
         return Tf
     }()
     
-    let noteLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Note"
-        label.frame = CGRect(x: 50, y: 0.4*UIScreen.main.bounds.height - 10, width: 60, height: 20)
-        label.textAlignment = .center
-        label.backgroundColor = .white
-        return label
-    }()
+
     
     let ScheduleButton : UIButton  = {
         let button = UIButton()
+        let image = UIImage(named: "Schedule")
         button.frame = CGRect(x: 30, y: 0.5*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 70)
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
+        button.setImages(right: nil, left: image)
+      
         return button
     }()
     
@@ -111,18 +116,17 @@ class AddDetailView: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // view.addSubview(backGround)
+
         view.addSubview(MainView)
         view.addSubview(ListDetail)
         view.addSubview(MoneyInput)
-        view.addSubview(MoneyInputLabel)
         view.addSubview(ButtonList)
         view.addSubview(noteTextfield)
-        view.addSubview(noteLabel)
         view.addSubview(ScheduleButton)
         view.addSubview(AccountButton)
         view.addSubview(DoneButton)
-       // view.addSubview(buttonTest)
+        
+
         ListDetail.isHidden = true
         ListDetail.delegate = self
         ListDetail.dataSource = self
@@ -132,6 +136,8 @@ class AddDetailView: UIViewController{
 
     @objc  func HidingTable(_ sender: UIButton){
         ListDetail.isHidden = !ListDetail.isHidden
+        noteTextfield.isHidden = !noteTextfield.isHidden
+        ScheduleButton.isHidden = !ScheduleButton.isHidden
 
     }
 
@@ -147,6 +153,57 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = AllAssetsCell.cellForTableView(tableView: ListDetail)
+       // let cell = UITableViewCell()
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        ListDetail.isHidden = !ListDetail.isHidden
+        noteTextfield.isHidden = !noteTextfield.isHidden
+        ScheduleButton.isHidden = !ScheduleButton.isHidden
+    }
+}
+
+
+
+extension UIButton{
+    
+    enum Direction{
+        case left
+        case right
+    }
+    
+    func setImages(right: UIImage? = nil, left: UIImage? = nil) {
+        if let leftImage = left, right == nil {
+            setImage(leftImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: (imageView?.frame.width)!)
+            contentHorizontalAlignment = .left
+        }
+        if let rightImage = right, left == nil {
+            setImage(rightImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: -20, bottom: 5, right: 20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
+            contentHorizontalAlignment = .right
+        }
+
+        if let rightImage = right, let leftImage = left {
+            setImage(rightImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
+            contentHorizontalAlignment = .left
+
+            let leftImageView = UIImageView(frame: CGRect(x: bounds.maxX - 55,
+                                                          y: frame.height/2 - 15,
+                                                          width: 50,
+                                                          height: 30))
+           // leftImageView.backgroundColor = .purple
+            leftImageView.image?.withRenderingMode(.alwaysOriginal)
+            leftImageView.image = leftImage
+            leftImageView.contentMode = .scaleAspectFit
+            leftImageView.layer.masksToBounds = true
+           addSubview(leftImageView)
+        }
+
+    }
+
 }

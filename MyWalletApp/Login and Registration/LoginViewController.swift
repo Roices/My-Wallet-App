@@ -6,8 +6,8 @@
 //
 
 import UIKit
-
-import Firebase
+import FirebaseDatabase
+import FirebaseAuth
 
 class LoginViewController: UIViewController,UITextFieldDelegate{
 
@@ -35,8 +35,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         CustomUI()
         if FirebaseAuth.Auth.auth().currentUser != nil{
             //Change ->View
-            let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
-            self.navigationController?.pushViewController(mapview, animated: true)
+//            let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
+//            self.navigationController?.pushViewController(mapview, animated: true)
             
             
             //
@@ -63,18 +63,72 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
             }
             guard error == nil else{
                 // show accout creation
-                strongSelf.showCreateAccount()
+
                 return
             }
             print("U have signed in")
             //Change -> View
+            
+//            let path = UserDefaults.standard.string(forKey: "Username")
+//            let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
+//
+//            // tạo ref đến dữ liệu mới
+//    //        let newRef = ref.child("Internet")
+//
+//            // tạo value cho dữ liệu mới
+//            let val: [String : Any] = [
+//              "Account": "",
+//              "Sinh Hoạt": "",
+//              "Dịch vụ": "",
+//                "Con cái": "",
+//                "Học tập": "",
+//                "Du lịch": "",
+//                "Đi lại": "",
+//                "Shopping": "",
+//                "Nhà cửa": "",
+//                "Sức khỏe": "",
+//                "Hiếu hỉ": "",
+//                "Ngân hàng": ""
+//
+//            ]
+//
+//            // đẩy dữ liệu
+//         //  newRef.setValue(val)
+//         ref.setValue(val)
         })
-    }
-    
-    func showCreateAccount(){
         
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
+
+        // tạo ref đến dữ liệu mới
+//        let newRef = ref.child("Internet")
+
+        // tạo value cho dữ liệu mới
+        let val: [String : Any] = [
+          "Account": "",
+          "Sinh Hoạt": "",
+          "Dịch vụ": "",
+            "Con cái": "",
+            "Học tập": "",
+            "Du lịch": "",
+            "Đi lại": "",
+            "Shopping": "",
+            "Nhà cửa": "",
+            "Sức khỏe": "",
+            "Hiếu hỉ": "",
+            "Ngân hàng": ""
+            
+        ]
+
+        // đẩy dữ liệu
+     //  newRef.setValue(val)
+     ref.setValue(val)
+        
+        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
+        self.navigationController?.pushViewController(mapview, animated: true)
     }
     
+
     
     @IBAction func SignUp(){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "RegistrationView"))! as RegistrationViewcontroller

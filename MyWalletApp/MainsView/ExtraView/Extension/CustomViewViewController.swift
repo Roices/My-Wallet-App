@@ -49,6 +49,8 @@ extension UIColor {
     }
 }
 
+
+
 extension UITextField {
 
 enum Direction {
@@ -80,5 +82,49 @@ enum Direction {
 }
     
    
+
+}
+
+
+extension UIButton{
+    
+    enum Direction{
+        case left
+        case right
+    }
+    
+    func setImages(right: UIImage? = nil, left: UIImage? = nil) {
+        if let leftImage = left, right == nil {
+            setImage(leftImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: (imageView?.frame.width)!)
+            contentHorizontalAlignment = .left
+        }
+        if let rightImage = right, left == nil {
+            setImage(rightImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: -20, bottom: 5, right: 20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
+            contentHorizontalAlignment = .right
+        }
+
+        if let rightImage = right, let leftImage = left {
+            setImage(rightImage, for: .normal)
+            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
+            contentHorizontalAlignment = .left
+
+            let leftImageView = UIImageView(frame: CGRect(x: bounds.maxX - 55,
+                                                          y: frame.height/2 - 15,
+                                                          width: 50,
+                                                          height: 30))
+           // leftImageView.backgroundColor = .purple
+            leftImageView.image?.withRenderingMode(.alwaysOriginal)
+            leftImageView.image = leftImage
+            leftImageView.contentMode = .scaleAspectFit
+            leftImageView.layer.masksToBounds = true
+           addSubview(leftImageView)
+        }
+
+    }
 
 }

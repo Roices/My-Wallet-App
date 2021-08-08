@@ -8,7 +8,12 @@
 import UIKit
 
 class AddViewController: UIViewController {
+    lazy var SelectedArray : String = ""
 
+    let Expense = ["Children","Service","Study",
+                   "Health","Food",
+                   "Travel","House",
+                   "Gift","Bank","Entertain"]
     
     let background : UIImageView = {
         let view = UIImageView(image: UIImage(named: "Background"))
@@ -47,35 +52,25 @@ class AddViewController: UIViewController {
         Mainview.addSubview(CollectionStuff)
         // Do any additional setup after loading the view.
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
 extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return Expense.count
         
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionStuff.dequeueReusableCell(withReuseIdentifier: AddCell.identifier, for: indexPath) as! AddCell
-
-      //  cell.configure(with: UIImage(named: "Food")!)
+        cell.configure(Section: Expense[indexPath.item])
         return cell
 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
+        mapview.SelectedArray = self.SelectedArray
         mapview.modalPresentationStyle = .popover
         present(mapview, animated: true, completion: nil)
     }
@@ -83,9 +78,6 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
 
 }
 
-
-//extension AddViewController: UICollectionViewDelegateFlowLayout{
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 125, height: 125)
-//    }
-//}
+struct Stuff{
+    
+}

@@ -21,8 +21,7 @@ class AddCell: UICollectionViewCell {
     
     private var Label : UILabel = {
         let label = UILabel()
-        label.text = "123456789123456"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         label.layer.borderWidth = 0.5
             label.layer.cornerRadius = 10.0
@@ -68,5 +67,10 @@ class AddCell: UICollectionViewCell {
         ImageView.frame = CGRect(x: 0, y: 30, width: contentView.frame.size.width, height: contentView.frame.size.height - 30)
     }
     
+    func configure(Section: String){
+       // ImageView.image = UIImage(named: Section)
+        Label.text = Section
+        
+    }
 
 }

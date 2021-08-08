@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class FirstView: UIViewController,UITextFieldDelegate {
     
@@ -74,6 +76,27 @@ extension FirstView{
             let mapView = (self.storyboard?.instantiateViewController(identifier: "MainsView"))! as UITabBarController
             self.navigationController?.pushViewController(mapView, animated: true)
         }
+        
+        guard let Value = self.TextFld_Account.text
+        else {
+          return
+        }
+
+        // tạo ref tới dữ liệu cha
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
+
+        // tạo ref đến dữ liệu mới
+       let newRef = ref.child("Account")
+
+        // tạo value cho dữ liệu mới
+        let val: [String : Any] = [
+          "Cash": Value
+        ]
+
+        // đẩy dữ liệu
+       newRef.setValue(val)
+      //  ref.setValue(val)
         
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

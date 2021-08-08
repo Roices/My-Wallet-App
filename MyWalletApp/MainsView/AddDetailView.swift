@@ -9,10 +9,7 @@ import UIKit
 
 class AddDetailView: UIViewController{
 
-//    let ScreenH = UIScreen.main.bounds.height
-//    let ScreenW = UIScreen.main.bounds.width
-    
-    
+    lazy var SelectedArray : [String] = ""
 
     
     let backGround : UIImageView = {
@@ -89,7 +86,6 @@ class AddDetailView: UIViewController{
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
         button.setImages(right: nil, left: image)
-      
         return button
     }()
     
@@ -110,7 +106,6 @@ class AddDetailView: UIViewController{
         button.backgroundColor = UIColor(hexString: "090F52")
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.setTitle("Done", for: .normal)
-        
         return button
     }()
     
@@ -126,6 +121,7 @@ class AddDetailView: UIViewController{
         view.addSubview(AccountButton)
         view.addSubview(DoneButton)
         
+        
 
         ListDetail.isHidden = true
         ListDetail.delegate = self
@@ -133,26 +129,23 @@ class AddDetailView: UIViewController{
         // Do any additional setup after loading the view.
     }
     
-
     @objc  func HidingTable(_ sender: UIButton){
         ListDetail.isHidden = !ListDetail.isHidden
         noteTextfield.isHidden = !noteTextfield.isHidden
         ScheduleButton.isHidden = !ScheduleButton.isHidden
 
     }
-
- 
-
 }
 
 
 extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return [SelectedArray].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = AllAssetsCell.cellForTableView(tableView: ListDetail)
+        let cell = UITableViewCell()
+        cell.textLabel?.text = [SelectedArray][indexPath.row]
        // let cell = UITableViewCell()
         return cell
     }
@@ -165,45 +158,4 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
 
 
 
-extension UIButton{
-    
-    enum Direction{
-        case left
-        case right
-    }
-    
-    func setImages(right: UIImage? = nil, left: UIImage? = nil) {
-        if let leftImage = left, right == nil {
-            setImage(leftImage, for: .normal)
-            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: (imageView?.frame.width)!)
-            contentHorizontalAlignment = .left
-        }
-        if let rightImage = right, left == nil {
-            setImage(rightImage, for: .normal)
-            imageEdgeInsets = UIEdgeInsets(top: 5, left: -20, bottom: 5, right: 20)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
-            contentHorizontalAlignment = .right
-        }
 
-        if let rightImage = right, let leftImage = left {
-            setImage(rightImage, for: .normal)
-            imageEdgeInsets = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: -20)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: (imageView?.frame.width)!, bottom: 0, right: 10)
-            contentHorizontalAlignment = .left
-
-            let leftImageView = UIImageView(frame: CGRect(x: bounds.maxX - 55,
-                                                          y: frame.height/2 - 15,
-                                                          width: 50,
-                                                          height: 30))
-           // leftImageView.backgroundColor = .purple
-            leftImageView.image?.withRenderingMode(.alwaysOriginal)
-            leftImageView.image = leftImage
-            leftImageView.contentMode = .scaleAspectFit
-            leftImageView.layer.masksToBounds = true
-           addSubview(leftImageView)
-        }
-
-    }
-
-}

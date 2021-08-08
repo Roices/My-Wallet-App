@@ -128,20 +128,32 @@ var pieChart = PieChartView()
 
 
     @IBAction func Edittt(_ sender: Any) {
-                let path2 = "User"
-                let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path2)
-                ref.observe(.value, with: { (snapshot) in
-                  // cập nhật data
-        
-                  for children in snapshot.children {
-                    if let postSnapshot = children as? DataSnapshot {
-        //              let key = postSnapshot.key
-                        if let Food = postSnapshot.childSnapshot(forPath: "TestA").value as? String{
-                       print(children)
-                      }
-                    }
-                  }
-                })
+        guard let email = TextFld.text, !email.isEmpty, let password = TextFld.text,!password.isEmpty else {
+            //Missing data!!!!!
+            
+            //codehere
+            
+            //
+            return
+        }
+    
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {[weak self]result, error in
+            guard self != nil else{
+                print("error")
+                return
+            }
+            guard error == nil else{
+                
+                return
+            }
+            print("success")
+            let alert = UIAlertController(title: "Success", message: "You have successfully registered!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK",style: .default))
+            self!.present(alert, animated: true, completion: nil)
+         
+            print("Succsess")
+         //   UserDefaults.standard.setValue(self!.UserNameField.text, forKey: "Username")
+        })
     }
 
     @IBAction func Button(_ sender: Any) {
@@ -167,6 +179,7 @@ var pieChart = PieChartView()
 
         // đẩy dữ liệu
         newRef.setValue(val)
+        
     }
 
 }

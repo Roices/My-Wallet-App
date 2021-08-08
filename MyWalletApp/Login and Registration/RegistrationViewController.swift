@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 import Firebase
 
 class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
@@ -27,10 +27,13 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     var isSecureText = false
     var isSecureText2 = false
     
+    var ref: DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
 
+        ref = Database.database().reference()
         EmailField.delegate = self
         UserNameField.delegate = self
         PasswordTextField.delegate = self
@@ -63,6 +66,7 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
             //
             return
         }
+    
         FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {[weak self]result, error in
             guard self != nil else{
                 print("error")
@@ -72,13 +76,16 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
                 
                 return
             }
-            
+            print("success")
             let alert = UIAlertController(title: "Success", message: "You have successfully registered!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK",style: .default))
-            self?.present(alert, animated: true, completion: nil)
-            print("U have signed up")
-            
+            self!.present(alert, animated: true, completion: nil)
+         
+            print("Succsess")
+            UserDefaults.standard.setValue(self!.UserNameField.text, forKey: "Username")
         })
+        
+        
     }
     
     

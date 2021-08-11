@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1729AF1126C0D44000B4DEA2 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1026C0D44000B4DEA2 /* AccountView.swift */; };
+		1729AF1326C0D45A00B4DEA2 /* SavingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1226C0D45A00B4DEA2 /* SavingView.swift */; };
+		1729AF1526C0D47100B4DEA2 /* AccumulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1426C0D47100B4DEA2 /* AccumulationView.swift */; };
 		172A944E268DC09D00774926 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A944D268DC09D00774926 /* AppDelegate.swift */; };
 		172A9450268DC09D00774926 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A944F268DC09D00774926 /* SceneDelegate.swift */; };
 		172A9452268DC09D00774926 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9451268DC09D00774926 /* ViewController.swift */; };
@@ -33,7 +36,6 @@
 		17D0178B26B0475A0043FEE7 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0178A26B047590043FEE7 /* AddViewController.swift */; };
 		17D0178F26B051FE0043FEE7 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0178D26B051FD0043FEE7 /* AddCell.swift */; };
 		17D0179226B1A2AE0043FEE7 /* AddDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */; };
-		17D0179426B3E6AD0043FEE7 /* PopUpTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */; };
 		17D017A226B6395A0043FEE7 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D017A026B6395A0043FEE7 /* CustomButton.swift */; };
 		17D017A326B6395A0043FEE7 /* CustomButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D017A126B6395A0043FEE7 /* CustomButton.xib */; };
 		17D017A626B64A540043FEE7 /* CustomViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D017A526B64A540043FEE7 /* CustomViewViewController.swift */; };
@@ -59,6 +61,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1729AF1026C0D44000B4DEA2 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		1729AF1226C0D45A00B4DEA2 /* SavingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingView.swift; sourceTree = "<group>"; };
+		1729AF1426C0D47100B4DEA2 /* AccumulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulationView.swift; sourceTree = "<group>"; };
 		172A944A268DC09D00774926 /* MyWalletApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWalletApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		172A944D268DC09D00774926 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		172A944F268DC09D00774926 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,7 +96,6 @@
 		17D0178A26B047590043FEE7 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		17D0178D26B051FD0043FEE7 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
 		17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailView.swift; sourceTree = "<group>"; };
-		17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpTable.swift; sourceTree = "<group>"; };
 		17D017A026B6395A0043FEE7 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		17D017A126B6395A0043FEE7 /* CustomButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomButton.xib; sourceTree = "<group>"; };
 		17D017A526B64A540043FEE7 /* CustomViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +131,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1729AF0F26C0D41A00B4DEA2 /* WalletView */ = {
+			isa = PBXGroup;
+			children = (
+				17D0178026A9A5CD0043FEE7 /* WalletViewController.swift */,
+				1729AF1026C0D44000B4DEA2 /* AccountView.swift */,
+				1729AF1226C0D45A00B4DEA2 /* SavingView.swift */,
+				1729AF1426C0D47100B4DEA2 /* AccumulationView.swift */,
+			);
+			path = WalletView;
+			sourceTree = "<group>";
+		};
 		172A9441268DC09D00774926 = {
 			isa = PBXGroup;
 			children = (
@@ -211,14 +226,13 @@
 		17B2C6F42698482C004C7D4F /* MainsView */ = {
 			isa = PBXGroup;
 			children = (
+				1729AF0F26C0D41A00B4DEA2 /* WalletView */,
 				17E9BF3626A5C7DE00E6155B /* FirstView.swift */,
 				17B2C6F52698485D004C7D4F /* HomeView.swift */,
 				17D0177A26A7BA770043FEE7 /* DetailSpending.swift */,
-				17D0178026A9A5CD0043FEE7 /* WalletViewController.swift */,
 				17D0178A26B047590043FEE7 /* AddViewController.swift */,
 				17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */,
 				17D0178826A9BF780043FEE7 /* ReportViewController.swift */,
-				17D0179326B3E6AC0043FEE7 /* PopUpTable.swift */,
 				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
 			);
 			path = MainsView;
@@ -490,6 +504,7 @@
 				17D0178626A9B8610043FEE7 /* AccountCell.swift in Sources */,
 				172A944E268DC09D00774926 /* AppDelegate.swift in Sources */,
 				172A9450268DC09D00774926 /* SceneDelegate.swift in Sources */,
+				1729AF1526C0D47100B4DEA2 /* AccumulationView.swift in Sources */,
 				17D0178926A9BF780043FEE7 /* ReportViewController.swift in Sources */,
 				17D017A226B6395A0043FEE7 /* CustomButton.swift in Sources */,
 				1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */,
@@ -498,8 +513,9 @@
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
 				17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */,
-				17D0179426B3E6AD0043FEE7 /* PopUpTable.swift in Sources */,
+				1729AF1126C0D44000B4DEA2 /* AccountView.swift in Sources */,
 				17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */,
+				1729AF1326C0D45A00B4DEA2 /* SavingView.swift in Sources */,
 				1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

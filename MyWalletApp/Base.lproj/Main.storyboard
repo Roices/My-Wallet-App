@@ -8,6 +8,51 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Accumulation View-->
+        <scene sceneID="rly-JI-bkC">
+            <objects>
+                <viewController storyboardIdentifier="AccumulationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q1T-JY-Dz7" customClass="AccumulationView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5XZ-Vf-WFh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RsN-F3-HmE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iSc-cU-4hc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3377" y="-698"/>
+        </scene>
+        <!--Account View-->
+        <scene sceneID="WLI-74-2d0">
+            <objects>
+                <viewController storyboardIdentifier="AccountView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuY-cm-9a5" customClass="AccountView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VSI-AV-krk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="8AM-rF-QR0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W4V-k7-3Dn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4329" y="-698"/>
+        </scene>
+        <!--Saving View-->
+        <scene sceneID="bEj-mF-KK0">
+            <objects>
+                <viewController storyboardIdentifier="SavingView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ol4-HS-E45" customClass="SavingView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fkR-tq-mCo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="yQO-pa-KZp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zll-ib-lMC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5267" y="-698"/>
+        </scene>
         <!--Home-->
         <scene sceneID="QD1-fe-tPx">
             <objects>
@@ -561,7 +606,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VfO-S6-rw0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2822" y="139"/>
+            <point key="canvasLocation" x="2791" y="110"/>
         </scene>
     </scenes>
     <resources>

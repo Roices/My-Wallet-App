@@ -12,7 +12,7 @@ class AddViewController: UIViewController {
 
     let Expense = ["Children","Service","Study",
                    "Health","Food",
-                   "Travel","House",
+                   "Vehicles","House",
                    "Gift","Bank","Entertain"]
     
     let background : UIImageView = {
@@ -70,7 +70,7 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
-        mapview.SelectedArray = self.SelectedArray
+        mapview.SelectedArray = Expense[indexPath.item]
         mapview.modalPresentationStyle = .popover
         present(mapview, animated: true, completion: nil)
     }

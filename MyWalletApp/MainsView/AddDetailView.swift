@@ -9,8 +9,17 @@ import UIKit
 
 class AddDetailView: UIViewController{
 
-    lazy var SelectedArray : [String] = ""
-
+    lazy var SelectedArray : String = ""
+    let Category: [String : [String]] = ["Children":["Tuition","Books","Toy","Pocket money"],
+                                    "Service":["Electric","Water","Internet","Gas","Mobile","Television"],
+                                    "Study":["Tuition","Relationship"],
+                                    "Health":["Medication","Sport","Medical examination"],
+                                    "Food":["Dining out","Cafe","Supermarket","Dinner","Lunch","Breakfast"],
+                                    "Vehicles":["Gas", "Insurance", "Parking", "Car wash", "Maintenance", "Taxi"],
+                                    "House":["Furniture","Fixing","Rent"],
+                                    "Gift":["Wedding","Visit"],
+                                    "Bank":["Transfer fee"],
+                                    "Entertain":["Travel","Cosmetics","Game","Cinema"]]
     
     let backGround : UIImageView = {
         let Image = UIImageView(image: UIImage(named: "Background"))
@@ -140,12 +149,12 @@ class AddDetailView: UIViewController{
 
 extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [SelectedArray].count
+        return Category["\(SelectedArray)"]!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = [SelectedArray][indexPath.row]
+        cell.textLabel?.text = Category["\(SelectedArray)"]![indexPath.row]
        // let cell = UITableViewCell()
         return cell
     }

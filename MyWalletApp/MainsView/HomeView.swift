@@ -60,6 +60,7 @@ class HomeView: UIViewController,ChartViewDelegate{
         pieChartData.setValueTextColor(.white)
         pieChartDataSet.sliceSpace = 3
         pieChart.data = pieChartData
+
     
       // 4. Assign it to the chart’s data
     let legend = pieChart.legend
@@ -72,6 +73,7 @@ class HomeView: UIViewController,ChartViewDelegate{
     pieChart.holeRadiusPercent = 0.65
     pieChart.drawEntryLabelsEnabled = false
     pieChart.chartDescription?.text = ""
+    pieChart.isUserInteractionEnabled = false
     return pieChart
     }()
     
@@ -206,9 +208,6 @@ extension HomeView:CustomSegmentedControlDelegate{
         }
         ListAssets.reloadData()
     }
-
-    
-    
 }
 
 
@@ -232,10 +231,6 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = AllAssetsCell.cellForTableView(tableView: ListAssets)
         return cell
-
-//        let cell = UITableViewCell()
-//               cell.textLabel?.text = filterData[indexPath.row]
-//               return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -249,11 +244,3 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
 }
 
 
-//extension UITabBar {
-//
-//     override open func sizeThatFits(_ size: CGSize) -> CGSize {
-//     var sizeThatFits = super.sizeThatFits(size)
-//     sizeThatFits.height = 15 // adjust your size here
-//     return sizeThatFits
-//    }
-// }

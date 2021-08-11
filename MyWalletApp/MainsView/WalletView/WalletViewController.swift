@@ -33,7 +33,6 @@ class WalletViewController: UIViewController {
     let UserAccountLabel : UILabel = {
         let UserAccountLabel = UILabel()
         UserAccountLabel.frame = CGRect(x: 90, y: 135, width: 250, height: 30)
-     //   UserAccountLabel.backgroundColor = .purple
         UserAccountLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         UserAccountLabel.text = "USER's ACCOUNT"
         UserAccountLabel.textAlignment = .center
@@ -63,15 +62,15 @@ class WalletViewController: UIViewController {
         Segment.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: 60)
 
         Segment.insertSegment(withTitle: "Account", at: 0, animated: true)
-        Segment.insertSegment(withTitle: "Income", at: 1, animated: true)
-        Segment.insertSegment(withTitle: "Expense", at: 2, animated: true)
+        Segment.insertSegment(withTitle: "Saving", at: 1, animated: true)
+        Segment.insertSegment(withTitle: "Accumulation", at: 2, animated: true)
         Segment.selectedSegmentIndex = 0
         
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
             Segment.setTitleTextAttributes(titleTextAttributes, for: .normal)
         let TextForSelectedColor = [NSAttributedString.Key.foregroundColor: UIColor.black]
             Segment.setTitleTextAttributes(TextForSelectedColor, for: .selected)
-     //   Segment.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
+        Segment.addTarget(self, action: #selector(Add), for: .touchUpInside )
         return Segment
     }()
     
@@ -81,6 +80,16 @@ class WalletViewController: UIViewController {
         return tableWallet
     }()
     
+    
+    let AddWalletButton : UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 25
+        button.setImage(UIImage(named: "Plus"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.backgroundColor = UIColor(hexString: "090F52")
+  //      button.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
+        return button
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -94,7 +103,11 @@ class WalletViewController: UIViewController {
         view.addSubview(MoneyLabel)
         view.addSubview(Segment)
         view.addSubview(tableWallet)
+       // view.addSubview(AddWalletButton)
         // Do any additional setup after loading the view.
+        let tabarY = self.tabBarController!.tabBar.frame.origin.y
+        AddWalletButton.frame = CGRect(x: UIScreen.main.bounds.width - 75, y: tabarY - 75, width: 50, height: 50)
+        view.addSubview(AddWalletButton)
     }
     
 
@@ -113,4 +126,31 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     
+}
+
+
+extension WalletViewController{
+    @objc func Add(sender: UISegmentedControl){
+        switch Segment.selectedSegmentIndex {
+        case 0:
+            AddWalletButton.addTarget(self, action: #selector(AddAccount), for: .touchUpInside)
+        case 1:
+            AddWalletButton.addTarget(self, action: #selector(AddSaving), for: .touchUpInside)
+        default:
+            AddWalletButton.addTarget(self, action: #selector(AddAccumulation), for: .touchUpInside)
+        }
+    }
+    
+    @objc func AddAccount(sender: UIButton){
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "AccountView"))! as AccountView
+        self.navigationController?.pushViewController(mapView, animated: true)
+    }
+    @objc func AddSaving(sender: UIButton){
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "SavingView"))! as SavingView
+        self.navigationController?.pushViewController(mapView, animated: true)
+    }
+    @objc func AddAccumulation(sender: UIButton){
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "AccumulationView"))! as AccumulationView
+        self.navigationController?.pushViewController(mapView, animated: true)
+    }
 }

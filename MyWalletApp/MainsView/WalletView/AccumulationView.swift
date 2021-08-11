@@ -1,22 +1,22 @@
 //
-//  PopUpTable.swift
+//  AccumulationView.swift
 //  MyWalletApp
 //
-//  Created by Tuan on 30/07/2021.
+//  Created by Tuan on 09/08/2021.
 //
 
 import UIKit
 
-class PopUpTable: UIViewController {
+class AccumulationView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = .red
+        view.backgroundColor = .systemPink
         // Do any additional setup after loading the view.
     }
     
-    
+
     /*
     // MARK: - Navigation
 

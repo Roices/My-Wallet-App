@@ -50,6 +50,8 @@ class AddViewController: UIViewController {
         CollectionStuff.dataSource = self
         CollectionStuff.backgroundColor = .white
         Mainview.addSubview(CollectionStuff)
+        
+        self.navigationController?.navigationBar.isHidden = true
         // Do any additional setup after loading the view.
     }
 
@@ -71,13 +73,10 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
         mapview.SelectedArray = Expense[indexPath.item]
-        mapview.modalPresentationStyle = .popover
-        present(mapview, animated: true, completion: nil)
+        self.navigationController?.pushViewController(mapview, animated: true)
+//        present(mapview, animated: true, completion: nil)
     }
 
 
 }
 
-struct Stuff{
-    
-}

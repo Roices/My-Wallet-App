@@ -70,7 +70,7 @@ class WalletViewController: UIViewController {
             Segment.setTitleTextAttributes(titleTextAttributes, for: .normal)
         let TextForSelectedColor = [NSAttributedString.Key.foregroundColor: UIColor.black]
             Segment.setTitleTextAttributes(TextForSelectedColor, for: .selected)
-        Segment.addTarget(self, action: #selector(Add), for: .touchUpInside )
+       // Segment.addTarget(self, action: #selector(Add), for: .valueChanged )
         return Segment
     }()
     
@@ -87,7 +87,7 @@ class WalletViewController: UIViewController {
         button.setImage(UIImage(named: "Plus"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.backgroundColor = UIColor(hexString: "090F52")
-  //      button.addTarget(self, action: #selector(<#T##@objc method#>), for: <#T##UIControl.Event#>)
+        button.addTarget(self, action: #selector(Add), for: .touchUpInside)
         return button
     }()
     override func viewDidLoad() {
@@ -108,6 +108,12 @@ class WalletViewController: UIViewController {
         let tabarY = self.tabBarController!.tabBar.frame.origin.y
         AddWalletButton.frame = CGRect(x: UIScreen.main.bounds.width - 75, y: tabarY - 75, width: 50, height: 50)
         view.addSubview(AddWalletButton)
+        
+         self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Background"), for: .default)
+     //   self.navigationController?.navigationBar.barTintColor = UIColor(hexString: "090F52")
+//            UIColor(hexString: "090F52")
+      //  backGround.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (navigationController?.navigationBar.frame.height)!)
     }
     
 
@@ -130,27 +136,37 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
 
 
 extension WalletViewController{
-    @objc func Add(sender: UISegmentedControl){
-        switch Segment.selectedSegmentIndex {
-        case 0:
-            AddWalletButton.addTarget(self, action: #selector(AddAccount), for: .touchUpInside)
-        case 1:
-            AddWalletButton.addTarget(self, action: #selector(AddSaving), for: .touchUpInside)
-        default:
-            AddWalletButton.addTarget(self, action: #selector(AddAccumulation), for: .touchUpInside)
-        }
-    }
+//    @objc func Add(sender: UISegmentedControl){
+//        switch sender.selectedSegmentIndex {
+//        case 0:
+//
+//
+//        case 1:
+//
+//        default:
+//
+//        }
+//    }
     
-    @objc func AddAccount(sender: UIButton){
+    @objc func Add(sender: UIButton){
+        if Segment.selectedSegmentIndex == 0{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "AccountView"))! as AccountView
-        self.navigationController?.pushViewController(mapView, animated: true)
-    }
-    @objc func AddSaving(sender: UIButton){
+         self.navigationController?.pushViewController(mapView, animated: true)
+       
+
+
+            }
+        else if Segment.selectedSegmentIndex == 1{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "SavingView"))! as SavingView
-        self.navigationController?.pushViewController(mapView, animated: true)
-    }
-    @objc func AddAccumulation(sender: UIButton){
+            self.navigationController?.pushViewController(mapView, animated: true)
+
+        }
+        else{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "AccumulationView"))! as AccumulationView
-        self.navigationController?.pushViewController(mapView, animated: true)
+            self.navigationController?.pushViewController(mapView, animated: true)
+
     }
+}
+
+
 }

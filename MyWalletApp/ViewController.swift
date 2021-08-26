@@ -14,7 +14,13 @@ class ViewController: UIViewController, UITextFieldDelegate,ChartViewDelegate {
 
 var pieChart = PieChartView()
 
-
+    @IBAction func Action(_ sender: Any) {
+//        let mapview = self.storyboard?.instantiateViewController(identifier: "AddViewController") as! AddViewController
+//        mapview.modalTransitionStyle = .crossDissolve
+//        present(mapview, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
+    }
+    
     let ViewTo:UIView = {
         let View = UIView()
         View.backgroundColor = .white
@@ -112,6 +118,7 @@ var pieChart = PieChartView()
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        view.backgroundColor = .clear
             }
     //
 

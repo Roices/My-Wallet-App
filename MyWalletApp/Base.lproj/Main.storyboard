@@ -103,7 +103,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -576,21 +576,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pla-hb-Vir" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5199" y="1635"/>
-        </scene>
-        <!--Schedule View-->
-        <scene sceneID="VHd-rm-9Mk">
-            <objects>
-                <viewController storyboardIdentifier="ScheduleView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EmS-ZX-jPx" customClass="ScheduleView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tJV-fv-tWZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="L0V-7l-X6a"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YRT-EE-qd5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5233.3333333333339" y="2397.3214285714284"/>
         </scene>
         <!--Wallet View Controller-->
         <scene sceneID="ys5-BA-FOF">

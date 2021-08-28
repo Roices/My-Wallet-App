@@ -21,7 +21,6 @@
 		172A947F268DC10900774926 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A947E268DC10900774926 /* LoginViewController.swift */; };
 		172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9480268DC11600774926 /* RegistrationViewController.swift */; };
 		172A9483268DC12800774926 /* ResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9482268DC12800774926 /* ResetViewController.swift */; };
-		174CA59F26D69B660061E240 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174CA59E26D69B660061E240 /* ScheduleView.swift */; };
 		1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */; };
 		1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */; };
 		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
@@ -82,7 +81,6 @@
 		172A947E268DC10900774926 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		172A9480268DC11600774926 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		172A9482268DC12800774926 /* ResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetViewController.swift; sourceTree = "<group>"; };
-		174CA59E26D69B660061E240 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAssetsCell.swift; sourceTree = "<group>"; };
 		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
@@ -216,7 +214,6 @@
 			children = (
 				17D0178A26B047590043FEE7 /* AddViewController.swift */,
 				17D0179126B1A2AE0043FEE7 /* AddDetailView.swift */,
-				174CA59E26D69B660061E240 /* ScheduleView.swift */,
 			);
 			path = AddView;
 			sourceTree = "<group>";
@@ -510,7 +507,6 @@
 				17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */,
 				17D0178F26B051FE0043FEE7 /* AddCell.swift in Sources */,
 				172A9452268DC09D00774926 /* ViewController.swift in Sources */,
-				174CA59F26D69B660061E240 /* ScheduleView.swift in Sources */,
 				17D0178126A9A5CD0043FEE7 /* WalletViewController.swift in Sources */,
 				17D017A626B64A540043FEE7 /* CustomViewViewController.swift in Sources */,
 				17D0178626A9B8610043FEE7 /* AccountCell.swift in Sources */,

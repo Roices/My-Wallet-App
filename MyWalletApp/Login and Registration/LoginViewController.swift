@@ -58,7 +58,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
             return
         }
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion:  {[weak self] result, error in
-            guard let strongSelf = self else{
+            guard self != nil else{
                 return
             }
             guard error == nil else{
@@ -100,24 +100,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
 
-        // tạo ref đến dữ liệu mới
-//        let newRef = ref.child("Internet")
-
         // tạo value cho dữ liệu mới
         let val: [String : Any] = [
-          "Account": "",
-          "Sinh Hoạt": "",
-          "Dịch vụ": "",
-            "Con cái": "",
-            "Học tập": "",
-            "Du lịch": "",
-            "Đi lại": "",
-            "Shopping": "",
-            "Nhà cửa": "",
-            "Sức khỏe": "",
-            "Hiếu hỉ": "",
-            "Ngân hàng": ""
-            
+          "Account": ""
         ]
 
         // đẩy dữ liệu

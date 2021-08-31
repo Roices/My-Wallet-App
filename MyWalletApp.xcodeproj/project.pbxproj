@@ -21,6 +21,7 @@
 		172A947F268DC10900774926 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A947E268DC10900774926 /* LoginViewController.swift */; };
 		172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9480268DC11600774926 /* RegistrationViewController.swift */; };
 		172A9483268DC12800774926 /* ResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A9482268DC12800774926 /* ResetViewController.swift */; };
+		174CA5A126DB85400061E240 /* icons8-calendar-48.png in Resources */ = {isa = PBXBuildFile; fileRef = 174CA5A026DB85400061E240 /* icons8-calendar-48.png */; };
 		1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */; };
 		1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */; };
 		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
@@ -81,6 +82,7 @@
 		172A947E268DC10900774926 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		172A9480268DC11600774926 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		172A9482268DC12800774926 /* ResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetViewController.swift; sourceTree = "<group>"; };
+		174CA5A026DB85400061E240 /* icons8-calendar-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-calendar-48.png"; sourceTree = "<group>"; };
 		1759C8CB26A1854200DFB7F8 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAssetsCell.swift; sourceTree = "<group>"; };
 		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				172A9451268DC09D00774926 /* ViewController.swift */,
 				172A9453268DC09D00774926 /* Main.storyboard */,
 				172A9456268DC09F00774926 /* Assets.xcassets */,
+				174CA5A026DB85400061E240 /* icons8-calendar-48.png */,
 				172A9458268DC09F00774926 /* LaunchScreen.storyboard */,
 				1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */,
 				172A945B268DC09F00774926 /* Info.plist */,
@@ -218,6 +221,23 @@
 			path = AddView;
 			sourceTree = "<group>";
 		};
+		174CA5A226DDC1C60061E240 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				17D0177A26A7BA770043FEE7 /* DetailSpending.swift */,
+				17B2C6F52698485D004C7D4F /* HomeView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		174CA5A326DDC1DB0061E240 /* ReportView */ = {
+			isa = PBXGroup;
+			children = (
+				17D0178826A9BF780043FEE7 /* ReportViewController.swift */,
+			);
+			path = ReportView;
+			sourceTree = "<group>";
+		};
 		1759C8CD26A26C4C00DFB7F8 /* ExtraView */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,12 +255,11 @@
 		17B2C6F42698482C004C7D4F /* MainsView */ = {
 			isa = PBXGroup;
 			children = (
+				17E9BF3626A5C7DE00E6155B /* FirstView.swift */,
+				174CA5A326DDC1DB0061E240 /* ReportView */,
+				174CA5A226DDC1C60061E240 /* HomeView */,
 				174CA59D26D69B4A0061E240 /* AddView */,
 				1729AF0F26C0D41A00B4DEA2 /* WalletView */,
-				17E9BF3626A5C7DE00E6155B /* FirstView.swift */,
-				17B2C6F52698485D004C7D4F /* HomeView.swift */,
-				17D0177A26A7BA770043FEE7 /* DetailSpending.swift */,
-				17D0178826A9BF780043FEE7 /* ReportViewController.swift */,
 				1759C8CD26A26C4C00DFB7F8 /* ExtraView */,
 			);
 			path = MainsView;
@@ -430,6 +449,7 @@
 			files = (
 				17D017A326B6395A0043FEE7 /* CustomButton.xib in Resources */,
 				172A945A268DC09F00774926 /* LaunchScreen.storyboard in Resources */,
+				174CA5A126DB85400061E240 /* icons8-calendar-48.png in Resources */,
 				17D0177F26A7BC420043FEE7 /* SpendingCell.xib in Resources */,
 				1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */,
 				172A9457268DC09F00774926 /* Assets.xcassets in Resources */,

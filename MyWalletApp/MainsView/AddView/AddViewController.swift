@@ -8,7 +8,7 @@
 import UIKit
 
 class AddViewController: UIViewController {
-    lazy var SelectedArray : String = ""
+    lazy var Selected : String = ""
 
     let Expense = ["Children","Service","Study",
                    "Health","Food",
@@ -25,7 +25,7 @@ class AddViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 15.0
-        view.frame = CGRect(x: 0, y: 200, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
+        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
         return view
     }()
     
@@ -73,6 +73,7 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mapview = (self.storyboard?.instantiateViewController(identifier: "AddDetailView"))! as AddDetailView
         mapview.SelectedArray = Expense[indexPath.item]
+        mapview.SelectedLabel = Expense[indexPath.item]
         self.navigationController?.pushViewController(mapview, animated: true)
 //        present(mapview, animated: true, completion: nil)
     }

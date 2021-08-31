@@ -6,10 +6,25 @@
 //
 
 import UIKit
+import FSCalendar
+import FirebaseDatabase
+
 
 class SavingView: UIViewController {
 
     
+    let PeriodArray = ["2 week", "1 Month", "3 Months", "6 Months", "12 Month"]
+    
+    let TitleLB : UILabel = {
+        let label = UILabel()
+        label.text = "Saving Plan"
+        label.frame = CGRect(x: UIScreen.main.bounds.width/2 - 100, y: 50, width: 200, height: 50)
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.textAlignment = .center
+        label.textColor = .white
+       // label.backgroundColor = .yellow
+        return label
+    }()
     
     let background : UIImageView = {
         let background = UIImageView(image: UIImage(named: "Background"))
@@ -28,7 +43,7 @@ class SavingView: UIViewController {
     let BackButton : UIButton = {
         let button = UIButton()
         button.setImage( UIImage(named: "Back"), for: .normal)
-        button.frame = CGRect(x: 25, y: 50, width: 50, height: 50)
+        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(BacktoWallet), for: .touchUpInside)
         return button
@@ -41,6 +56,7 @@ class SavingView: UIViewController {
         Tf.frame = CGRect(x: 30, y: 0.1*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
+        Tf.placeholder = "Value"
         Tf.withImage(direction: .Left, image: imageUSD)
         Tf.withImage(direction: .Right, image: imageVND)
         return Tf
@@ -52,6 +68,8 @@ class SavingView: UIViewController {
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
         Tf.placeholder = "Your Account"
+        let Image = UIImage(named: "NameAccount")
+        Tf.withImage(direction: .Left, image: Image!)
         return Tf
     }()
     
@@ -60,23 +78,41 @@ class SavingView: UIViewController {
         button.frame = CGRect(x: 30, y: 0.3*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height*0.075)
         button.layer.cornerRadius = 15.0
         button.layer.borderWidth = 0.5
+        button.addTarget(self, action: #selector(ShowUpCalendar), for: .touchUpInside)
+        button.setTitle("------Date of dispatch------", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
         return button
     }()
     
-    let periodButton : UIButton = {
-        let button = UIButton()
-        button.frame = CGRect(x: 30, y: 0.4*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height*0.075)
-        button.layer.cornerRadius = 15.0
-        button.layer.borderWidth = 0.5
-        return button
+    let calendar : FSCalendar = {
+        let calendar = FSCalendar()
+        calendar.frame = CGRect(x: 30, y: 0.375*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.215*UIScreen.main.bounds.height)
+        calendar.layer.cornerRadius = 15.0
+        calendar.layer.borderWidth = 0.5
+        return calendar
     }()
+    
+    let periodTf : UITextField = {
+        let Tf = UITextField()
+        Tf.frame = CGRect(x: 30, y: 0.4*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height*0.075)
+        Tf.layer.cornerRadius = 15.0
+        Tf.layer.borderWidth = 0.5
+        Tf.placeholder = "Period"
+        let Image = UIImage(named: "Period")
+        Tf.withImage(direction: .Left, image: Image!)
+        return Tf
+    }()
+    
+    
 
     let Bankrate : UITextField = {
         let Tf = UITextField()
         Tf.frame = CGRect(x: 30, y: 0.5*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
-        Tf.placeholder = "Your Account"
+        Tf.placeholder = "Interest Rates"
+        let Image = UIImage(named: "InterestRate")
+        Tf.withImage(direction: .Left, image: Image!)
         return Tf
     }()
     
@@ -88,6 +124,7 @@ class SavingView: UIViewController {
         button.backgroundColor = UIColor(hexString: "090F52")
         button.setTitle("Done", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
+        button.addTarget(self, action: #selector(Add), for: .touchUpInside)
         return button
         
     }()
@@ -95,16 +132,29 @@ class SavingView: UIViewController {
         super.viewDidLoad()
 
         view.addSubview(background)
-       view.addSubview(MainView)
+        view.addSubview(MainView)
         view.addSubview(BackButton)
+        view.addSubview(TitleLB)
         MainView.addSubview(valueTf)
         MainView.addSubview(NameAccountTf)
         MainView.addSubview(DateButton)
-        MainView.addSubview(periodButton)
+        MainView.addSubview(periodTf)
         MainView.addSubview(Bankrate)
         MainView.addSubview(DoneButton)
+        MainView.addSubview(calendar)
+        
+        calendar.isHidden = true
+        calendar.delegate = self
+        calendar.dataSource = self
         // Do any additional setup after loading the view.
-      //  self.navigationController?.isNavigationBarHidden = false
+  
+    }
+    
+    
+    @objc func ShowUpCalendar(sender: UIButton){
+        calendar.isHidden = !calendar.isHidden
+        periodTf.isHidden = !periodTf.isHidden
+        Bankrate.isHidden = !Bankrate.isHidden
     }
     
     
@@ -113,7 +163,46 @@ class SavingView: UIViewController {
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     
+    @objc func Add(sender: UIButton){
+        let path = UserDefaults.standard.string(forKey: "Username")
+//        let path = "tuan dep trai"
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Saving")
+
+        // tạo ref đến dữ liệu mới
+    //   let newRef = ref.child("Account")
+        let newRef = ref.child("\(String(describing: NameAccountTf.text))")
+
+        // đẩy dữ liệu
+        let val: [String : Any] = [
+            "Value": valueTf.text as Any,
+            "Date": DateButton.titleLabel?.text as Any,
+            "Period": periodTf.text as Any,
+            "Interest Rate": Bankrate.text as Any
+        ]
+
+        newRef.setValue(val)
+    }
 
  
 
 }
+
+
+extension SavingView:FSCalendarDelegate,FSCalendarDataSource{
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-YYYY"
+        let DateFormatter = formatter.string(from: date)
+        
+        DateButton.setTitle("\(DateFormatter)", for: .normal)
+        DateButton.setTitleColor(.black, for: .normal)
+        
+        calendar.isHidden = !calendar.isHidden
+        periodTf.isHidden = !periodTf.isHidden
+        Bankrate.isHidden = !Bankrate.isHidden
+        
+        
+    }
+}
+
+

@@ -14,6 +14,8 @@ class AddDetailView: UIViewController{
 
     lazy var TheChoicedThing = ""
     lazy var SelectedArray : String = ""
+    lazy var SelectedLabel : String = ""
+    
     let Category: [String : [String]] = ["Children":["Tuition","Books","Toy","Pocket money"],
                                     "Service":["Electric","Water","Internet","Gas","Mobile","Television"],
                                     "Study":["Tuition","Relationship"],
@@ -32,7 +34,15 @@ class AddDetailView: UIViewController{
         return Image
     }()
     
-    
+    let TitleLB : UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.frame = CGRect(x: UIScreen.main.bounds.width/2 - 50, y: 50, width: 100, height: 50)
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.textAlignment = .center
+        label.textColor = .white
+        return label
+    }()
     let MainView : UIView = {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 150)
@@ -42,6 +52,14 @@ class AddDetailView: UIViewController{
         return view
     }()
     
+    let BackButton : UIButton = {
+        let button = UIButton()
+        button.setImage( UIImage(named: "Back"), for: .normal)
+        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(BackToAddView), for: .touchUpInside)
+        return button
+    }()
     
     let MoneyInput : UITextField = {
         let Tf = UITextField()
@@ -151,6 +169,8 @@ class AddDetailView: UIViewController{
 
         view.addSubview(backGround)
         view.addSubview(MainView)
+        view.addSubview(TitleLB)
+        view.addSubview(BackButton)
         MainView.addSubview(ListDetail)
         MainView.addSubview(MoneyInput)
         MainView.addSubview(ButtonList)
@@ -160,7 +180,9 @@ class AddDetailView: UIViewController{
         MainView.addSubview(DoneButton)
         MainView.addSubview(Calendar)
         MainView.addSubview(ListAccount)
+        
       //  MainView.addSubview(Calendar)
+        TitleLB.text = self.SelectedLabel
         
         
         
@@ -200,9 +222,11 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
         if tableView == ListDetail{
             let cell = ListDetail.dequeueReusableCell(withIdentifier: "ListDetail")
             cell?.textLabel?.text = Category["\(SelectedArray)"]![indexPath.row]
+            cell?.textLabel?.textAlignment = .center
             return cell!
         } else if tableView == ListAccount{
             let cell = ListAccount.dequeueReusableCell(withIdentifier: "ListAccount")
+            cell?.textLabel?.textAlignment = .center
             return cell!
         }
         return UITableViewCell()
@@ -231,6 +255,12 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
 //Functions
 extension AddDetailView{
     
+    @objc func BackToAddView(sender: UIButton){
+            let mapView = (self.storyboard?.instantiateViewController(identifier: "AddViewController"))! as AddViewController
+         self.navigationController?.pushViewController(mapView, animated: true)
+        
+    }
+    
     @objc func ShowCalendar(){
         Calendar.isHidden = !Calendar.isHidden
         AccountButton.isHidden = !AccountButton.isHidden
@@ -253,10 +283,10 @@ extension AddDetailView{
         // tạo ref tới dữ liệu cha
         let path = UserDefaults.standard.string(forKey: "Username")
 //        let path = "tuan dep trai"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(SelectedLabel)").child("\(TheChoicedThing)")
 
         // tạo ref đến dữ liệu mới
-       let newRef = ref.child("\(TheChoicedThing)")
+        let newRef = ref.child("\(ScheduleButton.titleLabel!.text! as String)")
 
         // tạo value cho dữ liệu mới
         let val: [String : Any] = [
@@ -266,9 +296,22 @@ extension AddDetailView{
             "Account": AccountButton.titleLabel?.text as Any
         ]
 
+        ref.child("\(TheChoicedThing)").observeSingleEvent(of: .value, with: { [self] (snapshot) in
+
+               if snapshot.hasChild(""){
+                   print("data exist")
+               }else{
+
+                   print("data doesn't exist")
+               }
+
+
+           })
         // đẩy dữ liệu
        newRef.setValue(val)
 
+        let mapView = self.storyboard?.instantiateViewController(identifier: "AddViewController") as! AddViewController
+        self.navigationController?.pushViewController(mapView, animated: true)
         
     }
     
@@ -276,12 +319,16 @@ extension AddDetailView{
 
 
 extension AddDetailView: FSCalendarDataSource, FSCalendarDelegate{
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition){
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-YYYY"
         let DateFormatter = formatter.string(from: date)
+        
+        
         ScheduleButton.setTitle("\(DateFormatter)", for: .normal)
         ScheduleButton.setTitleColor(.black, for: .normal)
+        
+        
         Calendar.isHidden = !Calendar.isHidden
         AccountButton.isHidden = !AccountButton.isHidden
         DoneButton.isHidden = !DoneButton.isHidden

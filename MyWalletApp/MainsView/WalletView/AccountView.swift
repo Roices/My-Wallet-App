@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class AccountView: UIViewController {
 
+    
+    let TypeAccount = ["Cash","Banking","Credit card","e-Wallet"]
+    lazy var AccountChoiced = ""
+    
+  
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
         backGround.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -42,7 +48,7 @@ class AccountView: UIViewController {
     let BackButton : UIButton = {
         let button = UIButton()
         button.setImage( UIImage(named: "Back"), for: .normal)
-        button.frame = CGRect(x: 25, y: 50, width: 50, height: 50)
+        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(AccountView.BacktoWallet), for: .touchUpInside)
         return button
@@ -67,12 +73,16 @@ class AccountView: UIViewController {
         button.layer.cornerRadius = 15.0
         button.layer.borderWidth = 0.5
         button.addTarget(self, action: #selector(ChooseAccount), for: .touchUpInside)
+        button.setTitle("------Type Account------", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
         return button
     }()
     
     let ListAccount : UITableView = {
         let tableView = UITableView()
-        tableView.frame = CGRect(x: 30, y: 0.275 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.3*UIScreen.main.bounds.height)
+        tableView.frame = CGRect(x: 30, y: 0.275 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
+        tableView.layer.cornerRadius = 15.0
+        tableView.layer.borderWidth = 0.5
         return tableView
     }()
     
@@ -90,20 +100,6 @@ class AccountView: UIViewController {
     }()
     
     
-    @objc func BacktoWallet(sender: UIButton){
-        let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
-     self.navigationController?.pushViewController(mapView, animated: true)
-    }
-    
-    
-    
-    @objc func Add(sender: UIButton){
-        
-    }
-    
-    @objc func ChooseAccount(sender: UIButton){
-        ListAccount.isHidden = !ListAccount.isHidden
-    }
     
     
     override func viewDidLoad() {
@@ -117,21 +113,63 @@ class AccountView: UIViewController {
         MainView.addSubview(DoneButton)
         MainView.addSubview(ListAccount)
         view.addSubview(BackButton)
+        
+        
         ListAccount.isHidden = true
+        ListAccount.dataSource = self
+        ListAccount.delegate = self
        
     }
 
 
 }
 
+//functions
+extension AccountView{
+    
+    @objc func BacktoWallet(sender: UIButton){
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+     self.navigationController?.pushViewController(mapView, animated: true)
+    }
+    
+    
+    
+    @objc func Add(sender: UIButton){
+        let path = UserDefaults.standard.string(forKey: "Username")
+//        let path = "tuan dep trai"
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Account")
 
+        // tạo ref đến dữ liệu mới
+    //   let newRef = ref.child("Account")
+        let newRef = ref.child("\(AccountChoiced)")
+
+        // đẩy dữ liệu
+        newRef.setValue(ValueTF.text)
+    }
+    
+    @objc func ChooseAccount(sender: UIButton){
+        ListAccount.isHidden = !ListAccount.isHidden
+        DoneButton.isHidden = !DoneButton.isHidden
+    }
+}
+
+//ListAccountDelegate
 extension AccountView : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+       return TypeAccount.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        cell.textLabel?.text = TypeAccount[indexPath.row]
+        cell.textLabel?.textAlignment = .center
         return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        AccountChoiced = TypeAccount[indexPath.row]
+        ListAccount.isHidden = !ListAccount.isHidden
+        DoneButton.isHidden = !DoneButton.isHidden
+        TypeAccountBT.setTitle(TypeAccount[indexPath.row], for: .normal)
+        TypeAccountBT.setTitleColor(.black, for: .normal)
     }
 }

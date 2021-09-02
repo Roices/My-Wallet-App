@@ -45,7 +45,7 @@ class AddDetailView: UIViewController{
     }()
     let MainView : UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 150)
+        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
         view.backgroundColor = .white
         view.layer.cornerRadius = 15.0
         view.layer.borderWidth = 0.5
@@ -82,7 +82,7 @@ class AddDetailView: UIViewController{
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
         button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
-        button.setTitle("--------Detail--------", for: .normal)
+        button.setTitle("--------Category--------", for: .normal)
         button.contentHorizontalAlignment = .center
         button.setTitleColor(.lightGray, for: .normal)
         return button
@@ -162,6 +162,35 @@ class AddDetailView: UIViewController{
     }()
     
 
+    let WarningView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .red
+        label.setTitle("Please fill out the information completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
+    
+    let WarningCompletelyView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .green
+        label.setTitle("Completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
     
 
     override func viewDidLoad() {
@@ -171,6 +200,8 @@ class AddDetailView: UIViewController{
         view.addSubview(MainView)
         view.addSubview(TitleLB)
         view.addSubview(BackButton)
+        MainView.addSubview(WarningCompletelyView)
+        MainView.addSubview(WarningView)
         MainView.addSubview(ListDetail)
         MainView.addSubview(MoneyInput)
         MainView.addSubview(ButtonList)
@@ -183,6 +214,8 @@ class AddDetailView: UIViewController{
         
       //  MainView.addSubview(Calendar)
         TitleLB.text = self.SelectedLabel
+        WarningView.isHidden = true
+        WarningCompletelyView.isHidden = true
         
         
         
@@ -280,15 +313,21 @@ extension AddDetailView{
         DoneButton.isHidden = !DoneButton.isHidden
     }
     @objc func Save(sender: UIButton){
-        // tạo ref tới dữ liệu cha
+        
+        if MoneyInput.text == "" || ButtonList.titleLabel?.text == "--------Category--------" || ScheduleButton.titleLabel?.text == "--------Date--------"{
+            //Push up Warning
+            WarningView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningView.isHidden = true
+            }
+            return
+        }else{
+        //Creat a path for data
         let path = UserDefaults.standard.string(forKey: "Username")
-//        let path = "tuan dep trai"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(SelectedLabel)").child("\(TheChoicedThing)")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(SelectedLabel)").child("\(TheChoicedThing)")
 
-        // tạo ref đến dữ liệu mới
-        let newRef = ref.child("\(ScheduleButton.titleLabel!.text! as String)")
-
-        // tạo value cho dữ liệu mới
+        let newRef = ref.childByAutoId()
+        // creat new value
         let val: [String : Any] = [
             "Value": MoneyInput.text as Any,
             "Date": ScheduleButton.titleLabel?.text as Any,
@@ -296,22 +335,23 @@ extension AddDetailView{
             "Account": AccountButton.titleLabel?.text as Any
         ]
 
-        ref.child("\(TheChoicedThing)").observeSingleEvent(of: .value, with: { [self] (snapshot) in
+        // push value
+      newRef.setValue(val)
+            
+            MoneyInput.text = ""
+            ButtonList.setTitle("--------Category--------", for: .normal)
+            ButtonList.setTitleColor(.lightGray, for: .normal)
+            ScheduleButton.setTitle("--------Date--------", for: .normal)
+            ScheduleButton.setTitleColor(.lightGray, for: .normal)
+            noteTextfield.text = ""
+            //Push Compeletely notification
+            WarningCompletelyView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningCompletelyView.isHidden = true
+            }
 
-               if snapshot.hasChild(""){
-                   print("data exist")
-               }else{
 
-                   print("data doesn't exist")
-               }
-
-
-           })
-        // đẩy dữ liệu
-       newRef.setValue(val)
-
-        let mapView = self.storyboard?.instantiateViewController(identifier: "AddViewController") as! AddViewController
-        self.navigationController?.pushViewController(mapView, animated: true)
+        }
         
     }
     

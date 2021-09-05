@@ -128,6 +128,36 @@ class SavingView: UIViewController {
         return button
         
     }()
+    
+    let WarningView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .red
+        label.setTitle("Please fill out the information completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
+    
+    let WarningCompletelyView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .green
+        label.setTitle("Completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -142,12 +172,20 @@ class SavingView: UIViewController {
         MainView.addSubview(Bankrate)
         MainView.addSubview(DoneButton)
         MainView.addSubview(calendar)
+        MainView.addSubview(WarningView)
+        MainView.addSubview(WarningCompletelyView)
+        
+        valueTf.delegate = self
+        NameAccountTf.delegate = self
+        
         
         calendar.isHidden = true
         calendar.delegate = self
         calendar.dataSource = self
         // Do any additional setup after loading the view.
   
+        WarningView.isHidden = true
+        WarningCompletelyView.isHidden = true
     }
     
     
@@ -164,6 +202,16 @@ class SavingView: UIViewController {
     }
     
     @objc func Add(sender: UIButton){
+        //check if value empty
+        if valueTf.text == "" || NameAccountTf.text == "" || DateButton.titleLabel?.text == "------Date of dispatch------" || periodTf.text == "" || Bankrate.text == ""{
+            //if empty push warning
+            WarningView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningView.isHidden = true
+            }
+            return
+        }else{
+            
         let path = UserDefaults.standard.string(forKey: "Username")
 //        let path = "tuan dep trai"
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Saving")
@@ -181,9 +229,22 @@ class SavingView: UIViewController {
         ]
 
         newRef.setValue(val)
+            //push completely warning
+            WarningCompletelyView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningCompletelyView.isHidden = true
+            }
+            
+            //set UI to default
+            valueTf.text = ""
+            NameAccountTf.text = ""
+            DateButton.setTitle("------Date of dispatch------", for: .normal)
+            DateButton.setTitleColor(.lightGray, for: .normal)
+            periodTf.text = ""
+            Bankrate.text = ""
     }
 
- 
+}
 
 }
 
@@ -206,3 +267,32 @@ extension SavingView:FSCalendarDelegate,FSCalendarDataSource{
 }
 
 
+extension SavingView: UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+              let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.groupingSeparator = "."
+                formatter.locale = Locale.current
+                formatter.maximumFractionDigits = 0
+               // Uses the grouping separator corresponding to your Locale
+               // e.g. "," in the US, a space in France, and so on
+               if let groupingSeparator = formatter.groupingSeparator {
+                   if string == groupingSeparator {
+                       return true
+                   }
+                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                       if string.isEmpty { // pressed Backspace key
+                           totalTextWithoutGroupingSeparators.removeLast()
+                       }
+                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                           textField.text = formattedText
+                           return false
+                       }
+                   }
+               }
+               return true
+           }
+}

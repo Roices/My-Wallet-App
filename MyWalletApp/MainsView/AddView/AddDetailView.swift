@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 import FirebaseDatabase
 import FSCalendar
 
@@ -15,6 +14,8 @@ class AddDetailView: UIViewController{
     lazy var TheChoicedThing = ""
     lazy var SelectedArray : String = ""
     lazy var SelectedLabel : String = ""
+    
+   lazy var TypeAccount : [(TypeAccount: String, Value: String)] = []
     
     let Category: [String : [String]] = ["Children":["Tuition","Books","Toy","Pocket money"],
                                     "Service":["Electric","Water","Internet","Gas","Mobile","Television"],
@@ -137,6 +138,8 @@ class AddDetailView: UIViewController{
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
         button.addTarget(self, action: #selector(ShowListAccount), for: .touchUpInside)
+        button.setTitle("-----Account-----", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
         return button
     }()
     
@@ -191,6 +194,7 @@ class AddDetailView: UIViewController{
         label.layer.shadowOpacity = 0.7
         return label
     }()
+  
     
 
     override func viewDidLoad() {
@@ -217,12 +221,15 @@ class AddDetailView: UIViewController{
         WarningView.isHidden = true
         WarningCompletelyView.isHidden = true
         
+        MoneyInput.delegate = self
+        noteTextfield.delegate = self
         
         
-        self.ListAccount.register(UITableViewCell.self, forCellReuseIdentifier: "ListAccount")
+       // self.ListAccount.register(UITableViewCell.self, forCellReuseIdentifier: "ListAccount")
         ListAccount.isHidden = true
         ListAccount.delegate = self
         ListAccount.dataSource = self
+        
 
         self.ListDetail.register(UITableViewCell.self, forCellReuseIdentifier: "ListDetail")
         ListDetail.isHidden = true
@@ -235,7 +242,8 @@ class AddDetailView: UIViewController{
         Calendar.dataSource = self
 
         
-
+        //call Function For UpdateData -> ListAccountTable
+        UpdateDataforAccoutList()
        
         // Do any additional setup after loading the view.
     }
@@ -243,24 +251,36 @@ class AddDetailView: UIViewController{
    
 }
 
-//ListDetail
+//ListDetail and ListAccount configure
 extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == ListDetail{
         return Category["\(SelectedArray)"]!.count
+        }else{
+            return TypeAccount.count
+        }
     }
     
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == ListDetail{
-            let cell = ListDetail.dequeueReusableCell(withIdentifier: "ListDetail")
-            cell?.textLabel?.text = Category["\(SelectedArray)"]![indexPath.row]
-            cell?.textLabel?.textAlignment = .center
-            return cell!
+            let cell = ListDetail.dequeueReusableCell(withIdentifier: "ListDetail",for: indexPath)
+            cell.textLabel?.text = Category["\(SelectedArray)"]![indexPath.row]
+            cell.textLabel?.textAlignment = .center
+            return cell
         } else if tableView == ListAccount{
-            let cell = ListAccount.dequeueReusableCell(withIdentifier: "ListAccount")
-            cell?.textLabel?.textAlignment = .center
+            var cell = tableView.dequeueReusableCell(withIdentifier: "ListAccount")
+            if cell == nil {
+                cell = UITableViewCell(style: .value1, reuseIdentifier: "ListAccount")
+                let Data = TypeAccount[indexPath.row]
+                cell?.textLabel?.text = Data.TypeAccount
+                cell?.detailTextLabel?.text = Data.Value + " VND"
+                cell?.textLabel?.textAlignment = .left
+                cell?.detailTextLabel?.textAlignment = .right
+            }
             return cell!
+
         }
         return UITableViewCell()
     }
@@ -276,6 +296,10 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
         TheChoicedThing = Category["\(SelectedArray)"]![indexPath.row]
             
         }else{
+            let Data = TypeAccount[indexPath.row]
+            let value = Data.TypeAccount + "\t\t - \t\t" + Data.Value + " VND"
+            AccountButton.setTitle(value, for: .normal)
+            AccountButton.setTitleColor(.black, for: .normal)
             DoneButton.isHidden = !DoneButton.isHidden
             ListAccount.isHidden = !ListAccount.isHidden
         }
@@ -288,6 +312,27 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
 //Functions
 extension AddDetailView{
     
+    func UpdateDataforAccoutList(){
+     //   let path = "Account"
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Account")
+        ref.observe(.value, with: { (snapshot) in
+          // cập nhật data
+          self.TypeAccount = [];
+          for children in snapshot.children {
+            if let postSnapshot = children as? DataSnapshot {
+//              let key = postSnapshot.key
+              if let Account = postSnapshot.childSnapshot(forPath: "TypeAccount").value as? String,
+                let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String {
+                self.TypeAccount.append((TypeAccount: Account,Value: Value))
+              }
+            }
+          }
+          
+          // cập nhật ui
+          self.ListAccount.reloadData()
+        })
+    }
     @objc func BackToAddView(sender: UIButton){
             let mapView = (self.storyboard?.instantiateViewController(identifier: "AddViewController"))! as AddViewController
          self.navigationController?.pushViewController(mapView, animated: true)
@@ -313,8 +358,9 @@ extension AddDetailView{
         DoneButton.isHidden = !DoneButton.isHidden
     }
     @objc func Save(sender: UIButton){
+       //check if it contains data
         
-        if MoneyInput.text == "" || ButtonList.titleLabel?.text == "--------Category--------" || ScheduleButton.titleLabel?.text == "--------Date--------"{
+        if MoneyInput.text == "" || ButtonList.titleLabel?.text == "--------Category--------" || ScheduleButton.titleLabel?.text == "--------Date--------" || AccountButton.titleLabel?.text == "-----Account-----"{
             //Push up Warning
             WarningView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -323,11 +369,13 @@ extension AddDetailView{
             return
         }else{
         //Creat a path for data
+            
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(SelectedLabel)").child("\(TheChoicedThing)")
 
         let newRef = ref.childByAutoId()
         // creat new value
+            
         let val: [String : Any] = [
             "Value": MoneyInput.text as Any,
             "Date": ScheduleButton.titleLabel?.text as Any,
@@ -344,6 +392,10 @@ extension AddDetailView{
             ScheduleButton.setTitle("--------Date--------", for: .normal)
             ScheduleButton.setTitleColor(.lightGray, for: .normal)
             noteTextfield.text = ""
+            AccountButton.setTitle("-----Account-----", for: .normal)
+            AccountButton.setTitleColor(.lightGray, for: .normal)
+            
+            
             //Push Compeletely notification
             WarningCompletelyView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -375,4 +427,35 @@ extension AddDetailView: FSCalendarDataSource, FSCalendarDelegate{
         noteTextfield.isHidden = !noteTextfield.isHidden
         
     }
+}
+
+
+extension AddDetailView:UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+              let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.groupingSeparator = "."
+                formatter.locale = Locale.current
+                formatter.maximumFractionDigits = 0
+               // Uses the grouping separator corresponding to your Locale
+               // e.g. "," in the US, a space in France, and so on
+               if let groupingSeparator = formatter.groupingSeparator {
+                   if string == groupingSeparator {
+                       return true
+                   }
+                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                       if string.isEmpty { // pressed Backspace key
+                           totalTextWithoutGroupingSeparators.removeLast()
+                       }
+                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                           textField.text = formattedText
+                           return false
+                       }
+                   }
+               }
+               return true
+           }
 }

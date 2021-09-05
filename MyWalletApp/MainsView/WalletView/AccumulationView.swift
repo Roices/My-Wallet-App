@@ -58,6 +58,7 @@ class AccumulationView: UIViewController {
         tf.frame = CGRect(x: 30, y: 0.1*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         tf.layer.cornerRadius = 15.0
         tf.layer.borderWidth = 0.5
+        tf.placeholder = "Value"
         tf.withImage(direction: .Left, image: imageUSD)
         tf.withImage(direction: .Right, image: imageVND)
         return tf
@@ -126,6 +127,36 @@ class AccumulationView: UIViewController {
         
     }()
     
+    let WarningView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .red
+        label.setTitle("Please fill out the information completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
+    
+    let WarningCompletelyView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .green
+        label.setTitle("Completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(Background)
@@ -139,6 +170,11 @@ class AccumulationView: UIViewController {
         Mainview.addSubview(DoneButton)
         Mainview.addSubview(Calendar)
         Mainview.addSubview(ListOfEndDate)
+        Mainview.addSubview(WarningView)
+        Mainview.addSubview(WarningCompletelyView)
+        
+        WarningView.isHidden = true
+        WarningCompletelyView.isHidden = true
         
         Calendar.isHidden = true
         Calendar.delegate = self
@@ -156,12 +192,11 @@ class AccumulationView: UIViewController {
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     
-
     @objc func StartedDate(sender : UIButton){
         Calendar.isHidden = !Calendar.isHidden
         ExpirationDate.isHidden = !ExpirationDate.isHidden
         DoneButton.isHidden = !DoneButton.isHidden
-    }
+     }
     
     @objc func ShowUpPeriod(sender: UIButton){
         ListOfEndDate.isHidden = !ListOfEndDate.isHidden
@@ -169,6 +204,18 @@ class AccumulationView: UIViewController {
     }
 
     @objc func Add(sender: UIButton){
+        //Check if empty value
+        if ValueTf.text == "" || NoteTf.text == "" || DateButton.titleLabel?.text == "------Date of dispatch------" || ExpirationDate.titleLabel?.text == "------How long?------"{
+            //push warning
+            WarningView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningView.isHidden = true
+            }
+            return
+            
+        }else{
+        
+        //creat a path for data
         let path = UserDefaults.standard.string(forKey: "Username")
 //        let path = "tuan dep trai"
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Accumulation")
@@ -186,9 +233,23 @@ class AccumulationView: UIViewController {
         ]
         
         newRef.setValue(val)
+            //push completely warning
+            WarningCompletelyView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningCompletelyView.isHidden = true
+            }
+            
+            //set UI to default
+            ValueTf.text = ""
+            NoteTf.text = ""
+            DateButton.setTitle("------Date of dispatch------", for: .normal)
+            DateButton.setTitleColor(.lightGray, for: .normal)
+            ExpirationDate.setTitle("------How long?------", for: .normal)
+            ExpirationDate.setTitleColor(.lightGray, for: .normal)
     }
-}
+  }
 
+}
 
 extension AccumulationView: FSCalendarDelegate,FSCalendarDataSource{
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {

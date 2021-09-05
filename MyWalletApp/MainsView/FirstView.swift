@@ -11,6 +11,7 @@ import FirebaseDatabase
 
 class FirstView: UIViewController,UITextFieldDelegate {
     
+    var amt: Int = 0
     let label:UILabel = {
         let label = UILabel()
         label.text = "CREAT A WALLET"
@@ -100,14 +101,15 @@ extension FirstView{
         
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
               let formatter = NumberFormatter()
                 formatter.numberStyle = .decimal
+                formatter.groupingSeparator = "."
                 formatter.locale = Locale.current
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
                if let groupingSeparator = formatter.groupingSeparator {
-
                    if string == groupingSeparator {
                        return true
                    }
@@ -125,6 +127,8 @@ extension FirstView{
                }
                return true
            }
+    
+
 
 
 }

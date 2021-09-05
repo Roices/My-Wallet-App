@@ -67,9 +67,20 @@ class AccountView: UIViewController {
         return tf
     }()
     
+    let NameAccountTf : UITextField = {
+        let Tf = UITextField()
+        Tf.frame = CGRect(x: 30, y: 0.2*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
+        Tf.layer.cornerRadius = 15.0
+        Tf.layer.borderWidth = 0.5
+        Tf.placeholder = "Name Account"
+        let Image = UIImage(named: "NameAccount")
+        Tf.withImage(direction: .Left, image: Image!)
+        return Tf
+    }()
+    
     let TypeAccountBT : UIButton = {
         let button = UIButton()
-        button.frame = CGRect(x: 30, y: 0.2 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
+        button.frame = CGRect(x: 30, y: 0.3 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.cornerRadius = 15.0
         button.layer.borderWidth = 0.5
         button.addTarget(self, action: #selector(ChooseAccount), for: .touchUpInside)
@@ -80,7 +91,7 @@ class AccountView: UIViewController {
     
     let ListAccount : UITableView = {
         let tableView = UITableView()
-        tableView.frame = CGRect(x: 30, y: 0.275 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
+        tableView.frame = CGRect(x: 30, y: 0.375 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
         tableView.layer.cornerRadius = 15.0
         tableView.layer.borderWidth = 0.5
         return tableView
@@ -89,7 +100,7 @@ class AccountView: UIViewController {
     
     @objc let DoneButton : UIButton = {
         let button = UIButton()
-        button.frame = CGRect(x: 30, y: 0.3 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
+        button.frame = CGRect(x: 30, y: 0.4 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.cornerRadius = 15.0
         button.layer.borderWidth = 0.5
         button.setTitle("Done", for: .normal)
@@ -99,7 +110,35 @@ class AccountView: UIViewController {
         return button
     }()
     
+    let WarningView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .red
+        label.setTitle("Please fill out the information completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
     
+    let WarningCompletelyView : UIButton = {
+        let label = UIButton()
+        label.frame = CGRect(x: 60, y: 0.015*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 120, height: UIScreen.main.bounds.height * 0.04)
+        label.backgroundColor = .green
+        label.setTitle("Completely", for: .normal)
+        label.setTitleColor(.white, for: .normal)
+        label.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        label.layer.cornerRadius = 19.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 0)
+        label.layer.shadowRadius = 15
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.7
+        return label
+    }()
     
     
     override func viewDidLoad() {
@@ -108,12 +147,19 @@ class AccountView: UIViewController {
         view.addSubview(backGround)
         view.addSubview(MainView)
         view.addSubview(TitleAccountLB)
+        view.addSubview(BackButton)
         MainView.addSubview(ValueTF)
+        MainView.addSubview(NameAccountTf)
         MainView.addSubview(TypeAccountBT)
         MainView.addSubview(DoneButton)
         MainView.addSubview(ListAccount)
-        view.addSubview(BackButton)
+        MainView.addSubview(WarningView)
+        MainView.addSubview(WarningCompletelyView)
         
+        ValueTF.delegate = self
+        
+        WarningView.isHidden = true
+        WarningCompletelyView.isHidden = true
         
         ListAccount.isHidden = true
         ListAccount.dataSource = self
@@ -135,16 +181,44 @@ extension AccountView{
     
     
     @objc func Add(sender: UIButton){
+        
+        if ValueTF.text == "" || TypeAccountBT.titleLabel?.text == "------Type Account------" || NameAccountTf.text == ""{
+            WarningView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningView.isHidden = true
+            }
+            return
+        }else{
+            
         let path = UserDefaults.standard.string(forKey: "Username")
 //        let path = "tuan dep trai"
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Account")
 
         // tạo ref đến dữ liệu mới
     //   let newRef = ref.child("Account")
-        let newRef = ref.child("\(AccountChoiced)")
+        let newRef = ref.childByAutoId()
+
+            let val: [String : Any] = [
+                "Value": ValueTF.text as Any,
+                "Name": NameAccountTf.text as Any,
+                "TypeAccount": TypeAccountBT.titleLabel?.text as Any
+            ]
 
         // đẩy dữ liệu
-        newRef.setValue(ValueTF.text)
+        newRef.setValue(val)
+            
+            WarningCompletelyView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningCompletelyView.isHidden = true
+            }
+            
+            ValueTF.text = ""
+            TypeAccountBT.setTitle("------Type Account------", for: .normal)
+            TypeAccountBT.setTitleColor(.lightGray, for: .normal)
+            NameAccountTf.text = ""
+            
+            
+        }
     }
     
     @objc func ChooseAccount(sender: UIButton){
@@ -172,4 +246,34 @@ extension AccountView : UITableViewDelegate,UITableViewDataSource{
         TypeAccountBT.setTitle(TypeAccount[indexPath.row], for: .normal)
         TypeAccountBT.setTitleColor(.black, for: .normal)
     }
+}
+
+extension AccountView:UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+              let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.groupingSeparator = "."
+                formatter.locale = Locale.current
+                formatter.maximumFractionDigits = 0
+               // Uses the grouping separator corresponding to your Locale
+               // e.g. "," in the US, a space in France, and so on
+               if let groupingSeparator = formatter.groupingSeparator {
+                   if string == groupingSeparator {
+                       return true
+                   }
+                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                       if string.isEmpty { // pressed Backspace key
+                           totalTextWithoutGroupingSeparators.removeLast()
+                       }
+                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                           textField.text = formattedText
+                           return false
+                       }
+                   }
+               }
+               return true
+           }
 }

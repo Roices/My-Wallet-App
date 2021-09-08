@@ -10,7 +10,7 @@ import FirebaseDatabase
 
 class AccountView: UIViewController {
 
-    
+
     let TypeAccount = ["Cash","Banking","Credit card","e-Wallet"]
     lazy var AccountChoiced = ""
     
@@ -173,6 +173,7 @@ class AccountView: UIViewController {
 //functions
 extension AccountView{
     
+
     @objc func BacktoWallet(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
      self.navigationController?.pushViewController(mapView, animated: true)

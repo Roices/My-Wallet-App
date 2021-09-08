@@ -214,14 +214,14 @@ class SavingView: UIViewController {
             
         let path = UserDefaults.standard.string(forKey: "Username")
 //        let path = "tuan dep trai"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Saving")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("SavingPlan")
 
         // tạo ref đến dữ liệu mới
     //   let newRef = ref.child("Account")
-        let newRef = ref.child("\(String(describing: NameAccountTf.text))")
-
+        let newRef = ref.childByAutoId()
         // đẩy dữ liệu
         let val: [String : Any] = [
+            "NameAccount": NameAccountTf.text as Any,
             "Value": valueTf.text as Any,
             "Date": DateButton.titleLabel?.text as Any,
             "Period": periodTf.text as Any,

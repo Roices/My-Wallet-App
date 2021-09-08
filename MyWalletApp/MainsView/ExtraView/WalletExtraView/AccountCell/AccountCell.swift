@@ -7,8 +7,16 @@
 
 import UIKit
 
+protocol AccountCellDelegate{
+    func Detail(cell:AccountCell)
+}
 class AccountCell: UITableViewCell {
 
+    var delegate: AccountCellDelegate?
+    @IBOutlet var AccountLabel:UILabel!
+    @IBOutlet var AccountImage:UIImageView!
+    @IBOutlet var ValueLabel:UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,5 +34,10 @@ class AccountCell: UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kSamleTableViewCellIdentifier) as! AccountCell
         return cell
     }
+    
+    @IBAction func DetailButton(_ sender: Any) {
+        delegate?.Detail(cell: self)
+    }
+    
     
 }

@@ -222,14 +222,15 @@ class AccumulationView: UIViewController {
 
         // tạo ref đến dữ liệu mới
     //   let newRef = ref.child("Account")
-        let newRef = ref.child("\(String(describing: NoteTf.text!))")
+        let newRef = ref.childByAutoId()
 
         // đẩy dữ liệu
         let val: [String : Any] = [
             "Value": ValueTf.text as Any,
-            "Goal": NoteTf.text as Any,
+            "Target": NoteTf.text as Any,
             "Date": DateButton.titleLabel?.text as Any,
-            "ExpirationDate": ExpirationDate.titleLabel!.text as Any
+            "ExpirationDate": ExpirationDate.titleLabel!.text as Any,
+            "ValueCompleted": "0"
         ]
         
         newRef.setValue(val)

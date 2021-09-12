@@ -8,12 +8,14 @@
 import UIKit
 
 protocol AccumulationPlancellDelegate {
-    func Detail(cell: AccumulationPlanCell)
+    func DetailAccumulationPlan(cell: AccumulationPlanCell)
 }
 
 class AccumulationPlanCell: UITableViewCell {
 
     var delegate: AccumulationPlancellDelegate?
+    lazy var key = ""
+    @IBOutlet var MainView:UIView!
     @IBOutlet var ImageOfAccumulation:UIImageView!
     @IBOutlet var TargetLabel:UILabel!
     @IBOutlet var ValueTarget:UILabel!
@@ -29,6 +31,21 @@ class AccumulationPlanCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        
+        let Color = UIColor(hexString: "D1D1D6")
+        if selected {
+            MainView.backgroundColor =  Color
+            TargetLabel.backgroundColor = Color
+            ValueTarget.backgroundColor = Color
+            ValueCompleted.backgroundColor = Color
+            DetailButton.backgroundColor = Color
+        } else {
+            MainView.backgroundColor = UIColor.clear
+            TargetLabel.backgroundColor = .clear
+            ValueTarget.backgroundColor = .clear
+            ValueCompleted.backgroundColor = .clear
+            DetailButton.backgroundColor = .clear
+        }
     }
     
     class func cellForTableView(tableView: UITableView) -> AccumulationPlanCell {
@@ -38,7 +55,7 @@ class AccumulationPlanCell: UITableViewCell {
         return cell
     }
     
-    @IBAction func DetailAccumulationPlan(_ sender: Any) {
-        delegate?.Detail(cell: self)
+    @IBAction func DetailAccumulationAction() {
+        delegate?.DetailAccumulationPlan(cell: self)
     }
 }

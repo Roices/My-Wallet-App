@@ -8,24 +8,38 @@
 import UIKit
 
 protocol AccountCellDelegate{
-    func Detail(cell:AccountCell)
+    func DetailAccount(cell:AccountCell)
 }
 class AccountCell: UITableViewCell {
 
+    
     var delegate: AccountCellDelegate?
+    lazy var Key = ""
+    @IBOutlet var MainView:UIView!
     @IBOutlet var AccountLabel:UILabel!
     @IBOutlet var AccountImage:UIImageView!
     @IBOutlet var ValueLabel:UILabel!
+    @IBOutlet var DetailButtonAccount:UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        ValueLabel.textColor = .gray
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+        let Color = UIColor(hexString: "D1D1D6")
+        if selected {
+            MainView.backgroundColor =  Color
+            AccountLabel.backgroundColor = Color
+            ValueLabel.backgroundColor = Color
+        } else {
+            MainView.backgroundColor = UIColor.clear
+            AccountLabel.backgroundColor = .clear
+            ValueLabel.backgroundColor = .clear
+        }
     }
     
     class func cellForTableView(tableView: UITableView) -> AccountCell {
@@ -35,9 +49,11 @@ class AccountCell: UITableViewCell {
         return cell
     }
     
-    @IBAction func DetailButton(_ sender: Any) {
-        delegate?.Detail(cell: self)
+    @IBAction func DetailButtonAction() {
+        delegate?.DetailAccount(cell: self)
+        
     }
+    
     
     
 }

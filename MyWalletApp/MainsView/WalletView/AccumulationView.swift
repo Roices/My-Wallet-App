@@ -14,6 +14,7 @@ class AccumulationView: UIViewController {
 
     
     let PeriodArray = ["1 Month","2 Months", "3 Months", "6 Months", "9 Months", "12 Months"]
+    lazy var Key = ""
     
     
     
@@ -220,11 +221,7 @@ class AccumulationView: UIViewController {
 //        let path = "tuan dep trai"
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Accumulation")
 
-        // tạo ref đến dữ liệu mới
-    //   let newRef = ref.child("Account")
-        let newRef = ref.childByAutoId()
-
-        // đẩy dữ liệu
+        // Data
         let val: [String : Any] = [
             "Value": ValueTf.text as Any,
             "Target": NoteTf.text as Any,
@@ -233,7 +230,14 @@ class AccumulationView: UIViewController {
             "ValueCompleted": "0"
         ]
         
-        newRef.setValue(val)
+            if Key.isEmpty{
+                let newRef = ref.childByAutoId()
+                newRef.setValue(val)
+            }else{
+                let newRef = ref.child(Key)
+                newRef.setValue(val)
+            }
+      
             //push completely warning
             WarningCompletelyView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -247,6 +251,7 @@ class AccumulationView: UIViewController {
             DateButton.setTitleColor(.lightGray, for: .normal)
             ExpirationDate.setTitle("------How long?------", for: .normal)
             ExpirationDate.setTitleColor(.lightGray, for: .normal)
+            Key = ""
     }
   }
 

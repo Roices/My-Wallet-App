@@ -13,6 +13,7 @@ class AccountView: UIViewController {
 
     let TypeAccount = ["Cash","Banking","Credit card","e-Wallet"]
     lazy var AccountChoiced = ""
+    lazy var Key = ""
     
   
     let backGround : UIImageView = {
@@ -195,28 +196,35 @@ extension AccountView{
 //        let path = "tuan dep trai"
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("Account")
 
-        // tạo ref đến dữ liệu mới
-    //   let newRef = ref.child("Account")
-        let newRef = ref.childByAutoId()
-
+            
+            //Data
             let val: [String : Any] = [
                 "Value": ValueTF.text as Any,
                 "Name": NameAccountTf.text as Any,
                 "TypeAccount": TypeAccountBT.titleLabel?.text as Any
             ]
 
-        // đẩy dữ liệu
-        newRef.setValue(val)
+            //Push Data
+            if Key.isEmpty{
+                let newRef = ref.childByAutoId()
+                newRef.setValue(val)
+            }else{
+                let newRef = ref.child(Key)
+                newRef.setValue(val)
+            }
             
+            //Push Notification
             WarningCompletelyView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.WarningCompletelyView.isHidden = true
             }
             
+            //set UI to default
             ValueTF.text = ""
             TypeAccountBT.setTitle("------Type Account------", for: .normal)
             TypeAccountBT.setTitleColor(.lightGray, for: .normal)
             NameAccountTf.text = ""
+            Key = ""
             
             
         }

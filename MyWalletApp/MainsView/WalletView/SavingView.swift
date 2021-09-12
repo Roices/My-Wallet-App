@@ -14,6 +14,7 @@ class SavingView: UIViewController {
 
     
     let PeriodArray = ["2 week", "1 Month", "3 Months", "6 Months", "12 Month"]
+    lazy var Key = ""
     
     let TitleLB : UILabel = {
         let label = UILabel()
@@ -218,7 +219,7 @@ class SavingView: UIViewController {
 
         // tạo ref đến dữ liệu mới
     //   let newRef = ref.child("Account")
-        let newRef = ref.childByAutoId()
+         
         // đẩy dữ liệu
         let val: [String : Any] = [
             "NameAccount": NameAccountTf.text as Any,
@@ -227,8 +228,15 @@ class SavingView: UIViewController {
             "Period": periodTf.text as Any,
             "Interest Rate": Bankrate.text as Any
         ]
+            if Key.isEmpty{
+            let newRef = ref.childByAutoId()
+                newRef.setValue(val)
+            }else{
+                let newRef = ref.child(Key)
+                newRef.setValue(val)
+            }
 
-        newRef.setValue(val)
+    //    newRef.setValue(val)
             //push completely warning
             WarningCompletelyView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -242,6 +250,7 @@ class SavingView: UIViewController {
             DateButton.setTitleColor(.lightGray, for: .normal)
             periodTf.text = ""
             Bankrate.text = ""
+            Key = ""
     }
 
 }

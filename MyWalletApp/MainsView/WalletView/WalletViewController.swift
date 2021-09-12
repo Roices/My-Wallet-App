@@ -11,9 +11,9 @@ import FirebaseDatabase
 class WalletViewController: UIViewController {
 
     
-    lazy var ListAccount : [(TypeAccount: String, Value: String)] = []
-    lazy var ListSavingPlan : [(Name: String, Value: String, Rate: String, Date: String)] = []
-    lazy var ListAccumulationPlan : [(Target: String,TargetValue: String,ValueComplete: String)] = []
+    lazy var ListAccount : [(TypeAccount: String, Value: String,Name: String,key: String)] = []
+    lazy var ListSavingPlan : [(Name: String, Value: String, Rate: String, Date: String,Period: String,key: String)] = []
+    lazy var ListAccumulationPlan : [(Target: String,TargetValue: String,ValueComplete: String,Date: String,ExpirationDate: String,key: String)] = []
     
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
@@ -158,6 +158,7 @@ class WalletViewController: UIViewController {
   
 }
 
+//Configure TableView
 
 extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -177,6 +178,8 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
         let Data = ListAccount[indexPath.row]
         cell.AccountLabel.text = Data.TypeAccount
         cell.ValueLabel.text = Data.Value
+        cell.Key = Data.key
+        cell.delegate = self
         return cell
             
         }else if tableView == SavingPlanTable{
@@ -187,6 +190,8 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
            // cell.ImageSavingPlan.image = UIImage(named: "\(Data.Name)")
             cell.ValueLabel.text = Data.Value
             cell.DateLabel.text = Data.Date
+            cell.key = Data.key
+            cell.delegate = self
             return cell
             
         }else if tableView == AccumulationPlanTable{
@@ -195,12 +200,27 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             cell.TargetLabel.text = Data.Target
             cell.ValueCompleted.text = Data.ValueComplete
             cell.ValueTarget.text = Data.TargetValue
+            cell.key = Data.key
+            cell.delegate = self
             return cell
         }else{
             return UITableViewCell()
         }
     }
+  
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == tableWallet{
+        //    let indexPath = AccumulationPlanTable.cellForRow(at: indexPath)
+            let selectedCell = tableWallet.cellForRow(at: indexPath)!
+            selectedCell.contentView.tintColor = UIColor.red
+            
+        }else if tableView == SavingPlanTable{
+            
+        }else{
+            
+        }
+    }
     
 }
 
@@ -227,6 +247,7 @@ extension WalletViewController{
     }
     
     func UpdateDataForAccumulationPlan(){
+        
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Accumulation")
         ref.observe(.value, with: { [self] (snapshot) in
@@ -234,15 +255,16 @@ extension WalletViewController{
           self.ListAccumulationPlan = [];
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
-
+                let key = postSnapshot.key
              if let TargetPlan = postSnapshot.childSnapshot(forPath: "Target").value as? String,
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
-                let ValueCompleted = postSnapshot.childSnapshot(forPath: "ValueCompleted").value as? String{
-                self.ListAccumulationPlan.append((Target: TargetPlan, TargetValue: Value, ValueComplete: ValueCompleted))
+                let ValueCompleted = postSnapshot.childSnapshot(forPath: "ValueCompleted").value as? String,
+                let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
+                let ExpirationDate = postSnapshot.childSnapshot(forPath: "ExpirationDate").value as? String{
+                self.ListAccumulationPlan.append((Target: TargetPlan, TargetValue: Value, ValueComplete: ValueCompleted,Date: Date,ExpirationDate: ExpirationDate,key: key))
               }
             }
           }
-          
           // cập nhật ui
           self.AccumulationPlanTable.reloadData()
             print(ListAccumulationPlan)
@@ -251,6 +273,7 @@ extension WalletViewController{
     
     
     func UpdateDataForSavingPlan(){
+        
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("SavingPlan")
         ref.observe(.value, with: { [self] (snapshot) in
@@ -258,23 +281,23 @@ extension WalletViewController{
           self.ListSavingPlan = [];
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
-//              let key = postSnapshot.key
-              if let SavingPlan = postSnapshot.childSnapshot(forPath: "NameAccount").value as? String,
+               let key = postSnapshot.key
+                if let SavingPlan = postSnapshot.childSnapshot(forPath: "NameAccount").value as? String,
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
-                let Rate = postSnapshot.childSnapshot(forPath: "Interest Rate").value as? String{
-                self.ListSavingPlan.append((Name: SavingPlan, Value: Value, Rate: Rate, Date: Date))
+                let Rate = postSnapshot.childSnapshot(forPath: "Interest Rate").value as? String,
+                let Period = postSnapshot.childSnapshot(forPath: "Period").value as? String{
+                    self.ListSavingPlan.append((Name: SavingPlan, Value: Value, Rate: Rate, Date: Date,Period: Period,key: key))
               }
             }
           }
-          
           // cập nhật ui
           self.SavingPlanTable.reloadData()
         })
     }
     
     func UpdateDataforAccoutList(){
-     //   let path = "Account"
+
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Account")
         ref.observe(.value, with: { [self] (snapshot) in
@@ -282,14 +305,14 @@ extension WalletViewController{
           self.ListAccount = [];
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
-//              let key = postSnapshot.key
+                let key = postSnapshot.key
               if let Account = postSnapshot.childSnapshot(forPath: "TypeAccount").value as? String,
-                let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String {
-                self.ListAccount.append((TypeAccount: Account,Value: Value))
+                let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
+                let NameAccount = postSnapshot.childSnapshot(forPath: "Name").value as? String{
+                self.ListAccount.append((TypeAccount: Account,Value: Value,Name: NameAccount,key: key))
               }
             }
           }
-          
           // cập nhật ui
           self.tableWallet.reloadData()
         })
@@ -320,20 +343,122 @@ extension WalletViewController{
     }
 }
 
+    func DeleteData(childPath:String,key: String){
+        // tạo ref tới dữ liệu cha
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(childPath)")
+        
+        // tạo ref đến dữ liệu có key thỏa mãn
+        let currentRef = ref.child(key)
+        
+        // xóa
+        currentRef.removeValue { (err, ref) in
+          if let err = err {
+            print(err)
+          } else {
+            // thành công, bỏ chọn trên UI
+            print("Done")
+          }
+        }
+    }
+    
 
+    
 }
 
 extension WalletViewController:AccountCellDelegate,SavingPlanCellDelegate,AccumulationPlancellDelegate{
-    func Detail(cell: AccountCell) {
-        <#code#>
+    
+    func DetailAccount(cell: AccountCell){
+        let indexPath =  tableWallet.indexPath(for: cell)
+        let Data = ListAccount[indexPath!.row]
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // add action cancel, edit, delete
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        alert.addAction(cancel)
+        
+        let share = UIAlertAction(title: "Edit", style: .default) { (action) in
+            let mapView = self.storyboard?.instantiateViewController(identifier: "AccountView") as! AccountView
+            mapView.NameAccountTf.text = Data.Name
+            mapView.ValueTF.text = Data.Value
+            mapView.TypeAccountBT.setTitle( Data.TypeAccount, for: .normal)
+            mapView.TypeAccountBT.setTitleColor(.black, for: .normal)
+            mapView.Key = Data.key
+            self.navigationController?.pushViewController(mapView, animated: true)
+        }
+        alert.addAction(share)
+
+        let save = UIAlertAction(title: "Delete", style: .default) {  (action) in
+            self.DeleteData(childPath:"Account" ,key: self.ListAccount[indexPath!.row].key)
+        }
+        alert.addAction(save)
+        // hiển thị sheet
+        present(alert, animated: true, completion: nil)
     }
     
-    func Detail(cell: SavingPlanCell) {
-        <#code#>
+    func DetailSavingPlan(cell: SavingPlanCell) {
+        let indexPath =  SavingPlanTable.indexPath(for: cell)
+        let Data = ListSavingPlan[indexPath!.row]
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // add action cancel, edit, delete
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        alert.addAction(cancel)
+        
+        let share = UIAlertAction(title: "Edit", style: .default) { (action) in
+            let MapView = self.storyboard?.instantiateViewController(identifier: "SavingView") as! SavingView
+            MapView.valueTf.text = Data.Value
+            MapView.NameAccountTf.text = Data.Name
+            MapView.Bankrate.text = Data.Rate
+            MapView.DateButton.setTitle(Data.Date, for: .normal)
+            MapView.DateButton.setTitleColor(.black, for: .normal)
+            MapView.periodTf.text = Data.Period
+            MapView.Key = Data.key
+            self.navigationController?.pushViewController(MapView, animated: true)
+        }
+        alert.addAction(share)
+
+        let save = UIAlertAction(title: "Delete", style: .default) {  (action) in
+            self.DeleteData(childPath: "SavingPlan", key: self.ListSavingPlan[indexPath!.row].key)
+        }
+        alert.addAction(save)
+        // hiển thị sheet
+        present(alert, animated: true, completion: nil)
     }
-    
-    func Detail(cell: AccumulationPlanCell) {
-        <#code#>
+
+    func DetailAccumulationPlan(cell: AccumulationPlanCell){
+        let indexPath =  AccumulationPlanTable.indexPath(for: cell)
+        let Data = ListAccumulationPlan[indexPath!.row]
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // add action cancel, edit, delete
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        alert.addAction(cancel)
+        
+        let share = UIAlertAction(title: "Edit", style: .default) { (action) in
+            let MapView = self.storyboard?.instantiateViewController(identifier: "AccumulationView") as! AccumulationView
+            MapView.ValueTf.text = Data.TargetValue
+            MapView.NoteTf.text = Data.Target
+            MapView.DateButton.setTitle( Data.Date , for: .normal)
+            MapView.DateButton.setTitleColor(.black, for: .normal)
+            MapView.ExpirationDate.setTitle(Data.ExpirationDate, for: .normal)
+            MapView.ExpirationDate.setTitleColor(.black, for: .normal)
+            MapView.Key = Data.key
+            self.navigationController?.pushViewController(MapView, animated: true)
+          
+        }
+        alert.addAction(share)
+
+        let save = UIAlertAction(title: "Delete", style: .default) {  (action) in
+            self.DeleteData(childPath: "Accumulation", key: self.ListAccumulationPlan[indexPath!.row].key)
+            
+        }
+        alert.addAction(save)
+        // hiển thị sheet
+        present(alert, animated: true, completion: nil)
     }
     
     

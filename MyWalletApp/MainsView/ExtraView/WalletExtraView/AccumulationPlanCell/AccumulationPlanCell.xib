@@ -43,7 +43,7 @@
                                 </constraints>
                                 <state key="normal" image="icons8-menu-vertical-24"/>
                                 <connections>
-                                    <action selector="DetailAccumulationPlan:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="SWo-Qe-tP8"/>
+                                    <action selector="DetailAccumulationAction" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ucP-fo-bi5"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOo-iQ-A15">
@@ -111,8 +111,9 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="DetailButton" destination="Lbn-qp-2Ke" id="VOF-0V-YfN"/>
+                <outlet property="DetailButton" destination="Lbn-qp-2Ke" id="vP1-EC-aw2"/>
                 <outlet property="ImageOfAccumulation" destination="Mzq-3o-sWs" id="VsZ-nd-xaF"/>
+                <outlet property="MainView" destination="jkD-d2-bzY" id="Of2-CA-Mqr"/>
                 <outlet property="TargetLabel" destination="LOo-iQ-A15" id="n4p-yr-ZPf"/>
                 <outlet property="ValueCompleted" destination="asY-of-huV" id="lbQ-T6-7jw"/>
                 <outlet property="ValueTarget" destination="xin-kj-OOK" id="QTq-UT-Y6U"/>

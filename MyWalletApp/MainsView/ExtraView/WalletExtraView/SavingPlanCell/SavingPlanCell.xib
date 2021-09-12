@@ -49,7 +49,7 @@
                                 </constraints>
                                 <state key="normal" image="icons8-menu-vertical-24"/>
                                 <connections>
-                                    <action selector="DetailSavingPlan:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="pln-zA-ENw"/>
+                                    <action selector="DetailSavingAction" destination="KGk-i7-Jjw" eventType="touchUpInside" id="esI-E2-GzO"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAI-C3-FL7">
@@ -95,7 +95,9 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="DateLabel" destination="yAI-C3-FL7" id="j3b-9t-qtv"/>
+                <outlet property="DetailButtonSaving" destination="1gP-iR-gCE" id="Wu9-iv-cjm"/>
                 <outlet property="ImageSavingPlan" destination="n3L-aB-WYa" id="eSp-7H-ebG"/>
+                <outlet property="MainView" destination="EpA-vz-EXM" id="gYC-PW-ZlE"/>
                 <outlet property="SavingPlanLabel" destination="JyF-mw-dgU" id="ulC-Hf-nxO"/>
                 <outlet property="ValueLabel" destination="DgL-AQ-cx5" id="UVI-wV-agV"/>
             </connections>

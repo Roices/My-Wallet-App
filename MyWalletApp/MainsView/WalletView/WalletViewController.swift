@@ -211,12 +211,20 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == tableWallet{
-        //    let indexPath = AccumulationPlanTable.cellForRow(at: indexPath)
-            let selectedCell = tableWallet.cellForRow(at: indexPath)!
-            selectedCell.contentView.tintColor = UIColor.red
+            let Data = ListAccount[indexPath.row]
+            let Date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM-yyyy"
+            let DateFormatted = formatter.string(from: Date)
+            let mapView = self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView") as! SpendingInWalletView
+            mapView.Path = Data.TypeAccount
+            mapView.TotalValue = Data.Value
+            mapView.MonthChoiced = DateFormatted
+            self.navigationController?.pushViewController(mapView, animated: true)
             
         }else if tableView == SavingPlanTable{
-            
+            let Mapview = self.storyboard?.instantiateViewController(identifier: "DetailSavingPlanView") as! DetailSavingPlanView
+            self.navigationController?.pushViewController(Mapview, animated: true)
         }else{
             
         }

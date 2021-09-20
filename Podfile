@@ -10,6 +10,7 @@ target 'MyWalletApp' do
    pod 'Firebase/Database'
    pod 'Charts'
    pod 'FSCalendar'
+   pod 'MonthYearPicker'
    
   use_frameworks!
 

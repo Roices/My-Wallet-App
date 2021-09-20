@@ -29,7 +29,11 @@
 		1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */; };
 		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
 		1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */; };
+		1782028F26F1936A006FD576 /* SpendingInWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782028E26F1936A006FD576 /* SpendingInWalletView.swift */; };
 		17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B2C6F52698485D004C7D4F /* HomeView.swift */; };
+		17B4F69D26F5D354006634B4 /* SpendingInWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4F69B26F5D354006634B4 /* SpendingInWalletCell.swift */; };
+		17B4F69E26F5D354006634B4 /* SpendingInWalletCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B4F69C26F5D354006634B4 /* SpendingInWalletCell.xib */; };
+		17B4F6A026F81C5D006634B4 /* DetailSavingPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4F69F26F81C5D006634B4 /* DetailSavingPlanView.swift */; };
 		17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177A26A7BA770043FEE7 /* DetailSpending.swift */; };
 		17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177C26A7BC420043FEE7 /* SpendingCell.swift */; };
 		17D0177F26A7BC420043FEE7 /* SpendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D0177D26A7BC420043FEE7 /* SpendingCell.xib */; };
@@ -93,7 +97,11 @@
 		1759C8CE26A26C8100DFB7F8 /* AllAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAssetsCell.swift; sourceTree = "<group>"; };
 		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
 		1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1782028E26F1936A006FD576 /* SpendingInWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingInWalletView.swift; sourceTree = "<group>"; };
 		17B2C6F52698485D004C7D4F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		17B4F69B26F5D354006634B4 /* SpendingInWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingInWalletCell.swift; sourceTree = "<group>"; };
+		17B4F69C26F5D354006634B4 /* SpendingInWalletCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpendingInWalletCell.xib; sourceTree = "<group>"; };
+		17B4F69F26F81C5D006634B4 /* DetailSavingPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSavingPlanView.swift; sourceTree = "<group>"; };
 		17D0177A26A7BA770043FEE7 /* DetailSpending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSpending.swift; sourceTree = "<group>"; };
 		17D0177C26A7BC420043FEE7 /* SpendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingCell.swift; sourceTree = "<group>"; };
 		17D0177D26A7BC420043FEE7 /* SpendingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpendingCell.xib; sourceTree = "<group>"; };
@@ -142,6 +150,7 @@
 		1729AF0F26C0D41A00B4DEA2 /* WalletView */ = {
 			isa = PBXGroup;
 			children = (
+				1782028D26F19330006FD576 /* DetailSpendingInWallet */,
 				17D0178026A9A5CD0043FEE7 /* WalletViewController.swift */,
 				1729AF1026C0D44000B4DEA2 /* AccountView.swift */,
 				1729AF1226C0D45A00B4DEA2 /* SavingView.swift */,
@@ -285,6 +294,15 @@
 			path = ExtraView;
 			sourceTree = "<group>";
 		};
+		1782028D26F19330006FD576 /* DetailSpendingInWallet */ = {
+			isa = PBXGroup;
+			children = (
+				1782028E26F1936A006FD576 /* SpendingInWalletView.swift */,
+				17B4F69F26F81C5D006634B4 /* DetailSavingPlanView.swift */,
+			);
+			path = DetailSpendingInWallet;
+			sourceTree = "<group>";
+		};
 		17B2C6F42698482C004C7D4F /* MainsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,6 +347,8 @@
 			children = (
 				17D0178426A9B8610043FEE7 /* AccountCell.swift */,
 				17D0178526A9B8610043FEE7 /* AccountCell.xib */,
+				17B4F69B26F5D354006634B4 /* SpendingInWalletCell.swift */,
+				17B4F69C26F5D354006634B4 /* SpendingInWalletCell.xib */,
 			);
 			path = AccountCell;
 			sourceTree = "<group>";
@@ -488,6 +508,7 @@
 				1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */,
 				172A9457268DC09F00774926 /* Assets.xcassets in Resources */,
 				17D0178726A9B8610043FEE7 /* AccountCell.xib in Resources */,
+				17B4F69E26F5D354006634B4 /* SpendingInWalletCell.xib in Resources */,
 				172A9455268DC09D00774926 /* Main.storyboard in Resources */,
 				1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */,
 			);
@@ -573,6 +594,7 @@
 				1759C8D026A26C8100DFB7F8 /* AllAssetsCell.swift in Sources */,
 				17D0179226B1A2AE0043FEE7 /* AddDetailView.swift in Sources */,
 				17D0178B26B0475A0043FEE7 /* AddViewController.swift in Sources */,
+				17B4F69D26F5D354006634B4 /* SpendingInWalletCell.swift in Sources */,
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
 				17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */,
@@ -580,6 +602,8 @@
 				1729AF1126C0D44000B4DEA2 /* AccountView.swift in Sources */,
 				17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */,
 				1729AF1326C0D45A00B4DEA2 /* SavingView.swift in Sources */,
+				1782028F26F1936A006FD576 /* SpendingInWalletView.swift in Sources */,
+				17B4F6A026F81C5D006634B4 /* DetailSavingPlanView.swift in Sources */,
 				1759C8CC26A1854200DFB7F8 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

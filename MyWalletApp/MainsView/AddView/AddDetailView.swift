@@ -12,9 +12,10 @@ import FSCalendar
 class AddDetailView: UIViewController{
 
     lazy var TheChoicedThing = ""
+    lazy var Time = ""
     lazy var SelectedArray : String = ""
     lazy var SelectedLabel : String = ""
-    
+    lazy var AccountChoiced : String = ""
    lazy var TypeAccount : [(TypeAccount: String, Value: String)] = []
     
     let Category: [String : [String]] = ["Children":["Tuition","Books","Toy","Pocket money"],
@@ -297,9 +298,10 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
             
         }else{
             let Data = TypeAccount[indexPath.row]
-            let value = Data.TypeAccount + "\t\t - \t\t" + Data.Value + " VND"
-            AccountButton.setTitle(value, for: .normal)
+            let Account = Data.TypeAccount
+            AccountButton.setTitle(Account, for: .normal)
             AccountButton.setTitleColor(.black, for: .normal)
+            AccountChoiced = Account
             DoneButton.isHidden = !DoneButton.isHidden
             ListAccount.isHidden = !ListAccount.isHidden
         }
@@ -360,6 +362,7 @@ extension AddDetailView{
     @objc func Save(sender: UIButton){
        //check if it contains data
         
+        
         if MoneyInput.text == "" || ButtonList.titleLabel?.text == "--------Category--------" || ScheduleButton.titleLabel?.text == "--------Date--------" || AccountButton.titleLabel?.text == "-----Account-----"{
             //Push up Warning
             WarningView.isHidden = false
@@ -371,12 +374,13 @@ extension AddDetailView{
         //Creat a path for data
             
         let path = UserDefaults.standard.string(forKey: "Username")
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(SelectedLabel)").child("\(TheChoicedThing)")
+            let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
 
         let newRef = ref.childByAutoId()
         // creat new value
             
         let val: [String : Any] = [
+            "Category": TheChoicedThing,
             "Value": MoneyInput.text as Any,
             "Date": ScheduleButton.titleLabel?.text as Any,
             "Note": noteTextfield.text as Any,
@@ -415,6 +419,8 @@ extension AddDetailView: FSCalendarDataSource, FSCalendarDelegate{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-YYYY"
         let DateFormatter = formatter.string(from: date)
+        formatter.dateFormat = "MM-YYYY"
+        Time = formatter.string(from: date)
         
         
         ScheduleButton.setTitle("\(DateFormatter)", for: .normal)

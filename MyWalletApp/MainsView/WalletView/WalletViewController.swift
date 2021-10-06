@@ -13,7 +13,7 @@ class WalletViewController: UIViewController {
     
     lazy var ListAccount : [(TypeAccount: String, Value: String,Name: String,key: String)] = []
     lazy var ListSavingPlan : [(Name: String, Value: String, Rate: String, Date: String,Period: String,key: String)] = []
-    lazy var ListAccumulationPlan : [(Target: String,TargetValue: String,ValueComplete: String,Date: String,ExpirationDate: String,key: String)] = []
+    lazy var ListAccumulationPlan : [(Target: String,TargetValue: String,ValueCompleted: String,Date: String,ExpirationDate: String,key: String)] = []
     
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
@@ -110,7 +110,6 @@ class WalletViewController: UIViewController {
     }()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(backGround)
@@ -148,10 +147,6 @@ class WalletViewController: UIViewController {
         UpdateDataForSavingPlan()
         UpdateDataForAccumulationPlan()
        
- 
-        
-
-    
     }
     
 
@@ -198,9 +193,10 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             let cell = AccumulationPlanCell.cellForTableView(tableView: AccumulationPlanTable)
             let Data = ListAccumulationPlan[indexPath.row]
             cell.TargetLabel.text = Data.Target
-            cell.ValueCompleted.text = Data.ValueComplete
-            cell.ValueTarget.text = Data.TargetValue
+            cell.ValueCompleted.text = (Data.ValueCompleted)
+            cell.ValueTarget.text = (Data.TargetValue)
             cell.key = Data.key
+            cell.ProgressCompletedValue.progress =   Float(CalculateAmount(Data.ValueCompleted)/CalculateAmount(Data.TargetValue))
             cell.delegate = self
             return cell
         }else{
@@ -224,9 +220,25 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             
         }else if tableView == SavingPlanTable{
             let Mapview = self.storyboard?.instantiateViewController(identifier: "DetailSavingPlanView") as! DetailSavingPlanView
+            let Data = ListSavingPlan[indexPath.row]
+            Mapview.Title = Data.Name
+            Mapview.InitialBalanceValue = Data.Value
+            Mapview.InitialTime = Data.Date
+            Mapview.Period = Data.Period
+            Mapview.ProfitRate = Data.Rate
             self.navigationController?.pushViewController(Mapview, animated: true)
-        }else{
             
+        }else if tableView == AccumulationPlanTable{
+            let Mapview = self.storyboard?.instantiateViewController(identifier: "DetailAccumulation") as! DetailAccumulation
+            
+            let Data = ListAccumulationPlan[indexPath.row]
+            Mapview.Time = Data.Date
+            Mapview.TitleForAccumulation = Data.Target
+            Mapview.CompletedValue = String(Data.ValueCompleted)
+            Mapview.Value = String(Data.TargetValue)
+            Mapview.Key = Data.key
+            Mapview.ExpirationDate = Data.ExpirationDate
+            self.navigationController?.pushViewController(Mapview, animated: true)
         }
     }
     
@@ -255,7 +267,6 @@ extension WalletViewController{
     }
     
     func UpdateDataForAccumulationPlan(){
-        
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Accumulation")
         ref.observe(.value, with: { [self] (snapshot) in
@@ -269,13 +280,12 @@ extension WalletViewController{
                 let ValueCompleted = postSnapshot.childSnapshot(forPath: "ValueCompleted").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let ExpirationDate = postSnapshot.childSnapshot(forPath: "ExpirationDate").value as? String{
-                self.ListAccumulationPlan.append((Target: TargetPlan, TargetValue: Value, ValueComplete: ValueCompleted,Date: Date,ExpirationDate: ExpirationDate,key: key))
+                self.ListAccumulationPlan.append((Target: TargetPlan, TargetValue: Value, ValueCompleted: ValueCompleted,Date: Date,ExpirationDate: ExpirationDate,key: key))
               }
             }
           }
           // cập nhật ui
           self.AccumulationPlanTable.reloadData()
-            print(ListAccumulationPlan)
         })
     }
     
@@ -330,8 +340,7 @@ extension WalletViewController{
     
     
     @objc func Add(sender: UIButton){
-        print(ListAccumulationPlan)
-        print(ListAccount)
+
         if Segment.selectedSegmentIndex == 0{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "AccountView"))! as AccountView
          self.navigationController?.pushViewController(mapView, animated: true)
@@ -370,10 +379,29 @@ extension WalletViewController{
         }
     }
     
+    func CalculateAmount(_ Value: String) ->Double{
+        var string = Value
+        var amount:Double = 0
+        let occurrencies = string.filter { $0 == "." }.count
+        for index in 0...occurrencies{
+            if let lastIndex = string.lastIndex(of: "."){
+            let last = string.endIndex
+            var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "")
+                subString2.remove(at: subString2.startIndex)
+                amount += Double(subString2)! * pow(1000, Double(index))
+            }else{
+                amount += Double(string)! * pow(1000, Double(index))
+            }
+            
+        }
+        return amount
+    }
 
     
 }
 
+//Edit
 extension WalletViewController:AccountCellDelegate,SavingPlanCellDelegate,AccumulationPlancellDelegate{
     
     func DetailAccount(cell: AccountCell){
@@ -431,6 +459,7 @@ extension WalletViewController:AccountCellDelegate,SavingPlanCellDelegate,Accumu
         let save = UIAlertAction(title: "Delete", style: .default) {  (action) in
             self.DeleteData(childPath: "SavingPlan", key: self.ListSavingPlan[indexPath!.row].key)
         }
+        
         alert.addAction(save)
         // hiển thị sheet
         present(alert, animated: true, completion: nil)
@@ -448,13 +477,15 @@ extension WalletViewController:AccountCellDelegate,SavingPlanCellDelegate,Accumu
         
         let share = UIAlertAction(title: "Edit", style: .default) { (action) in
             let MapView = self.storyboard?.instantiateViewController(identifier: "AccumulationView") as! AccumulationView
-            MapView.ValueTf.text = Data.TargetValue
-            MapView.NoteTf.text = Data.Target
+            MapView.ValueTf.text = String(Data.TargetValue)
+            MapView.NoteTf.text = String(Data.Target)
             MapView.DateButton.setTitle( Data.Date , for: .normal)
             MapView.DateButton.setTitleColor(.black, for: .normal)
             MapView.ExpirationDate.setTitle(Data.ExpirationDate, for: .normal)
             MapView.ExpirationDate.setTitleColor(.black, for: .normal)
+            MapView.ValueCompleted = Data.ValueCompleted
             MapView.Key = Data.key
+            MapView.State = "Edit"
             self.navigationController?.pushViewController(MapView, animated: true)
           
         }

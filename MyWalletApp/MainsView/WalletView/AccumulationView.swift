@@ -10,11 +10,15 @@ import Firebase
 import FirebaseDatabase
 import FSCalendar
 
-class AccumulationView: UIViewController {
+class AccumulationView: UIViewController,UITextFieldDelegate {
 
     
     let PeriodArray = ["1 Month","2 Months", "3 Months", "6 Months", "9 Months", "12 Months"]
     lazy var Key = ""
+    lazy var State = ""
+    lazy var Value = ""
+    lazy var ValueCompleted = ""
+
     
     
     
@@ -60,6 +64,7 @@ class AccumulationView: UIViewController {
         tf.layer.cornerRadius = 15.0
         tf.layer.borderWidth = 0.5
         tf.placeholder = "Value"
+        tf.keyboardType = .numberPad
         tf.withImage(direction: .Left, image: imageUSD)
         tf.withImage(direction: .Right, image: imageVND)
         return tf
@@ -186,6 +191,9 @@ class AccumulationView: UIViewController {
         ListOfEndDate.delegate = self
         ListOfEndDate.dataSource = self
         
+        hideKeyboardWhenTappedAround()
+        ValueTf.delegate = self
+        
     }
     
     @objc func BacktoWallet(sender: UIButton){
@@ -235,7 +243,36 @@ class AccumulationView: UIViewController {
                 newRef.setValue(val)
             }else{
                 let newRef = ref.child(Key)
-                newRef.setValue(val)
+                if State == "Edit"{
+                    let val: [String : Any] = [
+                        "Value": ValueTf.text as Any,
+                        "Target": NoteTf.text as Any,
+                        "Date": DateButton.titleLabel?.text as Any,
+                        "ExpirationDate": ExpirationDate.titleLabel!.text as Any,
+                        "ValueCompleted": ValueCompleted
+                    ]
+                    newRef.setValue(val)
+                }
+                else if State == "SendMoney"{
+                    if let ValueAdding = ValueTf.text{
+                        let Amount = CalculateAmount(ValueCompleted) + CalculateAmount(ValueAdding)
+                        let formatter = NumberFormatter()
+                        formatter.numberStyle = .decimal
+                        formatter.groupingSeparator = "."
+                        let AmountAdding = formatter.string(from: Amount as NSNumber)
+                        let val: [String : Any] = [
+                            "Value": Value as Any,
+                            "Target": NoteTf.text as Any,
+                            "Date": DateButton.titleLabel?.text as Any,
+                            "ExpirationDate": ExpirationDate.titleLabel!.text as Any,
+                            "ValueCompleted": AmountAdding as Any
+                        ]
+                        newRef.setValue(val)
+                    }else{
+                        return
+                    }
+                   
+                }
             }
       
             //push completely warning
@@ -252,9 +289,55 @@ class AccumulationView: UIViewController {
             ExpirationDate.setTitle("------How long?------", for: .normal)
             ExpirationDate.setTitleColor(.lightGray, for: .normal)
             Key = ""
+            State = ""
     }
   }
-
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+             let formatter = NumberFormatter()
+               formatter.numberStyle = .decimal
+               formatter.groupingSeparator = "."
+               formatter.locale = Locale.current
+               formatter.maximumFractionDigits = 0
+              // Uses the grouping separator corresponding to your Locale
+              // e.g. "," in the US, a space in France, and so on
+              if let groupingSeparator = formatter.groupingSeparator {
+                  if string == groupingSeparator {
+                      return true
+                  }
+                  if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                      var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                      if string.isEmpty { // pressed Backspace key
+                          totalTextWithoutGroupingSeparators.removeLast()
+                      }
+                      if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                          let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                          textField.text = formattedText
+                          return false
+                      }
+                  }
+              }
+              return true
+          }
+    
+    func CalculateAmount(_ Value: String) ->Int{
+        var string = Value
+        var amount:Int = 0
+        let occurrencies = string.filter { $0 == "." }.count
+        for index in 0...occurrencies{
+            if let lastIndex = string.lastIndex(of: "."){
+            let last = string.endIndex
+            var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "")
+                subString2.remove(at: subString2.startIndex)
+                amount += Int(Double(subString2)! * pow(1000, Double(index)))
+            }else{
+                amount += Int(Double(string)! * pow(1000, Double(index)))
+            }
+            
+        }
+        return amount
+    }
 }
 
 extension AccumulationView: FSCalendarDelegate,FSCalendarDataSource{
@@ -291,4 +374,5 @@ extension AccumulationView:UITableViewDelegate,UITableViewDataSource{
         ListOfEndDate.isHidden = !ListOfEndDate.isHidden
         DoneButton.isHidden = !DoneButton.isHidden
     }
+    
 }

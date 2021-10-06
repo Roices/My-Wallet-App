@@ -38,6 +38,21 @@
             </objects>
             <point key="canvasLocation" x="4358" y="-1496"/>
         </scene>
+        <!--Detail Accumulation-->
+        <scene sceneID="T0R-rw-t8C">
+            <objects>
+                <viewController storyboardIdentifier="DetailAccumulation" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hD8-3h-nYr" customClass="DetailAccumulation" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VQG-a8-SpE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="h9W-4J-kpM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kh0-dQ-YGo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5341" y="-1471"/>
+        </scene>
         <!--Accumulation View-->
         <scene sceneID="rly-JI-bkC">
             <objects>

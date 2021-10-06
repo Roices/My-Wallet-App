@@ -40,11 +40,12 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
         ConfirmPasswordField.delegate = self
         
         CustomUI()
+        self.hideKeyboardWhenTappedAround()
 //        registerNotifications()
 
         
-        ConfirmPasswordField.addTarget(self, action: #selector(myTargetFunction), for: .touchDown)
-        registerNotifications()
+//        ConfirmPasswordField.addTarget(self, action: #selector(myTargetFunction), for: .touchDown)
+         registerNotifications()
         
         // Do any additional setup after loading the view.
     
@@ -88,8 +89,6 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
         
     }
     
-    
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         self.view.endEditing(true)
@@ -104,16 +103,16 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     }
     
     
-    
-    @objc func myTargetFunction(textField: UITextField) {
-        registerNotifications()
-    }
+//    @objc func myTargetFunction(textField: UITextField) {
+//        registerNotifications()
+//    }
     
     @objc func keyboardWillShow(notification: Notification) {
              guard let userInfo = notification.userInfo,
                    let frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                      return
     }
+        
      if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
          
          ScrollView.frame.origin.y = -frame.height + 100

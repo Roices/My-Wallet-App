@@ -27,7 +27,7 @@
                                     <constraint firstAttribute="height" constant="44" id="WLA-3X-yCg"/>
                                 </constraints>
                             </imageView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UPA-rC-rgi">
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UPA-rC-rgi">
                                 <rect key="frame" x="76" y="45" width="224" height="4"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="224" id="Hin-qM-x2X"/>
@@ -114,6 +114,7 @@
                 <outlet property="DetailButton" destination="Lbn-qp-2Ke" id="vP1-EC-aw2"/>
                 <outlet property="ImageOfAccumulation" destination="Mzq-3o-sWs" id="VsZ-nd-xaF"/>
                 <outlet property="MainView" destination="jkD-d2-bzY" id="Of2-CA-Mqr"/>
+                <outlet property="ProgressCompletedValue" destination="UPA-rC-rgi" id="eso-u9-wNd"/>
                 <outlet property="TargetLabel" destination="LOo-iQ-A15" id="n4p-yr-ZPf"/>
                 <outlet property="ValueCompleted" destination="asY-of-huV" id="lbQ-T6-7jw"/>
                 <outlet property="ValueTarget" destination="xin-kj-OOK" id="QTq-UT-Y6U"/>

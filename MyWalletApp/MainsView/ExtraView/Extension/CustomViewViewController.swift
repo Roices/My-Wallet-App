@@ -128,3 +128,36 @@ extension UIButton{
     }
 
 }
+
+extension UIViewController{
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(SavingView.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+extension String {
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        let nums: Set<Character> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",]
+        return Set(self).isSubset(of: nums)
+    }
+    
+    var IsANumber: Bool{
+        guard self.count > 0 else {
+            return false
+        }
+        if self.isNumeric == true{
+            return true
+        }else if self.hasPrefix("0."){
+            return true
+        }
+        return false
+    }
+}
+

@@ -16,6 +16,12 @@ class SavingView: UIViewController {
     let PeriodArray = ["2 week", "1 Month", "3 Months", "6 Months", "12 Month"]
     lazy var Key = ""
     
+    let ScrollView : UIScrollView = {
+        let ScrollView = UIScrollView()
+        ScrollView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+        return ScrollView
+    }()
+    
     let TitleLB : UILabel = {
         let label = UILabel()
         label.text = "Saving Plan"
@@ -35,7 +41,7 @@ class SavingView: UIViewController {
     
     let MainView : UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 150)
+        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
         view.backgroundColor = .white
         view.layer.cornerRadius = 15.0
         return view
@@ -53,13 +59,18 @@ class SavingView: UIViewController {
     let valueTf : UITextField = {
         let Tf = UITextField()
         let imageUSD = UIImage(named: "USD")!
-        let imageVND = UIImage(named: "VND")!
         Tf.frame = CGRect(x: 30, y: 0.1*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
         Tf.placeholder = "Value"
         Tf.withImage(direction: .Left, image: imageUSD)
-        Tf.withImage(direction: .Right, image: imageVND)
+        let label = UILabel()
+        label.frame = CGRect(x: Tf.bounds.width - 60, y: 0.3*Tf.bounds.height, width: 45, height: 0.4*Tf.bounds.height)
+        label.text = "VND"
+        label.textAlignment = .right
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        Tf.addSubview(label)
         return Tf
     }()
     
@@ -99,21 +110,37 @@ class SavingView: UIViewController {
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
         Tf.placeholder = "Period"
+        Tf.keyboardType = .numberPad
+        let label = UILabel()
+        label.frame = CGRect(x: Tf.bounds.width - 60, y: 0.3*Tf.bounds.height, width: 45, height: 0.4*Tf.bounds.height)
+        label.text = "Month"
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .right
         let Image = UIImage(named: "Period")
         Tf.withImage(direction: .Left, image: Image!)
+        Tf.addSubview(label)
+       // Tf.withImage(direction: .Right, image: UIImage(named: "Month")!)
         return Tf
     }()
     
     
-
     let Bankrate : UITextField = {
         let Tf = UITextField()
         Tf.frame = CGRect(x: 30, y: 0.5*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.cornerRadius = 15.0
         Tf.layer.borderWidth = 0.5
         Tf.placeholder = "Interest Rates"
+        Tf.keyboardType = .decimalPad
         let Image = UIImage(named: "InterestRate")
         Tf.withImage(direction: .Left, image: Image!)
+        let label = UILabel()
+        label.frame = CGRect(x: Tf.bounds.width - 80, y: 0.3*Tf.bounds.height, width: 65, height: 0.4*Tf.bounds.height)
+        label.text = "%/Month"
+        label.textColor = .black
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 12)
+        Tf.addSubview(label)
         return Tf
     }()
     
@@ -166,6 +193,8 @@ class SavingView: UIViewController {
         view.addSubview(MainView)
         view.addSubview(BackButton)
         view.addSubview(TitleLB)
+        view.addSubview(ScrollView)
+        ScrollView.addSubview(MainView)
         MainView.addSubview(valueTf)
         MainView.addSubview(NameAccountTf)
         MainView.addSubview(DateButton)
@@ -177,9 +206,7 @@ class SavingView: UIViewController {
         MainView.addSubview(WarningCompletelyView)
         
         valueTf.delegate = self
-        NameAccountTf.delegate = self
-        
-        
+   
         calendar.isHidden = true
         calendar.delegate = self
         calendar.dataSource = self
@@ -187,74 +214,12 @@ class SavingView: UIViewController {
   
         WarningView.isHidden = true
         WarningCompletelyView.isHidden = true
+       
+        
+        self.hideKeyboardWhenTappedAround()
+        registerNotifications()
     }
     
-    
-    @objc func ShowUpCalendar(sender: UIButton){
-        calendar.isHidden = !calendar.isHidden
-        periodTf.isHidden = !periodTf.isHidden
-        Bankrate.isHidden = !Bankrate.isHidden
-    }
-    
-    
-    @objc func BacktoWallet(sender: UIButton){
-        let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
-     self.navigationController?.pushViewController(mapView, animated: true)
-    }
-    
-    @objc func Add(sender: UIButton){
-        //check if value empty
-        if valueTf.text == "" || NameAccountTf.text == "" || DateButton.titleLabel?.text == "------Date of dispatch------" || periodTf.text == "" || Bankrate.text == ""{
-            //if empty push warning
-            WarningView.isHidden = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.WarningView.isHidden = true
-            }
-            return
-        }else{
-            
-        let path = UserDefaults.standard.string(forKey: "Username")
-//        let path = "tuan dep trai"
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("SavingPlan")
-
-        // tạo ref đến dữ liệu mới
-    //   let newRef = ref.child("Account")
-         
-        // đẩy dữ liệu
-        let val: [String : Any] = [
-            "NameAccount": NameAccountTf.text as Any,
-            "Value": valueTf.text as Any,
-            "Date": DateButton.titleLabel?.text as Any,
-            "Period": periodTf.text as Any,
-            "Interest Rate": Bankrate.text as Any
-        ]
-            if Key.isEmpty{
-            let newRef = ref.childByAutoId()
-                newRef.setValue(val)
-            }else{
-                let newRef = ref.child(Key)
-                newRef.setValue(val)
-            }
-
-    //    newRef.setValue(val)
-            //push completely warning
-            WarningCompletelyView.isHidden = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.WarningCompletelyView.isHidden = true
-            }
-            
-            //set UI to default
-            valueTf.text = ""
-            NameAccountTf.text = ""
-            DateButton.setTitle("------Date of dispatch------", for: .normal)
-            DateButton.setTitleColor(.lightGray, for: .normal)
-            periodTf.text = ""
-            Bankrate.text = ""
-            Key = ""
-    }
-
-}
-
 }
 
 
@@ -277,8 +242,10 @@ extension SavingView:FSCalendarDelegate,FSCalendarDataSource{
 
 
 extension SavingView: UITextFieldDelegate{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
+
+        
               let formatter = NumberFormatter()
                 formatter.numberStyle = .decimal
                 formatter.groupingSeparator = "."
@@ -304,4 +271,92 @@ extension SavingView: UITextFieldDelegate{
                }
                return true
            }
+    
+}
+
+
+
+
+extension SavingView{
+    @objc func keyboardWillShow(notification: Notification) {
+             guard let userInfo = notification.userInfo,
+                   let frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                     return
+    }
+
+     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
+
+        ScrollView.frame.origin.y = -frame.height + 325
+
+     }else{
+         ScrollView.frame.origin.y = 150
+     }
+         }
+
+     func registerNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    @objc func ShowUpCalendar(sender: UIButton){
+        calendar.isHidden = !calendar.isHidden
+        periodTf.isHidden = !periodTf.isHidden
+        Bankrate.isHidden = !Bankrate.isHidden
+    }
+    
+    
+    @objc func BacktoWallet(sender: UIButton){
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+     self.navigationController?.pushViewController(mapView, animated: true)
+    }
+    
+    @objc func Add(sender: UIButton){
+        //check if value empty
+        if valueTf.text == "" || NameAccountTf.text == "" || DateButton.titleLabel?.text == "------Date of dispatch------" || periodTf.text == "" || Bankrate.text == ""{
+            //if empty push warning
+            WarningView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningView.isHidden = true
+            }
+            return
+        }else{
+            
+            if Bankrate.text?.IsANumber == false{
+                Bankrate.text = "0"
+            }
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("SavingPlan")
+
+        // đẩy dữ liệu
+        let val: [String : Any] = [
+            "NameAccount": NameAccountTf.text as Any,
+            "Value": valueTf.text as Any,
+            "Date": DateButton.titleLabel?.text as Any,
+            "Period": periodTf.text as Any,
+            "Interest Rate": Bankrate.text as Any
+        ]
+            if Key.isEmpty{
+            let newRef = ref.childByAutoId()
+                newRef.setValue(val)
+            }else{
+                let newRef = ref.child(Key)
+                newRef.setValue(val)
+            }
+
+            //push completely warning
+            WarningCompletelyView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.WarningCompletelyView.isHidden = true
+            }
+            
+            //set UI to default
+            valueTf.text = ""
+            NameAccountTf.text = ""
+            DateButton.setTitle("------Date of dispatch------", for: .normal)
+            DateButton.setTitleColor(.lightGray, for: .normal)
+            periodTf.text = ""
+            Bankrate.text = ""
+            Key = ""
+    }
+
+}
 }

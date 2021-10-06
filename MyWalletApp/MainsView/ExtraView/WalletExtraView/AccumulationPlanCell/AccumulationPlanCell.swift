@@ -21,6 +21,7 @@ class AccumulationPlanCell: UITableViewCell {
     @IBOutlet var ValueTarget:UILabel!
     @IBOutlet var ValueCompleted:UILabel!
     @IBOutlet var DetailButton:UIButton!
+    @IBOutlet var ProgressCompletedValue : UIProgressView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,6 +47,8 @@ class AccumulationPlanCell: UITableViewCell {
             ValueCompleted.backgroundColor = .clear
             DetailButton.backgroundColor = .clear
         }
+        
+      
     }
     
     class func cellForTableView(tableView: UITableView) -> AccumulationPlanCell {

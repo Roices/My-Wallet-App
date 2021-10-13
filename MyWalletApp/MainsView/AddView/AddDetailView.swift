@@ -9,14 +9,21 @@ import UIKit
 import FirebaseDatabase
 import FSCalendar
 
-class AddDetailView: UIViewController{
+class AddDetailView: UIViewController, CAAnimationDelegate{
 
     lazy var TheChoicedThing = ""
     lazy var Time = ""
     lazy var SelectedArray : String = ""
     lazy var SelectedLabel : String = ""
     lazy var AccountChoiced : String = ""
-   lazy var TypeAccount : [(TypeAccount: String, Value: String)] = []
+    lazy var TypeAccount : [(TypeAccount: String, Value: String)] = []
+    
+    
+    let transparentView = UIView()
+    var selectedButton = UIButton()
+    var dataSource = [String]()
+    var TableView = UITableView()
+
     
     let Category: [String : [String]] = ["Children":["Tuition","Books","Toy","Pocket money"],
                                     "Service":["Electric","Water","Internet","Gas","Mobile","Television"],
@@ -92,10 +99,6 @@ class AddDetailView: UIViewController{
     
     let ListDetail : UITableView = {
         let tableview = UITableView()
-        tableview.frame = CGRect(x: 30, y: 0.25*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
-        tableview.layer.borderWidth = 0.25
-        tableview.layer.cornerRadius = 15.0
-        tableview.backgroundColor = .purple
         return tableview
     }()
     
@@ -116,7 +119,6 @@ class AddDetailView: UIViewController{
           calendar.frame = CGRect(x: 30, y: 0.35*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height * 0.3)
           calendar.layer.cornerRadius = 10.0
           calendar.layer.borderWidth = 0.25
-      //  calendar.backgroundColor = .white
           return calendar
       }()
     
@@ -147,9 +149,6 @@ class AddDetailView: UIViewController{
     
     let ListAccount : UITableView = {
         let table = UITableView()
-        table.frame = CGRect(x: 30, y: 0.55*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.18*UIScreen.main.bounds.height)
-        table.layer.cornerRadius = 15.0
-        table.layer.borderWidth = 0.5
         return table
     }()
     
@@ -207,7 +206,6 @@ class AddDetailView: UIViewController{
         view.addSubview(BackButton)
         MainView.addSubview(WarningCompletelyView)
         MainView.addSubview(WarningView)
-        MainView.addSubview(ListDetail)
         MainView.addSubview(MoneyInput)
         MainView.addSubview(ButtonList)
         MainView.addSubview(noteTextfield)
@@ -215,7 +213,7 @@ class AddDetailView: UIViewController{
         MainView.addSubview(AccountButton)
         MainView.addSubview(DoneButton)
         MainView.addSubview(Calendar)
-        MainView.addSubview(ListAccount)
+       
         
       //  MainView.addSubview(Calendar)
         TitleLB.text = self.SelectedLabel
@@ -223,17 +221,12 @@ class AddDetailView: UIViewController{
         WarningCompletelyView.isHidden = true
         
         MoneyInput.delegate = self
-        noteTextfield.delegate = self
-        
-        
-       // self.ListAccount.register(UITableViewCell.self, forCellReuseIdentifier: "ListAccount")
-        ListAccount.isHidden = true
+
         ListAccount.delegate = self
         ListAccount.dataSource = self
         
 
         self.ListDetail.register(UITableViewCell.self, forCellReuseIdentifier: "ListDetail")
-        ListDetail.isHidden = true
         ListDetail.delegate = self
         ListDetail.dataSource = self
         
@@ -245,6 +238,7 @@ class AddDetailView: UIViewController{
         
         //call Function For UpdateData -> ListAccountTable
         UpdateDataforAccoutList()
+        self.hideKeyboardWhenTappedAround()
        
         // Do any additional setup after loading the view.
     }
@@ -288,12 +282,10 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == ListDetail{
-        ListDetail.isHidden = !ListDetail.isHidden
-        noteTextfield.isHidden = !noteTextfield.isHidden
-        ScheduleButton.isHidden = !ScheduleButton.isHidden
         ButtonList.setTitle(Category["\(SelectedArray)"]![indexPath.row], for: .normal)
         ButtonList.setTitleColor(.black, for: .normal)
         ButtonList.titleLabel?.textAlignment = .center
+        removeTransparentView()
         TheChoicedThing = Category["\(SelectedArray)"]![indexPath.row]
             
         }else{
@@ -302,8 +294,7 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
             AccountButton.setTitle(Account, for: .normal)
             AccountButton.setTitleColor(.black, for: .normal)
             AccountChoiced = Account
-            DoneButton.isHidden = !DoneButton.isHidden
-            ListAccount.isHidden = !ListAccount.isHidden
+            removeTransparentView()
         }
     }
 }
@@ -324,7 +315,7 @@ extension AddDetailView{
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
 //              let key = postSnapshot.key
-              if let Account = postSnapshot.childSnapshot(forPath: "TypeAccount").value as? String,
+              if let Account = postSnapshot.childSnapshot(forPath: "Name").value as? String,
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String {
                 self.TypeAccount.append((TypeAccount: Account,Value: Value))
               }
@@ -337,7 +328,14 @@ extension AddDetailView{
     }
     @objc func BackToAddView(sender: UIButton){
             let mapView = (self.storyboard?.instantiateViewController(identifier: "AddViewController"))! as AddViewController
-         self.navigationController?.pushViewController(mapView, animated: true)
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(mapView, animated: true)
         
     }
     
@@ -349,20 +347,51 @@ extension AddDetailView{
     }
     
     @objc func HidingTable(_ sender: UIButton){
-        ListDetail.isHidden = !ListDetail.isHidden
-        noteTextfield.isHidden = !noteTextfield.isHidden
-        ScheduleButton.isHidden = !ScheduleButton.isHidden
+        TableView = ListDetail
+        selectedButton = ButtonList
+        addTransparentView(frames: ButtonList.frame)
+
     }
     
     
     @objc func ShowListAccount(sender: UIButton){
-        ListAccount.isHidden = !ListAccount.isHidden
-        DoneButton.isHidden = !DoneButton.isHidden
+        TableView = ListAccount
+        selectedButton = AccountButton
+        addTransparentView(frames: AccountButton.frame)
     }
+    
+    func addTransparentView(frames: CGRect) {
+        let window = UIApplication.shared.keyWindow
+        transparentView.frame = window?.frame ?? self.view.frame
+        self.MainView.addSubview(transparentView)
+        
+        TableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        self.MainView.addSubview(TableView)
+        TableView.layer.cornerRadius = 5
+        
+        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+       // TableView.reloadData()
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTransparentView))
+        transparentView.addGestureRecognizer(tapgesture)
+        transparentView.alpha = 0
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.5
+            self.TableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height + 5, width: frames.width, height: 0.2*UIScreen.main.bounds.height)
+        }, completion: nil)
+    }
+    
+    @objc func removeTransparentView() {
+        let frames = selectedButton.frame
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0
+            self.TableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        }, completion: nil)
+    }
+    
+    
+    
     @objc func Save(sender: UIButton){
        //check if it contains data
-        
-        
         if MoneyInput.text == "" || ButtonList.titleLabel?.text == "--------Category--------" || ScheduleButton.titleLabel?.text == "--------Date--------" || AccountButton.titleLabel?.text == "-----Account-----"{
             //Push up Warning
             WarningView.isHidden = false
@@ -372,7 +401,6 @@ extension AddDetailView{
             return
         }else{
         //Creat a path for data
-            
         let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
 
@@ -446,22 +474,26 @@ extension AddDetailView:UITextFieldDelegate{
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
-               if let groupingSeparator = formatter.groupingSeparator {
-                   if string == groupingSeparator {
-                       return true
-                   }
-                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
-                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
-                       if string.isEmpty { // pressed Backspace key
-                           totalTextWithoutGroupingSeparators.removeLast()
-                       }
-                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
-                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
-                           textField.text = formattedText
-                           return false
-                       }
-                   }
-               }
-               return true
-           }
+        if textField.text!.count < 19{
+              if let groupingSeparator = formatter.groupingSeparator{
+                  if string == groupingSeparator {
+                     return true
+                  }
+                  if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                      var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                      if string.isEmpty { // pressed Backspace key
+                          totalTextWithoutGroupingSeparators.removeLast()
+                      }
+                      if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                          let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                          textField.text = formattedText
+                          return false
+                      }
+                  }
+              }
+        }else{
+            textField.deleteBackward()
+        }
+        return true
+    }
 }

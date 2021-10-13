@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailSavingPlanView: UIViewController {
+class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
 
     lazy var textTest = ""
     lazy var Title = ""
@@ -191,14 +191,18 @@ class DetailSavingPlanView: UIViewController {
         ValueProfitView.addSubview(ValueProfit)
         
         AccountTitleLabel.text = Title
-        
-        
-        
     }
 
 
     @objc func BacktoSavingPlan(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     

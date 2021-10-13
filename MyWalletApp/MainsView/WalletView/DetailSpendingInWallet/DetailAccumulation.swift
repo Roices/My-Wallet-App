@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailAccumulation: UIViewController {
+class DetailAccumulation: UIViewController, CAAnimationDelegate {
 
     lazy var Time = ""
     lazy var Value = ""
@@ -69,7 +69,6 @@ class DetailAccumulation: UIViewController {
     
     let SentButton : UIButton = {
         let button = UIButton()
-       // button.frame = CGRect(x: 20, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
         button.backgroundColor = UIColor(hexString: "090F52")
         button.addTarget(self, action: #selector(Sent), for: .touchUpInside)
         button.layer.cornerRadius = 15
@@ -89,7 +88,6 @@ class DetailAccumulation: UIViewController {
         MainView.addSubview(ProgressView)
         // Do any additional setup after loading the view.
         
-        TitleLabel.text = TitleForAccumulation
         let ImageView = UIImageView(frame: CGRect(x: 20, y: 0.25*TimeView.bounds.height, width: 0.5*TimeView.bounds.height, height: 0.5*TimeView.bounds.height))
         ImageView.image = UIImage(named: "Period")
         ImageView.contentMode = .scaleAspectFit
@@ -99,7 +97,7 @@ class DetailAccumulation: UIViewController {
         label.textColor = UIColor(hexString: "C0C0C0")
         
         let DatelabelPeriod = UILabel(frame: CGRect(x: 0.5*TimeView.bounds.height + 35, y: 0.55*TimeView.bounds.height, width: 200, height: 0.3*TimeView.bounds.height))
-        DatelabelPeriod.text = self.Time
+        DatelabelPeriod.text = self.Time + " - " + CalculatorTime(Time, ExpirationDate)
         DatelabelPeriod.textColor = .black
         
         TimeView.addSubview(ImageView)
@@ -145,6 +143,13 @@ class DetailAccumulation: UIViewController {
 
     @objc func BacktoAccumulation(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     
@@ -183,5 +188,18 @@ class DetailAccumulation: UIViewController {
             
         }
         return amount
+    }
+    
+    func CalculatorTime(_ Date: String,_ AddingTime: String) ->String{
+        let dateFormatter = DateFormatter()
+        let AddingTime = AddingTime
+            .components(separatedBy:CharacterSet.decimalDigits.inverted)
+            .joined()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let InitialDate = dateFormatter.date(from: Date)!
+        let NewDate = Calendar.current.date(byAdding: .month, value: Int(AddingTime)!, to: InitialDate)
+        let Time = dateFormatter.string(from: NewDate!)
+        return Time
+        
     }
 }

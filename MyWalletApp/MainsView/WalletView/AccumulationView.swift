@@ -10,7 +10,7 @@ import Firebase
 import FirebaseDatabase
 import FSCalendar
 
-class AccumulationView: UIViewController,UITextFieldDelegate {
+class AccumulationView: UIViewController,UITextFieldDelegate, CAAnimationDelegate {
 
     
     let PeriodArray = ["1 Month","2 Months", "3 Months", "6 Months", "9 Months", "12 Months"]
@@ -18,9 +18,7 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
     lazy var State = ""
     lazy var Value = ""
     lazy var ValueCompleted = ""
-
-    
-    
+    let transparentView = UIView()
     
     let Background : UIImageView = {
         let background = UIImageView(image: UIImage(named: "Background"))
@@ -67,6 +65,7 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         tf.keyboardType = .numberPad
         tf.withImage(direction: .Left, image: imageUSD)
         tf.withImage(direction: .Right, image: imageVND)
+      //  tf.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
         return tf
     }()
     
@@ -78,6 +77,7 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         Tf.layer.borderWidth = 0.5
         Tf.placeholder = "Goal"
         Tf.withImage(direction: .Left, image: image!)
+     //   Tf.addTarget(self, action: #selector(checkMaxLength), for: .editingChanged)
         return Tf
     }()
      
@@ -111,11 +111,11 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         return button
     }()
     
-    let ListOfEndDate : UITableView = {
+    let ListOfEndDateTable : UITableView = {
         let tableView = UITableView()
-        tableView.frame = CGRect(x: 30, y: 0.475*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
-        tableView.layer.cornerRadius = 15.0
-        tableView.layer.borderWidth = 0.5
+      //  tableView.frame = CGRect(x: 30, y: 0.475*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
+//        tableView.layer.cornerRadius = 15.0
+//        tableView.layer.borderWidth = 0.5
         return tableView
     }()
     
@@ -175,7 +175,7 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         Mainview.addSubview(ExpirationDate)
         Mainview.addSubview(DoneButton)
         Mainview.addSubview(Calendar)
-        Mainview.addSubview(ListOfEndDate)
+      //  Mainview.addSubview(ListOfEndDate)
         Mainview.addSubview(WarningView)
         Mainview.addSubview(WarningCompletelyView)
         
@@ -187,17 +187,25 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         Calendar.dataSource = self
         
         
-        ListOfEndDate.isHidden = true
-        ListOfEndDate.delegate = self
-        ListOfEndDate.dataSource = self
+       // ListOfEndDate.isHidden = true
+        ListOfEndDateTable.delegate = self
+        ListOfEndDateTable.dataSource = self
         
         hideKeyboardWhenTappedAround()
         ValueTf.delegate = self
+
         
     }
     
     @objc func BacktoWallet(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     
@@ -208,8 +216,9 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
      }
     
     @objc func ShowUpPeriod(sender: UIButton){
-        ListOfEndDate.isHidden = !ListOfEndDate.isHidden
-        DoneButton.isHidden = !DoneButton.isHidden
+//        ListOfEndDate.isHidden = !ListOfEndDate.isHidden
+//        DoneButton.isHidden = !DoneButton.isHidden
+        addTransparentView(frames: ExpirationDate.frame)
     }
 
     @objc func Add(sender: UIButton){
@@ -294,16 +303,17 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
   }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-             let formatter = NumberFormatter()
+               let formatter = NumberFormatter()
                formatter.numberStyle = .decimal
                formatter.groupingSeparator = "."
                formatter.locale = Locale.current
                formatter.maximumFractionDigits = 0
               // Uses the grouping separator corresponding to your Locale
               // e.g. "," in the US, a space in France, and so on
-              if let groupingSeparator = formatter.groupingSeparator {
+        if textField.text!.count < 19{
+              if let groupingSeparator = formatter.groupingSeparator{
                   if string == groupingSeparator {
-                      return true
+                     return true
                   }
                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
@@ -317,8 +327,13 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
                       }
                   }
               }
-              return true
-          }
+        }else{
+            textField.deleteBackward()
+        }
+        return true
+
+    }
+          
     
     func CalculateAmount(_ Value: String) ->Int{
         var string = Value
@@ -338,13 +353,43 @@ class AccumulationView: UIViewController,UITextFieldDelegate {
         }
         return amount
     }
+    
+
+    func addTransparentView(frames: CGRect) {
+        let window = UIApplication.shared.keyWindow
+        transparentView.frame = window?.frame ?? self.view.frame
+        self.Mainview.addSubview(transparentView)
+        
+        ListOfEndDateTable.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        self.Mainview.addSubview(ListOfEndDateTable)
+        ListOfEndDateTable.layer.cornerRadius = 5
+        
+        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        ListOfEndDateTable.reloadData()
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTransparentView))
+        transparentView.addGestureRecognizer(tapgesture)
+        transparentView.alpha = 0
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.5
+            self.ListOfEndDateTable.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height + 5, width: frames.width, height: 0.2*UIScreen.main.bounds.height )
+        }, completion: nil)
+    }
+    
+    @objc func removeTransparentView() {
+        let frames = ExpirationDate.frame
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0
+            self.ListOfEndDateTable.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        }, completion: nil)
+    }
 }
+
 
 extension AccumulationView: FSCalendarDelegate,FSCalendarDataSource{
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-YYYY"
+        formatter.dateFormat = "dd/MM/YYYY"
         let DateFormatter = formatter.string(from: date)
         
         DateButton.setTitle("\(DateFormatter)", for: .normal)
@@ -371,8 +416,10 @@ extension AccumulationView:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         ExpirationDate.setTitle(PeriodArray[indexPath.row], for: .normal)
         ExpirationDate.setTitleColor(.black, for: .normal)
-        ListOfEndDate.isHidden = !ListOfEndDate.isHidden
-        DoneButton.isHidden = !DoneButton.isHidden
+        removeTransparentView()
     }
     
 }
+
+
+

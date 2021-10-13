@@ -8,13 +8,15 @@
 import UIKit
 import FirebaseDatabase
 
-class AccountView: UIViewController {
+class AccountView: UIViewController, CAAnimationDelegate {
 
 
     let TypeAccount = ["Cash","Banking","Credit card","e-Wallet"]
     lazy var AccountChoiced = ""
     lazy var Key = ""
-    
+    let transparentView = UIView()
+
+   
   
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
@@ -92,9 +94,9 @@ class AccountView: UIViewController {
     
     let ListAccount : UITableView = {
         let tableView = UITableView()
-        tableView.frame = CGRect(x: 30, y: 0.375 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
-        tableView.layer.cornerRadius = 15.0
-        tableView.layer.borderWidth = 0.5
+      //  tableView.frame = CGRect(x: 30, y: 0.375 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
+//        tableView.layer.cornerRadius = 15.0
+//        tableView.layer.borderWidth = 0.5
         return tableView
     }()
     
@@ -153,7 +155,6 @@ class AccountView: UIViewController {
         MainView.addSubview(NameAccountTf)
         MainView.addSubview(TypeAccountBT)
         MainView.addSubview(DoneButton)
-        MainView.addSubview(ListAccount)
         MainView.addSubview(WarningView)
         MainView.addSubview(WarningCompletelyView)
         
@@ -162,10 +163,10 @@ class AccountView: UIViewController {
         WarningView.isHidden = true
         WarningCompletelyView.isHidden = true
         
-        ListAccount.isHidden = true
         ListAccount.dataSource = self
         ListAccount.delegate = self
        
+        self.hideKeyboardWhenTappedAround()
     }
 
 
@@ -177,6 +178,13 @@ extension AccountView{
 
     @objc func BacktoWallet(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     
@@ -231,8 +239,35 @@ extension AccountView{
     }
     
     @objc func ChooseAccount(sender: UIButton){
-        ListAccount.isHidden = !ListAccount.isHidden
-        DoneButton.isHidden = !DoneButton.isHidden
+        addTransparentView(frames: TypeAccountBT.frame)
+    }
+    
+    func addTransparentView(frames: CGRect) {
+        let window = UIApplication.shared.keyWindow
+        transparentView.frame = window?.frame ?? self.view.frame
+        self.MainView.addSubview(transparentView)
+        
+        ListAccount.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        self.MainView.addSubview(ListAccount)
+        ListAccount.layer.cornerRadius = 5
+        
+        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        ListAccount.reloadData()
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTransparentView))
+        transparentView.addGestureRecognizer(tapgesture)
+        transparentView.alpha = 0
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.5
+            self.ListAccount.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height + 5, width: frames.width, height: CGFloat(self.TypeAccount.count * 50))
+        }, completion: nil)
+    }
+    
+    @objc func removeTransparentView() {
+        let frames = TypeAccountBT.frame
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0
+            self.ListAccount.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        }, completion: nil)
     }
 }
 
@@ -250,10 +285,9 @@ extension AccountView : UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         AccountChoiced = TypeAccount[indexPath.row]
-        ListAccount.isHidden = !ListAccount.isHidden
-        DoneButton.isHidden = !DoneButton.isHidden
         TypeAccountBT.setTitle(TypeAccount[indexPath.row], for: .normal)
         TypeAccountBT.setTitleColor(.black, for: .normal)
+        removeTransparentView()
     }
 }
 
@@ -267,22 +301,26 @@ extension AccountView:UITextFieldDelegate{
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
-               if let groupingSeparator = formatter.groupingSeparator {
-                   if string == groupingSeparator {
-                       return true
-                   }
-                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
-                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
-                       if string.isEmpty { // pressed Backspace key
-                           totalTextWithoutGroupingSeparators.removeLast()
-                       }
-                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
-                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
-                           textField.text = formattedText
-                           return false
-                       }
-                   }
-               }
-               return true
-           }
+        if textField.text!.count < 19{
+              if let groupingSeparator = formatter.groupingSeparator{
+                  if string == groupingSeparator {
+                     return true
+                  }
+                  if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                      var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                      if string.isEmpty { // pressed Backspace key
+                          totalTextWithoutGroupingSeparators.removeLast()
+                      }
+                      if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                          let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                          textField.text = formattedText
+                          return false
+                      }
+                  }
+              }
+        }else{
+                textField.deleteBackward()
+              }
+                return true
+        }
 }

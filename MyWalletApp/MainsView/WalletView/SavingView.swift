@@ -10,7 +10,7 @@ import FSCalendar
 import FirebaseDatabase
 
 
-class SavingView: UIViewController {
+class SavingView: UIViewController, CAAnimationDelegate {
 
     
     let PeriodArray = ["2 week", "1 Month", "3 Months", "6 Months", "12 Month"]
@@ -206,6 +206,8 @@ class SavingView: UIViewController {
         MainView.addSubview(WarningCompletelyView)
         
         valueTf.delegate = self
+        periodTf.delegate = self
+        Bankrate.delegate = self
    
         calendar.isHidden = true
         calendar.delegate = self
@@ -243,9 +245,6 @@ extension SavingView:FSCalendarDelegate,FSCalendarDataSource{
 
 extension SavingView: UITextFieldDelegate{
      func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-
-        
               let formatter = NumberFormatter()
                 formatter.numberStyle = .decimal
                 formatter.groupingSeparator = "."
@@ -253,24 +252,34 @@ extension SavingView: UITextFieldDelegate{
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
-               if let groupingSeparator = formatter.groupingSeparator {
-                   if string == groupingSeparator {
-                       return true
-                   }
-                   if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
-                       var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
-                       if string.isEmpty { // pressed Backspace key
-                           totalTextWithoutGroupingSeparators.removeLast()
-                       }
-                       if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
-                           let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
-                           textField.text = formattedText
-                           return false
-                       }
-                   }
-               }
-               return true
-           }
+        if textField == valueTf && textField.text!.count < 19{
+              if let groupingSeparator = formatter.groupingSeparator{
+                  if string == groupingSeparator {
+                     return true
+                  }
+                  if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                      var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                      if string.isEmpty { // pressed Backspace key
+                          totalTextWithoutGroupingSeparators.removeLast()
+                      }
+                      if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                          let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                          textField.text = formattedText
+                          return false
+                      }
+                  }
+              }
+        }else if textField == periodTf && textField.text!.count < 3{
+                //textField.deleteBackward()
+            return true
+        }else if textField == Bankrate && textField.text!.count < 3{
+            //textField.deleteBackward()
+            return true
+        }else{
+            textField.deleteBackward()
+        }
+        return true
+    }
     
 }
 
@@ -306,6 +315,13 @@ extension SavingView{
     
     @objc func BacktoWallet(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     

@@ -10,7 +10,7 @@ import MonthYearPicker
 import FirebaseDatabase
  
 
-class SpendingInWalletView: UIViewController {
+class SpendingInWalletView: UIViewController, CAAnimationDelegate {
 
     
     lazy var AccountChoiced = ""
@@ -26,10 +26,19 @@ class SpendingInWalletView: UIViewController {
         return backGround
     }()
     
+    var AccountTitleLabel : UILabel = {
+        let label = UILabel()
+        label.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        return label
+    }()
+    
     let MainView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         view.layer.cornerRadius = 15.0
         return view
     }()
@@ -53,7 +62,7 @@ class SpendingInWalletView: UIViewController {
         button.setTitle("\(DateFormatter)", for: .normal)
         button.setTitleColor(.blue, for: .normal)
         button.addTarget(self, action: #selector(DateChosing), for: .touchUpInside)
-        button.layer.borderWidth = 0.5
+        button.layer.borderWidth = 0.2
 //        button.layer.cornerRadius = 15.0
         return button
     }()
@@ -65,13 +74,12 @@ class SpendingInWalletView: UIViewController {
         return view
     }()
     
-    
     let totalValueLabel : UILabel = {
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0.1*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.075*UIScreen.main.bounds.height)
 //        label.text = "Total: " + "\(TotalValue)đ"
         label.textAlignment = .center
-        label.layer.borderWidth = 0.5
+        label.layer.borderWidth = 0.2
         return label
     }()
     
@@ -91,7 +99,8 @@ class SpendingInWalletView: UIViewController {
     
     let tableData : UITableView = {
        let table = UITableView()
-        table.frame = CGRect(x: 0, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.925)
+        table.frame = CGRect(x: 0, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        table.backgroundColor = .purple
         return table
     }()
     
@@ -100,6 +109,7 @@ class SpendingInWalletView: UIViewController {
         view.addSubview(backGround)
         view.addSubview(MainView)
         view.addSubview(BackButton)
+        view.addSubview(AccountTitleLabel)
         MainView.addSubview(ButtonHiddenPickerView)
         MainView.addSubview(ButtonTime)
         MainView.addSubview(LineView)
@@ -114,12 +124,20 @@ class SpendingInWalletView: UIViewController {
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
         ConfigureDataForTable()
         
+       // tableData.frame.size.height = CGFloat(Data.count * 70)
         // Do any additional setup after loading the view.
     }
     
     @objc func BacktoWallet(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "WalletViewController"))! as WalletViewController
-     self.navigationController?.pushViewController(mapView, animated: true)
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = self
+        view.window!.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(mapView, animated: true)
     }
     
     @objc func dateChanged(sender: MonthYearPickerView){
@@ -128,10 +146,7 @@ class SpendingInWalletView: UIViewController {
         let DateFormatter = formatter.string(from: picker.date)
         ButtonTime.setTitle("\(DateFormatter)", for: .normal)
         MonthChoiced = DateFormatter
-        print(MonthChoiced)
         ConfigureDataForTable()
-
-       
     }
     
     @objc func DateChosing(sender: UIButton){
@@ -154,23 +169,25 @@ class SpendingInWalletView: UIViewController {
         
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
-            self.Data = [];
+            self.Data = []
             self.TimeSection = []
-          for children in snapshot.children {
-            if let postSnapshot = children as? DataSnapshot {
-                let key = postSnapshot.key
+            for children in snapshot.children {
+                if let postSnapshot = children as? DataSnapshot {
+              let key = postSnapshot.key
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
-                let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
+                let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String{
-                self.Data.append((Category: Category, Value: Value, Note: Note ,key: key ))
+                self.Data.append((Category: Category, Value: Value, Note: Note ,key: key))
                 self.TimeSection.append(Date)
               }
             }
           }
           // cập nhật ui
-          self.tableData.reloadData()
             
+            DispatchQueue.main.async{
+                self.tableData.reloadData()
+            }
         })
     }
 }
@@ -178,11 +195,11 @@ class SpendingInWalletView: UIViewController {
 
 extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-      return  TimeSection.count
+        return  TimeSection.count
     }
-    
+//
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return  Data.count
+        return  Data.count
         
     }
     
@@ -199,8 +216,8 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
            let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
            let color = UIColor(hexString: "D6D6D6")
            view.backgroundColor =  color
-             
-        
+
+
         let lbl = UILabel(frame: CGRect(x: 15, y: 0, width: view.frame.width - 15, height: 0.025*UIScreen.main.bounds.height))
            lbl.font = UIFont.systemFont(ofSize: 15)
            lbl.text = TimeSection[section]

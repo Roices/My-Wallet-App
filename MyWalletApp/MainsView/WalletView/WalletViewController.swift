@@ -65,7 +65,6 @@ class WalletViewController: UIViewController {
     let Segment:UISegmentedControl = {
         let Segment = UISegmentedControl()
         Segment.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: 60)
-
         Segment.insertSegment(withTitle: "Account", at: 0, animated: true)
         Segment.insertSegment(withTitle: "Saving", at: 1, animated: true)
         Segment.insertSegment(withTitle: "Accumulation", at: 2, animated: true)
@@ -136,6 +135,8 @@ class WalletViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Background"), for: .default)
         
         
+        
+        
         tableWallet.delegate = self
         tableWallet.dataSource = self
         SavingPlanTable.delegate = self
@@ -168,23 +169,22 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == tableWallet{
-            
+           // let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell",for: indexPath) as! AccountCell
         let cell = AccountCell.cellForTableView(tableView: tableWallet)
         let Data = ListAccount[indexPath.row]
-        cell.AccountLabel.text = Data.TypeAccount
+        cell.AccountLabel.text = Data.Name
         cell.ValueLabel.text = Data.Value
         cell.Key = Data.key
         cell.delegate = self
         return cell
             
         }else if tableView == SavingPlanTable{
-            
             let cell = SavingPlanCell.cellForTableView(tableView: SavingPlanTable)
             let Data = ListSavingPlan[indexPath.row]
             cell.SavingPlanLabel.text = Data.Name
            // cell.ImageSavingPlan.image = UIImage(named: "\(Data.Name)")
             cell.ValueLabel.text = Data.Value
-            cell.DateLabel.text = Data.Date
+            cell.DateLabel.text = CalculatorTime(Data.Date, Data.Period)
             cell.key = Data.key
             cell.delegate = self
             return cell
@@ -213,14 +213,16 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             formatter.dateFormat = "MM-yyyy"
             let DateFormatted = formatter.string(from: Date)
             let mapView = self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView") as! SpendingInWalletView
-            mapView.Path = Data.TypeAccount
+            mapView.Path = Data.Name
             mapView.TotalValue = Data.Value
             mapView.MonthChoiced = DateFormatted
+            mapView.AccountTitleLabel.text = Data.Name
             self.navigationController?.pushViewController(mapView, animated: true)
             
         }else if tableView == SavingPlanTable{
             let Mapview = self.storyboard?.instantiateViewController(identifier: "DetailSavingPlanView") as! DetailSavingPlanView
             let Data = ListSavingPlan[indexPath.row]
+            Mapview.AccountTitleLabel.text = Data.Name
             Mapview.Title = Data.Name
             Mapview.InitialBalanceValue = Data.Value
             Mapview.InitialTime = Data.Date
@@ -233,7 +235,8 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             
             let Data = ListAccumulationPlan[indexPath.row]
             Mapview.Time = Data.Date
-            Mapview.TitleForAccumulation = Data.Target
+            Mapview.TitleLabel.text = Data.Target
+           // Mapview.TitleForAccumulation = Data.Target
             Mapview.CompletedValue = String(Data.ValueCompleted)
             Mapview.Value = String(Data.TargetValue)
             Mapview.Key = Data.key
@@ -332,7 +335,10 @@ extension WalletViewController{
             }
           }
           // cập nhật ui
-          self.tableWallet.reloadData()
+           // DispatchQueue.main.async{
+            self.tableWallet.frame.size.height = CGFloat(ListAccount.count * 40)
+            self.tableWallet.reloadData()
+            
         })
     }
     
@@ -398,7 +404,18 @@ extension WalletViewController{
         return amount
     }
 
-    
+    func CalculatorTime(_ Date: String,_ AddingTime: String) ->String{
+        let dateFormatter = DateFormatter()
+        let AddingTime = AddingTime
+            .components(separatedBy:CharacterSet.decimalDigits.inverted)
+            .joined()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let InitialDate = dateFormatter.date(from: Date)!
+        let NewDate = Calendar.current.date(byAdding: .month, value: Int(AddingTime)!, to: InitialDate)
+        let Time = dateFormatter.string(from: NewDate!)
+        return Time
+        
+    }
 }
 
 //Edit

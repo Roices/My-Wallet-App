@@ -14,6 +14,9 @@ class WalletViewController: UIViewController {
     lazy var ListAccount : [(TypeAccount: String, Value: String,Name: String,key: String)] = []
     lazy var ListSavingPlan : [(Name: String, Value: String, Rate: String, Date: String,Period: String,key: String)] = []
     lazy var ListAccumulationPlan : [(Target: String,TargetValue: String,ValueCompleted: String,Date: String,ExpirationDate: String,key: String)] = []
+    lazy var TotalValueAccount = ""
+    lazy var TotalValueSavingPlan = ""
+    lazy var TotalValueAccumulation = ""
     
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
@@ -26,6 +29,7 @@ class WalletViewController: UIViewController {
         MainView.backgroundColor = .white
         MainView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
         MainView.layer.cornerRadius = 15.0
+        MainView.backgroundColor = .white
         return MainView
     }()
     
@@ -55,7 +59,7 @@ class WalletViewController: UIViewController {
     let MoneyLabel : UILabel = {
         let MoneyLabel = UILabel()
         MoneyLabel.frame = CGRect(x: 0, y: 205 + 32, width: UIScreen.main.bounds.width, height: 30)
-        MoneyLabel.text = "Total: 100.000.000đ"
+      //  MoneyLabel.text = "Total: 100.000.000đ"
         MoneyLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
         MoneyLabel.textAlignment = .center
         return MoneyLabel
@@ -80,19 +84,22 @@ class WalletViewController: UIViewController {
     
     let tableWallet : UITableView = {
         let tableWallet = UITableView()
-       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 265)
+       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
     
     let SavingPlanTable : UITableView = {
         let tableWallet = UITableView()
-       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 265)
+       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
     
     let AccumulationPlanTable : UITableView = {
         let tableWallet = UITableView()
-       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 265)
+        tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
     
@@ -134,7 +141,7 @@ class WalletViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Background"), for: .default)
         
-        
+        addConstraints()
         
         
         tableWallet.delegate = self
@@ -150,6 +157,26 @@ class WalletViewController: UIViewController {
        
     }
     
+    func addConstraints(){
+        var constraints = [NSLayoutConstraint]()
+        
+       constraints.append(tableWallet.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
+        constraints.append(tableWallet.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
+       constraints.append(tableWallet.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        constraints.append(tableWallet.topAnchor.constraint(equalTo: Segment.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        
+        constraints.append(SavingPlanTable.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
+         constraints.append(SavingPlanTable.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
+        constraints.append(SavingPlanTable.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+         constraints.append(SavingPlanTable.topAnchor.constraint(equalTo: Segment.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        
+        constraints.append(AccumulationPlanTable.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
+         constraints.append(AccumulationPlanTable.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
+        constraints.append(AccumulationPlanTable.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+         constraints.append(AccumulationPlanTable.topAnchor.constraint(equalTo: Segment.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        
+        NSLayoutConstraint.activate(constraints)
+    }
 
   
 }
@@ -217,6 +244,7 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             mapView.TotalValue = Data.Value
             mapView.MonthChoiced = DateFormatted
             mapView.AccountTitleLabel.text = Data.Name
+            mapView.totalValueLabel.text = "Total: " + "\(Data.Value)" + "đ"
             self.navigationController?.pushViewController(mapView, animated: true)
             
         }else if tableView == SavingPlanTable{
@@ -256,25 +284,31 @@ extension WalletViewController{
             tableWallet.isHidden = false
             SavingPlanTable.isHidden = true
             AccumulationPlanTable.isHidden = true
+            MoneyLabel.text = "Total: " + TotalValueAccount + "đ"
            case 1:
             tableWallet.isHidden = true
             SavingPlanTable.isHidden = false
             AccumulationPlanTable.isHidden = true
+            MoneyLabel.text = "Total: " + TotalValueSavingPlan + "đ"
            case 2:
             tableWallet.isHidden = true
             SavingPlanTable.isHidden = true
             AccumulationPlanTable.isHidden = false
+            MoneyLabel.text = "Total: " + TotalValueAccumulation + "đ"
         default:
-            print(0)
+            //MoneyLabel.text = "Total: " + TotalValueAccount + "đ"
+        print(0)
         }
     }
     
     func UpdateDataForAccumulationPlan(){
+        var ValueforAccumulation = 0.0
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Accumulation")
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
           self.ListAccumulationPlan = [];
+            ValueforAccumulation = 0.0
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
                 let key = postSnapshot.key
@@ -284,22 +318,30 @@ extension WalletViewController{
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let ExpirationDate = postSnapshot.childSnapshot(forPath: "ExpirationDate").value as? String{
                 self.ListAccumulationPlan.append((Target: TargetPlan, TargetValue: Value, ValueCompleted: ValueCompleted,Date: Date,ExpirationDate: ExpirationDate,key: key))
+                ValueforAccumulation += CalculateAmount(Value)
               }
             }
           }
           // cập nhật ui
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.groupingSeparator = "."
+            let ValueforAccumulation = formatter.string(from: ValueforAccumulation as NSNumber)
+            TotalValueAccumulation = ValueforAccumulation!
+           // MoneyLabel.text = "Total: " + TotalValueAccumulation + "đ"
           self.AccumulationPlanTable.reloadData()
         })
     }
     
     
     func UpdateDataForSavingPlan(){
-        
+        var ValueforSavingPlan = 0.0
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("SavingPlan")
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
           self.ListSavingPlan = [];
+            ValueforSavingPlan = 0.0
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
                let key = postSnapshot.key
@@ -309,21 +351,31 @@ extension WalletViewController{
                 let Rate = postSnapshot.childSnapshot(forPath: "Interest Rate").value as? String,
                 let Period = postSnapshot.childSnapshot(forPath: "Period").value as? String{
                     self.ListSavingPlan.append((Name: SavingPlan, Value: Value, Rate: Rate, Date: Date,Period: Period,key: key))
+                    ValueforSavingPlan += CalculateAmount(Value)
               }
             }
           }
           // cập nhật ui
+            
+             let formatter = NumberFormatter()
+             formatter.numberStyle = .decimal
+             formatter.groupingSeparator = "."
+             let ValueforSavingPlan = formatter.string(from: ValueforSavingPlan as NSNumber)
+             TotalValueSavingPlan = ValueforSavingPlan!
+          //  MoneyLabel.text = "Total: " + TotalValueSavingPlan + "đ"
           self.SavingPlanTable.reloadData()
         })
     }
     
     func UpdateDataforAccoutList(){
 
+        var ValueforAccount = 0.0
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Account")
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
           self.ListAccount = [];
+            ValueforAccount = 0.0
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
                 let key = postSnapshot.key
@@ -331,11 +383,19 @@ extension WalletViewController{
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let NameAccount = postSnapshot.childSnapshot(forPath: "Name").value as? String{
                 self.ListAccount.append((TypeAccount: Account,Value: Value,Name: NameAccount,key: key))
+                ValueforAccount += CalculateAmount(Value)
               }
             }
           }
           // cập nhật ui
            // DispatchQueue.main.async{
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.groupingSeparator = "."
+            let ValueforAccount = formatter.string(from: ValueforAccount as NSNumber)
+            TotalValueAccount = ValueforAccount!
+            MoneyLabel.text = "Total: " + TotalValueAccount + "đ"
+           
             self.tableWallet.frame.size.height = CGFloat(ListAccount.count * 40)
             self.tableWallet.reloadData()
             
@@ -346,18 +406,13 @@ extension WalletViewController{
     
     
     @objc func Add(sender: UIButton){
-
         if Segment.selectedSegmentIndex == 0{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "AccountView"))! as AccountView
          self.navigationController?.pushViewController(mapView, animated: true)
-//            tableWallet.isHidden = !tableWallet.isHidden
-       
             }
         else if Segment.selectedSegmentIndex == 1{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "SavingView"))! as SavingView
             self.navigationController?.pushViewController(mapView, animated: true)
- 
-
         }
         else{
         let mapView = (self.storyboard?.instantiateViewController(identifier: "AccumulationView"))! as AccumulationView

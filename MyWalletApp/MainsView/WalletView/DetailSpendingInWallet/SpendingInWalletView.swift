@@ -100,6 +100,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     let tableData : UITableView = {
        let table = UITableView()
         table.frame = CGRect(x: 0, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .purple
         return table
     }()
@@ -123,9 +124,21 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
         ConfigureDataForTable()
+        addConstraints()
         
        // tableData.frame.size.height = CGFloat(Data.count * 70)
         // Do any additional setup after loading the view.
+    }
+    
+    func addConstraints(){
+        var constraints = [NSLayoutConstraint]()
+        
+       constraints.append(tableData.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
+        constraints.append(tableData.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
+       constraints.append(tableData.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        constraints.append(tableData.topAnchor.constraint(equalTo: totalValueLabel.safeAreaLayoutGuide.bottomAnchor,constant: 0.5))
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     @objc func BacktoWallet(sender: UIButton){
@@ -162,8 +175,28 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         tableData.isHidden = !tableData.isHidden
         totalValueLabel.isHidden = !totalValueLabel.isHidden
     }
+    
+    func CalculateAmount(_ Value: String) ->Double{
+        var string = Value
+        var amount:Double = 0
+        let occurrencies = string.filter { $0 == "." }.count
+        for index in 0...occurrencies{
+            if let lastIndex = string.lastIndex(of: "."){
+            let last = string.endIndex
+            var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "")
+                subString2.remove(at: subString2.startIndex)
+                amount += Double(subString2)! * pow(1000, Double(index))
+            }else{
+                amount += Double(string)! * pow(1000, Double(index))
+            }
+            
+        }
+        return amount
+    }
 
-    func ConfigureDataForTable(){        
+    func ConfigureDataForTable(){
+        var TotalValue = 0
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(MonthChoiced)").child(Path)
         
@@ -173,30 +206,29 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
             self.TimeSection = []
             for children in snapshot.children {
                 if let postSnapshot = children as? DataSnapshot {
-              let key = postSnapshot.key
+                let key = postSnapshot.key
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String{
                 self.Data.append((Category: Category, Value: Value, Note: Note ,key: key))
                 self.TimeSection.append(Date)
+                TotalValue += Int(CalculateAmount(Value))
               }
             }
           }
           // cập nhật ui
-            
+            self.tableData.frame.size.height = CGFloat(Data.count * 40)
             DispatchQueue.main.async{
                 self.tableData.reloadData()
             }
+            
         })
     }
 }
 
 
 extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return  TimeSection.count
-    }
 //
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return  Data.count
@@ -212,20 +244,20 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-           let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
-           let color = UIColor(hexString: "D6D6D6")
-           view.backgroundColor =  color
-
-
-        let lbl = UILabel(frame: CGRect(x: 15, y: 0, width: view.frame.width - 15, height: 0.025*UIScreen.main.bounds.height))
-           lbl.font = UIFont.systemFont(ofSize: 15)
-           lbl.text = TimeSection[section]
-           view.addSubview(lbl)
-           return view
-         }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.025*UIScreen.main.bounds.height
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//           let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
+//           let color = UIColor(hexString: "D6D6D6")
+//           view.backgroundColor =  color
+//
+//
+//        let lbl = UILabel(frame: CGRect(x: 15, y: 0, width: view.frame.width - 15, height: 0.025*UIScreen.main.bounds.height))
+//           lbl.font = UIFont.systemFont(ofSize: 15)
+//           lbl.text = TimeSection[section]
+//           view.addSubview(lbl)
+//           return view
+//         }
+//
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 0.025*UIScreen.main.bounds.height
+//    }
 }

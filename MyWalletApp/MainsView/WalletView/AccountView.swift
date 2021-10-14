@@ -185,6 +185,7 @@ extension AccountView{
         transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
         transition.delegate = self
         view.window!.layer.add(transition, forKey: kCATransition)
+        mapView.UpdateDataforAccoutList()
      self.navigationController?.pushViewController(mapView, animated: true)
     }
     

@@ -356,7 +356,6 @@ extension WalletViewController{
             }
           }
           // cập nhật ui
-            
              let formatter = NumberFormatter()
              formatter.numberStyle = .decimal
              formatter.groupingSeparator = "."
@@ -368,7 +367,6 @@ extension WalletViewController{
     }
     
     func UpdateDataforAccoutList(){
-
         var ValueforAccount = 0.0
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Account")
@@ -395,15 +393,12 @@ extension WalletViewController{
             let ValueforAccount = formatter.string(from: ValueforAccount as NSNumber)
             TotalValueAccount = ValueforAccount!
             MoneyLabel.text = "Total: " + TotalValueAccount + "đ"
-           
-            self.tableWallet.frame.size.height = CGFloat(ListAccount.count * 40)
+           // self.tableWallet.frame.size.height = CGFloat(ListAccount.count * 40)
             self.tableWallet.reloadData()
             
         })
+      //  print(ListAccount)
     }
-    
-    
-    
     
     @objc func Add(sender: UIButton){
         if Segment.selectedSegmentIndex == 0{
@@ -454,7 +449,6 @@ extension WalletViewController{
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }
-            
         }
         return amount
     }

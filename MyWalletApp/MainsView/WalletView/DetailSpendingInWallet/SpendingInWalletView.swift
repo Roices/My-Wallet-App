@@ -12,9 +12,8 @@ import FirebaseDatabase
 
 class SpendingInWalletView: UIViewController, CAAnimationDelegate {
 
-    
+    lazy var SectionFortable = [TimeSectionData]()
     lazy var AccountChoiced = ""
-    lazy var Data : [(Category: String, Value: String,Note: String,key: String)] = []
     lazy var TimeSection:[String] = []
     lazy var TotalValue = ""
     lazy var Path = ""
@@ -38,7 +37,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     let MainView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
         view.layer.cornerRadius = 15.0
         return view
     }()
@@ -122,12 +121,11 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         tableData.delegate = self
         tableData.dataSource = self
         
+        addConstraints()
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
         ConfigureDataForTable()
-        addConstraints()
+       // addConstraints()
         
-       // tableData.frame.size.height = CGFloat(Data.count * 70)
-        // Do any additional setup after loading the view.
     }
     
     func addConstraints(){
@@ -197,32 +195,43 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
 
     func ConfigureDataForTable(){
         var TotalValue = 0
+        var DataBase = [DATA]()
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(MonthChoiced)").child(Path)
         
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
-            self.Data = []
-            self.TimeSection = []
+             SectionFortable = []
+              self.TimeSection = []
             for children in snapshot.children {
+                DataBase = []
                 if let postSnapshot = children as? DataSnapshot {
-                let key = postSnapshot.key
+                    let key = postSnapshot.key
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String{
-                self.Data.append((Category: Category, Value: Value, Note: Note ,key: key))
-                self.TimeSection.append(Date)
+    
+                let Data = DATA(Category: Category, Note: Note, Value: Value, Key: key, Date: Date)
+                if TimeSection.contains(Date){
+                    for index in 0..<SectionFortable.count{
+                        if SectionFortable[index].Time == Date{
+                            SectionFortable[index].Database.append(Data)
+                       }
+                    }
+                }else{
+                    TimeSection.append(Date)
+                    DataBase.append(Data)
+                    let Section = TimeSectionData(Time: Date, Database: DataBase)
+                    SectionFortable.append(Section)
+                }
                 TotalValue += Int(CalculateAmount(Value))
               }
             }
           }
           // cập nhật ui
-            self.tableData.frame.size.height = CGFloat(Data.count * 40)
-            DispatchQueue.main.async{
                 self.tableData.reloadData()
-            }
-            
+           
         })
     }
 }
@@ -230,34 +239,64 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
 
 extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
 //
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return SectionFortable.count
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  Data.count
-        
+        SectionFortable[section].Database.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = SpendingInWalletCell.cellForTableView(tableView: tableData)
-        let Data = Data[indexPath.row]
-        cell.CategoryLabel.text = Data.Category
-        cell.NoteLabel.text = "Note: " + Data.Note
-        cell.ValueLabel.text = Data.Value
-        return cell
+            let cell = SpendingInWalletCell.cellForTableView(tableView: tableData)
+            let Data = SectionFortable[indexPath.section].Database[indexPath.row]
+            cell.CategoryLabel.text = Data.Category
+            cell.NoteLabel.text = "Note: " + Data.Note
+            cell.ValueLabel.text = Data.Value
+            return cell
     }
     
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//           let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
-//           let color = UIColor(hexString: "D6D6D6")
-//           view.backgroundColor =  color
-//
-//
-//        let lbl = UILabel(frame: CGRect(x: 15, y: 0, width: view.frame.width - 15, height: 0.025*UIScreen.main.bounds.height))
-//           lbl.font = UIFont.systemFont(ofSize: 15)
-//           lbl.text = TimeSection[section]
-//           view.addSubview(lbl)
-//           return view
-//         }
-//
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 0.025*UIScreen.main.bounds.height
-//    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+           let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
+           let color = UIColor(hexString: "D6D6D6")
+           view.backgroundColor =  color
+
+
+        let lbl = UILabel(frame: CGRect(x: 15, y: 0, width: view.frame.width - 15, height: 0.025*UIScreen.main.bounds.height))
+           lbl.font = UIFont.systemFont(ofSize: 15)
+           lbl.text = TimeSection[section]
+           view.addSubview(lbl)
+           return view
+         }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.025*UIScreen.main.bounds.height
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let MapView = self.storyboard?.instantiateViewController(withIdentifier: "SaveAndDeleteView") as! SaveAndDeleteView
+        let Data = SectionFortable[indexPath.section].Database[indexPath.row]
+        MapView.MoneyInput.text = Data.Value
+        MapView.ButtonList.setTitle(Data.Category, for: .normal)
+        MapView.ButtonList.setTitleColor(.black, for: .normal)
+        MapView.ScheduleButton.setTitle(Data.Date, for: .normal)
+        MapView.ScheduleButton.setTitleColor(.black, for: .normal)
+        MapView.noteTextfield.text = Data.Note
+        MapView.AccountButton.setTitle(AccountTitleLabel.text, for: .normal)
+        MapView.AccountButton.setTitleColor(.black, for: .normal)
+        self.navigationController?.pushViewController(MapView, animated: true)
+    }
+}
+
+
+struct TimeSectionData{
+    var Time : String
+    var Database : [DATA]
+}
+
+struct DATA{
+    var Category : String
+    var Note : String
+    var Value : String
+    var Key : String
+    var Date : String
 }

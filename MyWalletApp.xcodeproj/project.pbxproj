@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		170FE2DB271D7C64000717F8 /* SaveAndDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170FE2DA271D7C64000717F8 /* SaveAndDeleteView.swift */; };
 		1729AF1126C0D44000B4DEA2 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1026C0D44000B4DEA2 /* AccountView.swift */; };
 		1729AF1326C0D45A00B4DEA2 /* SavingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1226C0D45A00B4DEA2 /* SavingView.swift */; };
 		1729AF1526C0D47100B4DEA2 /* AccumulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1729AF1426C0D47100B4DEA2 /* AccumulationView.swift */; };
@@ -70,6 +71,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		170FE2DA271D7C64000717F8 /* SaveAndDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAndDeleteView.swift; sourceTree = "<group>"; };
 		1729AF1026C0D44000B4DEA2 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1729AF1226C0D45A00B4DEA2 /* SavingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingView.swift; sourceTree = "<group>"; };
 		1729AF1426C0D47100B4DEA2 /* AccumulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulationView.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				1782028E26F1936A006FD576 /* SpendingInWalletView.swift */,
 				17B4F69F26F81C5D006634B4 /* DetailSavingPlanView.swift */,
 				17B4F6A127000B4F006634B4 /* DetailAccumulation.swift */,
+				170FE2DA271D7C64000717F8 /* SaveAndDeleteView.swift */,
 			);
 			path = DetailSpendingInWallet;
 			sourceTree = "<group>";
@@ -600,6 +603,7 @@
 				17B4F6A227000B50006634B4 /* DetailAccumulation.swift in Sources */,
 				17B4F69D26F5D354006634B4 /* SpendingInWalletCell.swift in Sources */,
 				172A9483268DC12800774926 /* ResetViewController.swift in Sources */,
+				170FE2DB271D7C64000717F8 /* SaveAndDeleteView.swift in Sources */,
 				172A9481268DC11600774926 /* RegistrationViewController.swift in Sources */,
 				17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */,
 				174CA5AD26E701400061E240 /* AccumulationPlanCell.swift in Sources */,

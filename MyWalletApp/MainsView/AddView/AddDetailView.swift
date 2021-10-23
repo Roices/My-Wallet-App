@@ -11,7 +11,7 @@ import FSCalendar
 
 class AddDetailView: UIViewController, CAAnimationDelegate{
 
-    lazy var TheChoicedThing = ""
+//    lazy var TheChoicedThing = ""
     lazy var Time = ""
     lazy var SelectedArray : String = ""
     lazy var SelectedLabel : String = ""
@@ -286,8 +286,8 @@ extension AddDetailView: UITableViewDelegate, UITableViewDataSource{
         ButtonList.setTitleColor(.black, for: .normal)
         ButtonList.titleLabel?.textAlignment = .center
         removeTransparentView()
-        TheChoicedThing = Category["\(SelectedArray)"]![indexPath.row]
-            
+//        TheChoicedThing = Category["\(SelectedArray)"]![indexPath.row]
+//
         }else{
             let Data = TypeAccount[indexPath.row]
             let Account = Data.TypeAccount
@@ -408,11 +408,12 @@ extension AddDetailView{
         // creat new value
             
         let val: [String : Any] = [
-            "Category": TheChoicedThing,
+            "Category": SelectedArray,
             "Value": MoneyInput.text as Any,
             "Date": ScheduleButton.titleLabel?.text as Any,
             "Note": noteTextfield.text as Any,
-            "Account": AccountButton.titleLabel?.text as Any
+            "Account": AccountButton.titleLabel?.text as Any,
+            "Detail": ButtonList.titleLabel?.text as Any
         ]
 
         // push value

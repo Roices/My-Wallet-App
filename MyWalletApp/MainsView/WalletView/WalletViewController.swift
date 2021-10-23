@@ -382,6 +382,7 @@ extension WalletViewController{
                 let NameAccount = postSnapshot.childSnapshot(forPath: "Name").value as? String{
                 self.ListAccount.append((TypeAccount: Account,Value: Value,Name: NameAccount,key: key))
                 ValueforAccount += CalculateAmount(Value)
+                UserDefaults.standard.set(Value, forKey: "\(NameAccount)")
               }
             }
           }

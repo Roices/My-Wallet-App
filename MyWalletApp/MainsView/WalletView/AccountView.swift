@@ -94,9 +94,6 @@ class AccountView: UIViewController, CAAnimationDelegate {
     
     let ListAccount : UITableView = {
         let tableView = UITableView()
-      //  tableView.frame = CGRect(x: 30, y: 0.375 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
-//        tableView.layer.cornerRadius = 15.0
-//        tableView.layer.borderWidth = 0.5
         return tableView
     }()
     

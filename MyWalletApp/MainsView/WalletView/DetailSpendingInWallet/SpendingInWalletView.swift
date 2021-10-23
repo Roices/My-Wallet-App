@@ -18,6 +18,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     lazy var TotalValue = ""
     lazy var Path = ""
     lazy var MonthChoiced = ""
+    
 
     let backGround : UIImageView = {
         let backGround = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
@@ -122,19 +123,21 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         tableData.dataSource = self
         
         addConstraints()
+        TotalValue = UserDefaults.standard.string(forKey: "\(Path)")!
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
         ConfigureDataForTable()
        // addConstraints()
         
+        print("MonthChoiced: \(MonthChoiced)")
     }
     
     func addConstraints(){
         var constraints = [NSLayoutConstraint]()
         
        constraints.append(tableData.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
-        constraints.append(tableData.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
+       constraints.append(tableData.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
        constraints.append(tableData.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
-        constraints.append(tableData.topAnchor.constraint(equalTo: totalValueLabel.safeAreaLayoutGuide.bottomAnchor,constant: 0.5))
+       constraints.append(tableData.topAnchor.constraint(equalTo: totalValueLabel.safeAreaLayoutGuide.bottomAnchor,constant: 0.5))
         
         NSLayoutConstraint.activate(constraints)
     }
@@ -156,7 +159,6 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         formatter.dateFormat = "MM-YYYY"
         let DateFormatter = formatter.string(from: picker.date)
         ButtonTime.setTitle("\(DateFormatter)", for: .normal)
-        MonthChoiced = DateFormatter
         ConfigureDataForTable()
     }
     
@@ -188,7 +190,6 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }
-            
         }
         return amount
     }
@@ -196,8 +197,9 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     func ConfigureDataForTable(){
         var TotalValue = 0
         var DataBase = [DATA]()
+        let MonthSection = (ButtonTime.titleLabel?.text)!
         let path = UserDefaults.standard.string(forKey: "Username")
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(MonthChoiced)").child(Path)
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(MonthSection)").child(Path)
         
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
@@ -210,9 +212,12 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
-                let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String{
-    
-                let Data = DATA(Category: Category, Note: Note, Value: Value, Key: key, Date: Date)
+                let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String,
+                let Account = postSnapshot.childSnapshot(forPath: "Account").value as? String,
+                let Detail = postSnapshot.childSnapshot(forPath: "Detail").value as? String{
+                Path = Account
+                print("Path1234: \(Path)")
+                let Data = DATA(Category: Category, Note: Note, Value: Value, Key: key, Date: Date,Account: Account,Detail: Detail)
                 if TimeSection.contains(Date){
                     for index in 0..<SectionFortable.count{
                         if SectionFortable[index].Time == Date{
@@ -224,6 +229,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
                     DataBase.append(Data)
                     let Section = TimeSectionData(Time: Date, Database: DataBase)
                     SectionFortable.append(Section)
+                    AccountTitleLabel.text = Path
                 }
                 TotalValue += Int(CalculateAmount(Value))
               }
@@ -231,6 +237,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
           }
           // cập nhật ui
                 self.tableData.reloadData()
+            print("Month Section1234: \(MonthSection)")
            
         })
     }
@@ -281,8 +288,14 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
         MapView.ScheduleButton.setTitle(Data.Date, for: .normal)
         MapView.ScheduleButton.setTitleColor(.black, for: .normal)
         MapView.noteTextfield.text = Data.Note
-        MapView.AccountButton.setTitle(AccountTitleLabel.text, for: .normal)
+        MapView.AccountButton.setTitle(Data.Account, for: .normal)
         MapView.AccountButton.setTitleColor(.black, for: .normal)
+        MapView.key = Data.Key
+        let MonthSection = (ButtonTime.titleLabel?.text)!
+        MapView.Time = MonthSection
+        MapView.TimeDeleted = MonthSection
+        MapView.AccountChoiced = Data.Account
+        MapView.CategorySection = Data.Category
         self.navigationController?.pushViewController(MapView, animated: true)
     }
 }
@@ -299,4 +312,6 @@ struct DATA{
     var Value : String
     var Key : String
     var Date : String
+    var Account : String
+    var Detail : String
 }

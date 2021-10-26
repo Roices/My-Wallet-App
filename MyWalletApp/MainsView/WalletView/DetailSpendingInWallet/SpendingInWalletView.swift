@@ -18,7 +18,6 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     lazy var TotalValue = ""
     lazy var Path = ""
     lazy var MonthChoiced = ""
-    
 
     let backGround : UIImageView = {
         let backGround = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
@@ -83,6 +82,30 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         return label
     }()
     
+    let ExpenseIncomeView : UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.075*UIScreen.main.bounds.height)
+        view.layer.borderWidth = 0.2
+        view.layer.borderColor = UIColor.black.cgColor
+        return view
+    }()
+    
+    let LabelTotalValueExpense : UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .red
+        //label.text = "Total Spending:"
+        return label
+    }()
+
+    let LabelTotalValueIncome : UILabel = {
+        let label = UILabel()
+        //label.text = "Total InCome3135:"
+        label.textColor = .green
+        label.textAlignment = .center
+        return label
+    }()
+    
     let ButtonHiddenPickerView : UIButton = {
         let button = UIButton()
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -99,7 +122,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     
     let tableData : UITableView = {
        let table = UITableView()
-        table.frame = CGRect(x: 0, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        table.frame = CGRect(x: 0, y: 0.25*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .purple
         return table
@@ -115,6 +138,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         MainView.addSubview(ButtonTime)
         MainView.addSubview(LineView)
         MainView.addSubview(totalValueLabel)
+        //MainView.addSubview(ExpenseIncomeView)
         MainView.addSubview(tableData)
         MainView.addSubview(picker)
         
@@ -122,13 +146,42 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         tableData.delegate = self
         tableData.dataSource = self
         
-        addConstraints()
         TotalValue = UserDefaults.standard.string(forKey: "\(Path)")!
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
         ConfigureDataForTable()
        // addConstraints()
         
-        print("MonthChoiced: \(MonthChoiced)")
+        let LabelIncome = UILabel()
+        LabelIncome.frame = CGRect(x: 0, y: 0.2*ExpenseIncomeView.frame.height, width: ExpenseIncomeView.frame.width/2 - 0.5, height: 0.25*ExpenseIncomeView.frame.height)
+        LabelIncome.text = "Total Income: "
+        LabelIncome.textAlignment = .center
+        ExpenseIncomeView.addSubview(LabelIncome)
+        
+ 
+        LabelTotalValueIncome.frame = CGRect(x: 0, y: 0.6*ExpenseIncomeView.frame.height, width: ExpenseIncomeView.frame.width/2 - 0.5, height: 0.2*ExpenseIncomeView.frame.height)
+        ExpenseIncomeView.addSubview(LabelTotalValueIncome)
+        
+        
+        let LabelExpense = UILabel()
+        LabelExpense.frame = CGRect(x: ExpenseIncomeView.frame.width/2 + 0.5, y: 0.2*ExpenseIncomeView.frame.height, width: ExpenseIncomeView.frame.width/2 - 0.5, height: 0.25*ExpenseIncomeView.frame.height)
+        LabelExpense.text = "Total Spending: "
+        LabelExpense.textAlignment = .center
+        LabelExpense.textColor = .black
+        ExpenseIncomeView.addSubview(LabelExpense)
+        
+        
+    
+        LabelTotalValueExpense.frame = CGRect(x: ExpenseIncomeView.frame.width/2 + 0.5, y: 0.6*ExpenseIncomeView.frame.height, width: ExpenseIncomeView.frame.width/2 - 0.5, height: 0.2*ExpenseIncomeView.frame.height)
+        ExpenseIncomeView.addSubview(LabelTotalValueExpense)
+        
+        let Line = UIView()
+        Line.frame = CGRect(x: ExpenseIncomeView.frame.width/2 - 0.5, y: 0.05*ExpenseIncomeView.frame.height, width: 1, height: 0.9*ExpenseIncomeView.frame.height)
+        Line.backgroundColor = .lightGray
+        ExpenseIncomeView.addSubview(Line)
+        
+        MainView.addSubview(ExpenseIncomeView)
+        addConstraints()
+        
     }
     
     func addConstraints(){
@@ -137,7 +190,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
        constraints.append(tableData.leadingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leadingAnchor))
        constraints.append(tableData.trailingAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.trailingAnchor))
        constraints.append(tableData.bottomAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.bottomAnchor,constant: 0))
-       constraints.append(tableData.topAnchor.constraint(equalTo: totalValueLabel.safeAreaLayoutGuide.bottomAnchor,constant: 0.5))
+       constraints.append(tableData.topAnchor.constraint(equalTo: ExpenseIncomeView.safeAreaLayoutGuide.bottomAnchor,constant: 0.5))
         
         NSLayoutConstraint.activate(constraints)
     }
@@ -166,6 +219,8 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         picker.isHidden = !picker.isHidden
         tableData.isHidden = !tableData.isHidden
         totalValueLabel.isHidden = !totalValueLabel.isHidden
+        ExpenseIncomeView.isHidden = !ExpenseIncomeView.isHidden
+    //    LabelTotalValueIncome.isHidden = !LabelTotalValueIncome.isHidden
         
         
     }
@@ -174,6 +229,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         picker.isHidden = !picker.isHidden
         tableData.isHidden = !tableData.isHidden
         totalValueLabel.isHidden = !totalValueLabel.isHidden
+        ExpenseIncomeView.isHidden = !ExpenseIncomeView.isHidden
     }
     
     func CalculateAmount(_ Value: String) ->Double{
@@ -196,6 +252,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
 
     func ConfigureDataForTable(){
         var TotalValue = 0
+        var ValueIncome = 0
         var DataBase = [DATA]()
         let MonthSection = (ButtonTime.titleLabel?.text)!
         let path = UserDefaults.standard.string(forKey: "Username")
@@ -203,10 +260,12 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         
         ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
-             SectionFortable = []
-              self.TimeSection = []
+            SectionFortable = []
+            self.TimeSection = []
+            ValueIncome = 0
             for children in snapshot.children {
                 DataBase = []
+                
                 if let postSnapshot = children as? DataSnapshot {
                     let key = postSnapshot.key
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
@@ -231,14 +290,26 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
                     SectionFortable.append(Section)
                     AccountTitleLabel.text = Path
                 }
-                TotalValue += Int(CalculateAmount(Value))
+                //TotalValue += Int(CalculateAmount(Value))
+                if Category == "Income"{
+                    ValueIncome += Int(CalculateAmount(Value))
+                    print("ValueINC: \(ValueIncome)")
+                }else{
+                    TotalValue += Int(CalculateAmount(Value))
+                }
               }
             }
           }
           // cập nhật ui
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.groupingSeparator = "."
+            let ValueIncomeforAccount = formatter.string(from: ValueIncome as NSNumber)
+            let ValueExpenseforAccount = formatter.string(from: TotalValue as NSNumber)
+            LabelTotalValueIncome.text = ValueIncomeforAccount
+            LabelTotalValueExpense.text = ValueExpenseforAccount
                 self.tableData.reloadData()
-            print("Month Section1234: \(MonthSection)")
-           
+            
         })
     }
 }
@@ -256,9 +327,14 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = SpendingInWalletCell.cellForTableView(tableView: tableData)
             let Data = SectionFortable[indexPath.section].Database[indexPath.row]
-            cell.CategoryLabel.text = Data.Category
+            cell.CategoryLabel.text = Data.Detail
             cell.NoteLabel.text = "Note: " + Data.Note
             cell.ValueLabel.text = Data.Value
+        if SectionFortable[indexPath.section].Database[indexPath.row].Category == "Income"{
+            cell.ValueLabel.textColor = .green
+        }else{
+            cell.ValueLabel.textColor = .red
+        }
             return cell
     }
     
@@ -315,3 +391,4 @@ struct DATA{
     var Account : String
     var Detail : String
 }
+

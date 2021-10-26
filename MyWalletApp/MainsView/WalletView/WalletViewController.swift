@@ -269,6 +269,7 @@ extension WalletViewController : UITableViewDelegate, UITableViewDataSource{
             Mapview.Value = String(Data.TargetValue)
             Mapview.Key = Data.key
             Mapview.ExpirationDate = Data.ExpirationDate
+            Mapview.Note = Data.Target
             self.navigationController?.pushViewController(Mapview, animated: true)
         }
     }

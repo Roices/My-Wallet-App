@@ -34,7 +34,10 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
                                     "House":["Furniture","Fixing","Rent"],
                                     "Gift":["Wedding","Visit"],
                                     "Bank":["Transfer fee"],
-                                    "Entertain":["Travel","Cosmetics","Game","Cinema"]]
+                                    "Entertain":["Travel","Cosmetics","Game","Cinema"],
+                                    "Income":["Wage","Bonus","interest","Other"],
+                                    "Loan":["Loan"],
+                                    "Borrowed money":["Borrow money"]]
     
   
     let backGround : UIImageView = {

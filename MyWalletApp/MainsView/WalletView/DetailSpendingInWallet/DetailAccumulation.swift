@@ -15,6 +15,7 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
     lazy var TitleForAccumulation = ""
     lazy var Key = ""
     lazy var ExpirationDate = ""
+    lazy var Note = ""
     
     let TitleLabel : UILabel = {
         let label = UILabel()
@@ -164,6 +165,7 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
         MapView.Key = Key
         MapView.DoneButton.setTitle("Send", for: .normal)
         MapView.NoteTf.isUserInteractionEnabled = false
+        MapView.NoteTf.text = Note
         MapView.DateButton.isEnabled = false
         MapView.ExpirationDate.isEnabled = false
         MapView.State = "SendMoney"
@@ -185,7 +187,6 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }
-            
         }
         return amount
     }

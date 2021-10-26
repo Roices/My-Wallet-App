@@ -260,6 +260,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         self.hideKeyboardWhenTappedAround()
         print("key: \(key)")
        
+        CategoryButton.setTitle(CategorySection, for: .normal)
         // Do any additional setup after loading the view.\
         let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")

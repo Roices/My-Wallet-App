@@ -183,7 +183,7 @@ class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
         TitlelabelProfit.textColor = .black
         
         let ValueProfit = UILabel(frame: CGRect(x: 0.5*ValueProfitView.bounds.width - 25, y: 0.25*ValueProfitView.bounds.height, width: 0.5*ValueProfitView.bounds.width, height: 0.5*ValueProfitView.bounds.height))
-        ValueProfit.text = CaculatorProfit(Rate: ProfitRate, Value: InitialBalanceValue, Period: Period)
+        ValueProfit.text = CaculatorProfit(Rate: ProfitRate, Value: InitialBalanceValue, Period: Period) + "đ"
         ValueProfit.textAlignment = .right
         print(ProfitRate)
         
@@ -213,7 +213,12 @@ class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
         let rate = Double(Rate)!
         let value = Double(Value)!
         let period = Double(Period)!
-        return String(Int(value * pow(1+rate/100,period))) + "đ"
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.groupingSeparator = "."
+            let Value =  value * pow(1+rate/100,period)
+            let Profit = formatter.string(from: Value as NSNumber)
+            return Profit!
         }
     }
 }

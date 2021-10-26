@@ -13,7 +13,7 @@ class AddViewController: UIViewController {
     let Expense = ["Children","Service","Study",
                    "Health","Food",
                    "Vehicles","House",
-                   "Gift","Bank","Entertain"]
+                   "Gift","Bank","Entertain","Loan","Income","Borrowed money"]
     
     let background : UIImageView = {
         let view = UIImageView(image: UIImage(named: "Background"))

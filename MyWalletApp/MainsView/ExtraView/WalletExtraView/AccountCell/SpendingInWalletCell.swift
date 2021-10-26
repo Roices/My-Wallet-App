@@ -23,12 +23,12 @@ class SpendingInWalletCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         let Color = UIColor(hexString: "D1D1D6")
-        if selected {
+        if selected{
             Background.backgroundColor =  Color
             NoteLabel.backgroundColor = Color
             ValueLabel.backgroundColor = Color
             CategoryLabel.backgroundColor = Color
-        } else {
+        }else{
             Background.backgroundColor = UIColor.clear
              NoteLabel.backgroundColor = .clear
             ValueLabel.backgroundColor = .clear

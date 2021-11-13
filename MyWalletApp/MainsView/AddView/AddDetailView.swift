@@ -36,8 +36,8 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
                                     "Bank":["Transfer fee"],
                                     "Entertain":["Travel","Cosmetics","Game","Cinema"],
                                     "Income":["Wage","Bonus","interest","Other"],
-                                    "Loan":["Loan"],
-                                    "Borrowed money":["Borrow money"]]
+                                    "Loan":["Loan"]]
+                                    
     
   
     let backGround : UIImageView = {
@@ -406,8 +406,11 @@ extension AddDetailView{
         //Creat a path for data
         let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
+            
+            let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
 
         let newRef = ref.childByAutoId()
+        let newRefforHomeView = refforHomeView.childByAutoId()
         // creat new value
             
         let val: [String : Any] = [
@@ -420,7 +423,8 @@ extension AddDetailView{
         ]
 
         // push value
-      newRef.setValue(val)
+            newRef.setValue(val)
+            newRefforHomeView.setValue(val)
             
             MoneyInput.text = ""
             ButtonList.setTitle("--------Category--------", for: .normal)

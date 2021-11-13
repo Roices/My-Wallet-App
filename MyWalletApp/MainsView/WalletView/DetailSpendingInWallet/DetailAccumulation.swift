@@ -178,12 +178,15 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
         var amount:Double = 0
         let occurrencies = string.filter { $0 == "." }.count
         for index in 0...occurrencies{
+            
             if let lastIndex = string.lastIndex(of: "."){
             let last = string.endIndex
-            var subString2 = string[lastIndex..<last]
-                string = string.replacingOccurrences(of: subString2, with: "")
+                var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "", range: lastIndex..<last)
                 subString2.remove(at: subString2.startIndex)
+                
                 amount += Double(subString2)! * pow(1000, Double(index))
+                
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }

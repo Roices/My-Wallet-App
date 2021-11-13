@@ -117,6 +117,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     let picker : MonthYearPickerView = {
         let picker = MonthYearPickerView(frame: CGRect(x: 0, y: 0.075*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.3*UIScreen.main.bounds.height))
         picker.addTarget(self, action: #selector (dateChanged), for: .valueChanged)
+        picker.layer.borderWidth = 0.25
         return picker
     }()
     
@@ -237,12 +238,15 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         var amount:Double = 0
         let occurrencies = string.filter { $0 == "." }.count
         for index in 0...occurrencies{
+            
             if let lastIndex = string.lastIndex(of: "."){
             let last = string.endIndex
-            var subString2 = string[lastIndex..<last]
-                string = string.replacingOccurrences(of: subString2, with: "")
+                var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "", range: lastIndex..<last)
                 subString2.remove(at: subString2.startIndex)
+                
                 amount += Double(subString2)! * pow(1000, Double(index))
+                
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }
@@ -251,8 +255,8 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     }
 
     func ConfigureDataForTable(){
-        var TotalValue = 0
-        var ValueIncome = 0
+        var TotalValue = 0.0
+        var ValueIncome = 0.0
         var DataBase = [DATA]()
         let MonthSection = (ButtonTime.titleLabel?.text)!
         let path = UserDefaults.standard.string(forKey: "Username")
@@ -262,7 +266,8 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
           // cập nhật data
             SectionFortable = []
             self.TimeSection = []
-            ValueIncome = 0
+            ValueIncome = 0.0
+            TotalValue = 0.0
             for children in snapshot.children {
                 DataBase = []
                 
@@ -292,10 +297,10 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
                 }
                 //TotalValue += Int(CalculateAmount(Value))
                 if Category == "Income"{
-                    ValueIncome += Int(CalculateAmount(Value))
+                    ValueIncome += (CalculateAmount(Value))
                     print("ValueINC: \(ValueIncome)")
                 }else{
-                    TotalValue += Int(CalculateAmount(Value))
+                    TotalValue += (CalculateAmount(Value))
                 }
               }
             }

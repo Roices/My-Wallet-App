@@ -17,6 +17,7 @@ class WalletViewController: UIViewController {
     lazy var TotalValueAccount = ""
     lazy var TotalValueSavingPlan = ""
     lazy var TotalValueAccumulation = ""
+    lazy var AccountArrayforHomeView = [""]
     
     let backGround : UIImageView = {
         let backGround = UIImageView(image: UIImage(named: "Background"))
@@ -378,28 +379,28 @@ extension WalletViewController{
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
                 let key = postSnapshot.key
-              if let Account = postSnapshot.childSnapshot(forPath: "TypeAccount").value as? String,
+                if let Account = postSnapshot.childSnapshot(forPath: "TypeAccount").value as? String,
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let NameAccount = postSnapshot.childSnapshot(forPath: "Name").value as? String{
                 self.ListAccount.append((TypeAccount: Account,Value: Value,Name: NameAccount,key: key))
+
                 ValueforAccount += CalculateAmount(Value)
                 UserDefaults.standard.set(Value, forKey: "\(NameAccount)")
+                    
               }
             }
           }
           // cập nhật ui
-           // DispatchQueue.main.async{
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.groupingSeparator = "."
             let ValueforAccount = formatter.string(from: ValueforAccount as NSNumber)
             TotalValueAccount = ValueforAccount!
             MoneyLabel.text = "Total: " + TotalValueAccount + "đ"
-           // self.tableWallet.frame.size.height = CGFloat(ListAccount.count * 40)
             self.tableWallet.reloadData()
             
         })
-      //  print(ListAccount)
+        print("LisTAccount: \(ListAccount)")
     }
     
     @objc func Add(sender: UIButton){
@@ -442,12 +443,15 @@ extension WalletViewController{
         var amount:Double = 0
         let occurrencies = string.filter { $0 == "." }.count
         for index in 0...occurrencies{
+            
             if let lastIndex = string.lastIndex(of: "."){
             let last = string.endIndex
-            var subString2 = string[lastIndex..<last]
-                string = string.replacingOccurrences(of: subString2, with: "")
+                var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "", range: lastIndex..<last)
                 subString2.remove(at: subString2.startIndex)
+                
                 amount += Double(subString2)! * pow(1000, Double(index))
+                
             }else{
                 amount += Double(string)! * pow(1000, Double(index))
             }

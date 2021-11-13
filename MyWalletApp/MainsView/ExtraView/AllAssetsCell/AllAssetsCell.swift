@@ -9,6 +9,14 @@ import UIKit
 
 class AllAssetsCell: UITableViewCell {
 
+    
+    @IBOutlet var IconImage:UIImageView!
+    @IBOutlet var CategoryLabel:UILabel!
+    @IBOutlet var Value: UILabel!
+    @IBOutlet var ProgressValue : UIProgressView!
+    @IBOutlet var ValuePercent: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -16,7 +24,12 @@ class AllAssetsCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
+        IconImage.layer.cornerRadius = 5.0
+        IconImage.layer.borderWidth = 0.3
+       // IconImage.backgroundColor = .green
+      //  IconImage.contentMode = .scaleAspectFit
+       // IconImage.image = UIImage(named: "Service")
         // Configure the view for the selected state
     }
     class func cellForTableView(tableView: UITableView) -> AllAssetsCell {

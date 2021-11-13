@@ -264,7 +264,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         // Do any additional setup after loading the view.\
         let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
-            
+        
             ref.observe(.value, with: { [self] (snapshot) in
               // cập nhật data
                 for children in snapshot.children {
@@ -465,10 +465,13 @@ extension SaveAndDeleteView{
         //Creat a path for data
         let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
+            
+            let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
         // remove value
             DeleteData(childPath: TimeDeleted, key: key)
 
             let newRef = ref.childByAutoId()
+            let newRefforHomeView = refforHomeView.childByAutoId()
             //creat new data
         let val: [String : Any] = [
             "Category": CategoryButton.titleLabel?.text as Any,
@@ -480,7 +483,8 @@ extension SaveAndDeleteView{
         ]
 
         // push value
-      newRef.setValue(val)
+        newRef.setValue(val)
+            newRefforHomeView.setValue(val)
             let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
         let transition = CATransition.init()
         transition.duration = 0.5

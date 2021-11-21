@@ -22,6 +22,7 @@ class SpendingInWalletCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
+        ImageCategory.layer.cornerRadius = 10.0
         let Color = UIColor(hexString: "D1D1D6")
         if selected{
             Background.backgroundColor =  Color

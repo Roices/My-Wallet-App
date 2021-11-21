@@ -11,30 +11,31 @@ class AddCell: UICollectionViewCell {
 
     static let identifier = "AddCell"
     
-    private var ImageView : UIImageView = {
+     var ImageView : UIImageView = {
         let view = UIImageView(image: UIImage(named: "Food"))
         view.contentMode = .scaleAspectFit
 //        view.layer.borderWidth = 0.25
 //        view.layer.cornerRadius = 10.0
+        view.layer.borderWidth = 0.25
         return view
     }()
     
-    private var Label : UILabel = {
+     var Label : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         label.layer.borderWidth = 0.5
-            label.layer.cornerRadius = 10.0
+        //    label.layer.cornerRadius = 10.0
       //  label.backgroundColor = .cyan
         
         return label
     }()
     
-    private var view: UIView = {
+     var view: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.borderWidth = 0.25
-        view.layer.cornerRadius = 10.0
+       // view.layer.cornerRadius = 10.0
         view.layer.shadowOffset = CGSize(width: 10, height: -10)
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.1
@@ -65,11 +66,14 @@ class AddCell: UICollectionViewCell {
         Label.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: 30)
         
         ImageView.frame = CGRect(x: 0, y: 30, width: contentView.frame.size.width, height: contentView.frame.size.height - 30)
+        
     }
     
     func configure(Section: String){
-       // ImageView.image = UIImage(named: Section)
+        
+        ImageView.image = UIImage(named: Section)
         Label.text = Section
+        
         
     }
 

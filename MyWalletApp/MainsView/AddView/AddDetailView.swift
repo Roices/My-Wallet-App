@@ -35,7 +35,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
                                     "Gift":["Wedding","Visit"],
                                     "Bank":["Transfer fee"],
                                     "Entertain":["Travel","Cosmetics","Game","Cinema"],
-                                    "Income":["Wage","Bonus","interest","Other"],
+                                    "Income":["Wage","Bonus","Interest","Other"],
                                     "Loan":["Loan"]]
                                     
     
@@ -482,7 +482,7 @@ extension AddDetailView:UITextFieldDelegate{
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
-        if textField.text!.count < 19{
+        if textField.text!.count < 12{
               if let groupingSeparator = formatter.groupingSeparator{
                   if string == groupingSeparator {
                      return true

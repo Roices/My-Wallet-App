@@ -18,6 +18,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     lazy var TotalValue = ""
     lazy var Path = ""
     lazy var MonthChoiced = ""
+    lazy var ColorForEachCategorySection : [String:UIColor] = [:]
 
     let backGround : UIImageView = {
         let backGround = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
@@ -180,6 +181,33 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         Line.backgroundColor = .lightGray
         ExpenseIncomeView.addSubview(Line)
         
+        
+        let color1 = UIColor(hexString: "FF6E2E")
+        let color2 = UIColor(hexString: "00B358")
+        let color3 = UIColor(hexString: "137FEC")
+        let color4 = UIColor.red
+        let color5 = UIColor.purple
+        let color6 = UIColor.gray
+        let color7 = UIColor(hexString: "945200")
+        let color8 = UIColor(hexString: "FF40FF")
+        let color9 = UIColor(hexString: "941751")
+        let color10 = UIColor(hexString: "76D6FF")
+        let color11 = UIColor(hexString: "AA7942")
+        let color12 = UIColor(hexString: "FF2F92")
+        self.ColorForEachCategorySection = ["Children": color1,
+                                    "Service": color12,
+                                    "Study": color3,
+                                    "Health": color4,
+                                    "Food": color5,
+                                    "Vehicles": color6,
+                                    "House": color7,
+                                    "Gift": color8,
+                                    "Bank": color9,
+                                    "Entertain": color10,
+                                    "Loan": color11,
+                                    "Income": color2]
+
+        
         MainView.addSubview(ExpenseIncomeView)
         addConstraints()
         
@@ -335,6 +363,8 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
             cell.CategoryLabel.text = Data.Detail
             cell.NoteLabel.text = "Note: " + Data.Note
             cell.ValueLabel.text = Data.Value
+        cell.ImageCategory.backgroundColor = ColorForEachCategorySection[Data.Category]
+        cell.ImageCategory.image = UIImage(named: "\(Data.Category)")
         if SectionFortable[indexPath.section].Database[indexPath.row].Category == "Income"{
             cell.ValueLabel.textColor = .green
         }else{
@@ -364,7 +394,7 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
         let MapView = self.storyboard?.instantiateViewController(withIdentifier: "SaveAndDeleteView") as! SaveAndDeleteView
         let Data = SectionFortable[indexPath.section].Database[indexPath.row]
         MapView.MoneyInput.text = Data.Value
-        MapView.ButtonList.setTitle(Data.Category, for: .normal)
+        MapView.ButtonList.setTitle(Data.Detail, for: .normal)
         MapView.ButtonList.setTitleColor(.black, for: .normal)
         MapView.ScheduleButton.setTitle(Data.Date, for: .normal)
         MapView.ScheduleButton.setTitleColor(.black, for: .normal)
@@ -377,6 +407,10 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
         MapView.TimeDeleted = MonthSection
         MapView.AccountChoiced = Data.Account
         MapView.CategorySection = Data.Category
+        MapView.ValueTf = Data.Value
+        MapView.Datebt = Data.Date
+        MapView.NoteTf = Data.Note
+        MapView.Detail = Data.Detail
         self.navigationController?.pushViewController(MapView, animated: true)
     }
 }

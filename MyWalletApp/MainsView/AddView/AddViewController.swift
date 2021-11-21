@@ -14,6 +14,7 @@ class AddViewController: UIViewController {
                    "Health","Food",
                    "Vehicles","House",
                    "Gift","Bank","Entertain","Loan","Income"]
+    lazy var ColorForEachCategorySection : [String:UIColor] = [:]
     
     let background : UIImageView = {
         let view = UIImageView(image: UIImage(named: "Background"))
@@ -52,6 +53,31 @@ class AddViewController: UIViewController {
         Mainview.addSubview(CollectionStuff)
         
         self.navigationController?.navigationBar.isHidden = true
+        
+        let color1 = UIColor(hexString: "FF6E2E")
+        let color2 = UIColor(hexString: "00B358")
+        let color3 = UIColor(hexString: "137FEC")
+        let color4 = UIColor.red
+        let color5 = UIColor.purple
+        let color6 = UIColor.gray
+        let color7 = UIColor(hexString: "945200")
+        let color8 = UIColor(hexString: "FF40FF")
+        let color9 = UIColor(hexString: "941751")
+        let color10 = UIColor(hexString: "76D6FF")
+        let color11 = UIColor(hexString: "AA7942")
+        let color12 = UIColor(hexString: "FF2F92")
+        self.ColorForEachCategorySection = ["Children": color1,
+                                    "Service": color12,
+                                    "Study": color3,
+                                    "Health": color4,
+                                    "Food": color5,
+                                    "Vehicles": color6,
+                                    "House": color7,
+                                    "Gift": color8,
+                                    "Bank": color9,
+                                    "Entertain": color10,
+                                    "Loan": color11,
+                                    "Income": color2]
         // Do any additional setup after loading the view.
     }
 
@@ -65,7 +91,9 @@ extension AddViewController: UICollectionViewDelegate, UICollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionStuff.dequeueReusableCell(withReuseIdentifier: AddCell.identifier, for: indexPath) as! AddCell
+        
         cell.configure(Section: Expense[indexPath.item])
+        cell.ImageView.backgroundColor = ColorForEachCategorySection[Expense[indexPath.item]]
         return cell
 
     }

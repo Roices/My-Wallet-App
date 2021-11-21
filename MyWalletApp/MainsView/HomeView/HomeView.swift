@@ -10,31 +10,20 @@ import Charts
 import FirebaseDatabase
 import MonthYearPicker
 
-class HomeView: UIViewController,ChartViewDelegate{
+class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
  
     lazy var ListAccount = [String]()
     lazy var ArrayCategory = [String]()
+    lazy var IncomeArray = [String]()
     lazy var CategorySectionData = [CategorySection]()
-    lazy var ColorForEachSection: [String: UIColor] = [:]
+    lazy var InComeSection = [CategorySection]()
+    lazy var ColorForEachCategorySection: [String: UIColor] = [:]
+    lazy var ColorForEachInComeSection: [String: UIColor] = [:]
+  //  lazy var ColorForIconTable: [String: UIColor] = [:]
     lazy var TotalExpense = 0.0
-
-    let players = ["All Assets", "Cash", "Income"]
-    let goals:[Double] = [11.0, 22.0, 33.0]
-    let Games = [
-        "LOL" , "PUBG" , "CF"
-    ]
-   
-    let TVShow = [
-        "Friends" , "Breaking bad" , "Preason of break"
-    ]
+    lazy var TotalInCome = 0.0
     
-    let gadgets = [
-        "Laptop" , "PC" , "Bag" , "Mouse"
-    ]
-    
-    var filterData:[String]!
-    lazy var RowToDisplay = Games
-    
+    lazy var DataForTabel = [CategorySection]()
     
     let buttonTime : UIButton = {
         let button = UIButton()
@@ -61,10 +50,10 @@ class HomeView: UIViewController,ChartViewDelegate{
     
   lazy var pieChart:PieChartView = {
     let pieChart = Charts.PieChartView()
-    pieChart.legend.enabled = false
-    pieChart.frame.size.width = 300 // 0.75 * UIScreen.main.bounds.width
-    pieChart.frame.size.height =  300 //0.4 * UIScreen.main.bounds.height
-    pieChart.frame = CGRect(x: ViewForChart.frame.size.width/2 - 150, y: ViewForChart.frame.size.height/2 - 150, width: 0.75 * UIScreen.main.bounds.width, height: 0.75 * UIScreen.main.bounds.width)
+  //  pieChart.legend.enabled = false
+    pieChart.legend.horizontalAlignment = .center
+    pieChart.legend.font = UIFont.systemFont(ofSize: 11)
+    pieChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * UIScreen.main.bounds.width, height: 0.85 * UIScreen.main.bounds.width)
     //pieChart.center = ViewForChart.center
     pieChart.holeRadiusPercent = 0.68
     pieChart.drawEntryLabelsEnabled = false
@@ -73,15 +62,6 @@ class HomeView: UIViewController,ChartViewDelegate{
     return pieChart
     }()
     
-    lazy var NoDataLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Data does not exist!"
-        label.frame.size.width = 200
-        label.frame.size.height = 40
-        label.center = ViewForChart.center
-        label.textAlignment = .center
-        return label
-    }()
     
     //BackGround
     let BackGroundImage:UIImageView = {
@@ -91,12 +71,13 @@ class HomeView: UIViewController,ChartViewDelegate{
     }()
     
    //View for PieChart
-    let ViewForChart : UIView = {
+    lazy var ViewForChart : UIView = {
         let ViewForChart = UIView()
-        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2)
-       // ViewForChart.backgroundColor = .yellow
+        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2 + 30)
+        //ViewForChart.backgroundColor = .purple
         return ViewForChart
     }()
+    
     
     //MainView
     let MainView : UIView = {
@@ -109,7 +90,7 @@ class HomeView: UIViewController,ChartViewDelegate{
     
 
     let codeSegmented : CustomSegmentedControl = {
-        let y = (UIScreen.main.bounds.height - 200)/2 + 65
+        let y = (UIScreen.main.bounds.height - 200)/2 + 120
         let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: y, width: UIScreen.main.bounds.width, height: 50), buttonTitle: ["All Assets","Spending","Income"])
         
         let color = UIColor(hexString: "797979")
@@ -124,32 +105,15 @@ class HomeView: UIViewController,ChartViewDelegate{
         return codeSegmented
     }()
     
-    
-   lazy var searchController: UISearchBar = {
-        let OriginY = codeSegmented.frame.origin.y + 60
-        let s = UISearchBar()
-        s.frame = CGRect(x: 10, y: OriginY, width: UIScreen.main.bounds.width - 20, height: 80)
-        s.placeholder = "Search for Games..."
-        s.searchBarStyle = .minimal
 
-        let color = UIColor(hexString: "EFEFEF")
-        let image = self.getImageWithColor(color: color, size: CGSize(width: UIScreen.main.bounds.width - 20, height: 60))
-        s.setSearchFieldBackgroundImage(image, for: .normal)
-        s.showsCancelButton = false
-        s.searchBarStyle = .minimal
-           
-        return s
-        
-        
-    }()
-    
     lazy var ListAssets:UITableView = {
-        let OriginY = codeSegmented.frame.origin.y + 60 + 80
+        let OriginY = codeSegmented.frame.origin.y + 60
         let List = UITableView()
         List.frame = CGRect(x: 0, y: OriginY, width: UIScreen.main.bounds.width, height: 282)
         List.translatesAutoresizingMaskIntoConstraints = false
         return List
     }()
+    
     
     func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
         let rect =
@@ -165,59 +129,42 @@ class HomeView: UIViewController,ChartViewDelegate{
     
     let InComeView : UIView = {
         let ViewForChart = UIView()
-        ViewForChart.backgroundColor = .systemPink
-        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2)
+        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2 - 30)
+        //ViewForChart.backgroundColor = .yellow
         return ViewForChart
     }()
     
     lazy var InComePieChart:PieChartView = {
       let piEChart = Charts.PieChartView()
-        var dataEntries: [ChartDataEntry] = []
-        let dataPoints = players
-        let values = goals
-          for i in 0..<dataPoints.count {
-            let dataEntry = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i] as AnyObject)
-            dataEntries.append(dataEntry)
-          }
-          // 2. Set ChartDataSet
-        let color1 = UIColor(hexString: "FF6E2E")
-        let color2 = UIColor(hexString: "00B358")
-        let color3 = UIColor(hexString: "137FEC")
-      //  pieChartDataSet.colors = colors
-        let colors:[UIColor] = [color1,color2,color3]
-        let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
-        pieChartDataSet.colors = colors
+      piEChart.legend.enabled = true
+      piEChart.legend.horizontalAlignment = .center
+      piEChart.legend.font = UIFont.systemFont(ofSize: 11)
+      piEChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * UIScreen.main.bounds.width, height: 0.85 * UIScreen.main.bounds.width)
         
-          // 3. Set ChartData
-        let pieChartData = PieChartData(dataSet: pieChartDataSet)
-        let pFormatter = NumberFormatter()
-            pFormatter.numberStyle = .percent
-            pFormatter.maximumFractionDigits = 1
-            pFormatter.multiplier = 1
-            pFormatter.percentSymbol = "%"
-        //
-            pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Light", size: 12)!)
-            pieChartData.setValueTextColor(.white)
-            pieChartDataSet.sliceSpace = 3
-            pieChartDataSet.drawValuesEnabled = false
-      piEChart.legend.enabled = false
-      piEChart.frame.size.width = 300 // 0.75 * UIScreen.main.bounds.width
-      piEChart.frame.size.height =  300 //0.4 * UIScreen.main.bounds.height
-      piEChart.center = ViewForChart.center
+   //   piEChart.center = InComeView.center
       piEChart.holeRadiusPercent = 0.68
       piEChart.drawEntryLabelsEnabled = false
       piEChart.chartDescription?.text = ""
       piEChart.isUserInteractionEnabled = true
-      piEChart.data = pieChartData
       return piEChart
       }()
 
-    let Left : UIButton = {
+    lazy var Left : UIButton = {
         let button = UIButton()
-        button.frame = CGRect(x: 0, y: 200, width: 30, height: 30)
+        button.frame = CGRect(x: 5, y: (UIScreen.main.bounds.height - 225 + 85)/3, width: 30, height: 30)
         button.setTitle("Left", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.setBackgroundImage(UIImage(named: "LeftButton"), for: .normal)
+        button.addTarget(self, action: #selector(LeftView), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var Right : UIButton = {
+        let button = UIButton()
+        button.frame = CGRect(x: UIScreen.main.bounds.width - 35, y: (UIScreen.main.bounds.height - 225 + 85)/3, width: 30, height: 30)
+        button.setTitle("Left", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setBackgroundImage(UIImage(named: "RightButton"), for: .normal)
         button.addTarget(self, action: #selector(LeftView), for: .touchUpInside)
         return button
     }()
@@ -227,7 +174,6 @@ class HomeView: UIViewController,ChartViewDelegate{
         codeSegmented.delegate = self
         ListAssets.delegate = self
         ListAssets.dataSource = self
-        searchController.delegate = self
 
         
         self.tabBarController?.tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -257,7 +203,8 @@ class HomeView: UIViewController,ChartViewDelegate{
         picker.isHidden = true
         self.hideKeyboardWhenTappedAround()
         InComeView.isHidden = true
-        InComePieChart.isHidden = true
+     //   ListIncome.isHidden = true
+//        InComePieChart.isHidden = true
                     
 }
 
@@ -270,16 +217,22 @@ class HomeView: UIViewController,ChartViewDelegate{
         view.addSubview(buttonTime)
         view.addSubview(MainView)
         ViewForChart.addSubview(pieChart)
+      //  ViewForChart.addSubview(AllAssetLabel)
+       // InComeView.addSubview(InComePieChart)
+       // view.addSubview(InComeView)
         view.addSubview(ViewForChart)
-        //view.addSubview(pieChart)
         view.addSubview(codeSegmented)
-        view.addSubview(searchController)
+      //  view.addSubview(searchController)
         view.addSubview(ListAssets)
-        view.addSubview(picker)
-        view.addSubview(NoDataLabel)
+        //view.addSubview(picker)
+      //  view.addSubview(NoDataLabel)
+        InComeView.addSubview(InComePieChart)
         view.addSubview(InComeView)
-        view.addSubview(InComePieChart)
+       // view.addSubview(InComePieChart)
+        view.addSubview(picker)
         view.addSubview(Left)
+        view.addSubview(Right)
+       // view.addSubview(ListIncome)
     }
    
 
@@ -290,47 +243,32 @@ extension HomeView:CustomSegmentedControlDelegate{
     func change(to index: Int) {
         switch index {
         case 0:
-            RowToDisplay = Games
-            filterData = Games
-            searchController.placeholder = "Search for Games...."
-            searchController.text = ""
+//        ConfigureDataDetail()
+
+            DataForTabel =  CategorySectionData + InComeSection
+
+            ListAssets.reloadData()
         case 1:
-            RowToDisplay = TVShow
-            filterData = TVShow
-            searchController.placeholder = "Search for TVShow...."
-            searchController.text = ""
+           // ConfigureDataDetail()
+            DataForTabel = CategorySectionData
+            ListAssets.reloadData()
+        case 2:
+           // ConfigureDataDetail()
+            DataForTabel = InComeSection
+            ListAssets.reloadData()
         default:
-            RowToDisplay = gadgets
-            filterData = gadgets
-            searchController.placeholder = "Search for Gadgets...."
-            searchController.text = ""
+            print("Default")
+            ListAssets.reloadData()
         }
-        ListAssets.reloadData()
     }
 }
 
-
-extension HomeView:UISearchBarDelegate{
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterData = []
-        if searchText == ""{
-            filterData = RowToDisplay
-        }else{
-            for data in RowToDisplay{
-                if data.lowercased().contains(searchText.lowercased()){
-                    filterData.append(data)
-                }
-            }
-        }
-        self.ListAssets.reloadData()
-    }
-}
 
 extension HomeView:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = AllAssetsCell.cellForTableView(tableView: ListAssets)
-        let Data = CategorySectionData[indexPath.row]
+        let Data = DataForTabel[indexPath.row]
         cell.CategoryLabel.text = Data.Category
         cell.ProgressValue.progress = Float(Data.TotalValue/TotalExpense)
         
@@ -344,34 +282,37 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
         let NewPercentValue = formatter.string(from: perCentValue as NSNumber)
         cell.ValuePercent.text = "(" + NewPercentValue! + "%)"
         cell.IconImage.image = UIImage(named: "\(Data.Category)")
-        cell.IconImage.backgroundColor = ColorForEachSection[Data.Category]
-        
+        cell.IconImage.backgroundColor = ColorForEachCategorySection[Data.Category]
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CategorySectionData.count
+        return DataForTabel.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
         self.navigationController?.pushViewController(mapView, animated: true)
+        //let Data = DataForTabel[indexPath.row]
+        
     }
 }
 
 extension HomeView{
     
     @objc func LeftView(sender: UIButton){
-        pieChart.isHidden = !pieChart.isHidden
-        InComePieChart.isHidden = !InComePieChart.isHidden
+        ViewForChart.isHidden = !ViewForChart.isHidden
+        InComeView.isHidden = !InComeView.isHidden
+
     }
     
-    func ConfigPieChart(data: [String], ValueData: [Double]){
+    func ConfigIncomePieChart(data: [String], ValueData: [Double], TotalValue: Double){
         var dataEntries: [ChartDataEntry] = []
-        let dataPoints = data
+        var dataPoints = data
         let values = ValueData
           for i in 0..<dataPoints.count {
-            let dataEntry = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i] as AnyObject)
+            dataPoints[i] = dataPoints[i] +  "(\(String(values[i]))%)"
+            let dataEntry = PieChartDataEntry(value: values[i] , label: dataPoints[i], data: dataPoints[i] as AnyObject)
             dataEntries.append(dataEntry)
           }
           // 2. Set ChartDataSet
@@ -379,34 +320,18 @@ extension HomeView{
         let color2 = UIColor(hexString: "00B358")
         let color3 = UIColor(hexString: "137FEC")
         let color4 = UIColor.red
-        let color5 = UIColor.purple
-        let color6 = UIColor.gray
-        let color7 = UIColor(hexString: "945200")
-        let color8 = UIColor(hexString: "FF40FF")
-        let color9 = UIColor(hexString: "941751")
-        let color10 = UIColor(hexString: "76D6FF")
-        let color11 = UIColor(hexString: "AA7942")
-        let color12 = UIColor(hexString: "FF2F92")
-        self.ColorForEachSection = ["Children": color1,
-                                    "Service": color2,
-                                    "Study": color3,
-                                    "Health": color4,
-                                    "Food": color5,
-                                    "Vehicles": color6,
-                                    "House": color7,
-                                    "Gift": color8,
-                                    "Bank": color9,
-                                    "Entertain": color10,
-                                    "Loan": color11,
-                                    "Income": color12]
+        self.ColorForEachInComeSection = ["Wage": color1,
+                                    "Bonus": color2,
+                                    "Interest": color3,
+                                    "Other": color4]
         
         var colors:[UIColor] = []
+        print("data: \(data)")
         
         for color in 0..<data.count{
-            let UIcolor = ColorForEachSection[data[color]]
-            colors.append(UIcolor!)
+            let UIcolor = ColorForEachInComeSection[data[color]]!
+            colors.append(UIcolor)
         }
-        //let colors:[UIColor] = [color1,color2,color3,color4,color5,color6,color7,color8,color9,color10,color11,color12]
         let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
         pieChartDataSet.colors = colors
         
@@ -423,8 +348,99 @@ extension HomeView{
             pieChartData.setValueTextColor(.white)
             pieChartDataSet.sliceSpace = 3
             pieChartDataSet.drawValuesEnabled = false
+        
+        
+        let Formatter = NumberFormatter()
+        Formatter.numberStyle = .decimal
+        Formatter.groupingSeparator = "."
+        
+        let TotalValueIncome = Formatter.string(from: TotalValue as NSNumber)
+        let attrStri = NSMutableAttributedString.init(string:"ALL INCOME\n \(TotalValueIncome!)đ")
+        let nsRange = NSString(string: "ALL INCOME\n \(TotalValueIncome!)đ").range(of: "\(TotalValueIncome!)đ", options: String.CompareOptions.caseInsensitive)
+        let FsRange = NSString(string: "ALL INCOME\n \(TotalValueIncome!)đ").range(of: "ALL INCOME", options: String.CompareOptions.caseInsensitive)
+        attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 20.0) as Any], range: FsRange)
+        attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 19.0) as Any], range: nsRange)
+        InComePieChart.centerAttributedText = attrStri
+
+          //  pieChart.centerAttributedText = myTotalValue
+            InComePieChart.data = pieChartData
+    }
+    
+    
+    
+    func ConfigPieChart(data: [String], ValueData: [Double], TotalValue: Double){
+        var dataEntries: [ChartDataEntry] = []
+        var dataPoints = data
+        let values = ValueData
+          for i in 0..<dataPoints.count {
+                dataPoints[i] = dataPoints[i] +  "(\(String(values[i]))%)"
+                let dataEntry = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i] as AnyObject)
+                dataEntries.append(dataEntry)
+            }
+            
+          // 2. Set ChartDataSet
+        let color1 = UIColor(hexString: "FF6E2E")
+        let color2 = UIColor(hexString: "00B358")
+        let color3 = UIColor(hexString: "137FEC")
+        let color4 = UIColor.red
+        let color5 = UIColor.purple
+        let color6 = UIColor.gray
+        let color7 = UIColor(hexString: "945200")
+        let color8 = UIColor(hexString: "FF40FF")
+        let color9 = UIColor(hexString: "941751")
+        let color10 = UIColor(hexString: "76D6FF")
+        let color11 = UIColor(hexString: "AA7942")
+        let color12 = UIColor(hexString: "FF2F92")
+        self.ColorForEachCategorySection = ["Children": color1,
+                                    "Service": color12,
+                                    "Study": color3,
+                                    "Health": color4,
+                                    "Food": color5,
+                                    "Vehicles": color6,
+                                    "House": color7,
+                                    "Gift": color8,
+                                    "Bank": color9,
+                                    "Entertain": color10,
+                                    "Loan": color11,
+                                    "Income": color2]
+        
+        var colors:[UIColor] = []
+        
+        for color in 0..<data.count{
+            let UIcolor = ColorForEachCategorySection[data[color]]
+            colors.append(UIcolor!)
+        }
+        let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
+        pieChartDataSet.colors = colors
+        
+          // 3. Set ChartData
+        let pieChartData = PieChartData(dataSet: pieChartDataSet)
+        let pFormatter = NumberFormatter()
+            pFormatter.numberStyle = .percent
+            pFormatter.maximumFractionDigits = 2
+            pFormatter.multiplier = 1
+            pFormatter.percentSymbol = "%"
+        //
+            pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Light", size: 12)!)
+            pieChartData.setValueTextColor(.white)
+            pieChartDataSet.sliceSpace = 1
+            pieChartDataSet.drawValuesEnabled = false
+
+        
+            let Formatter = NumberFormatter()
+            Formatter.numberStyle = .decimal
+            Formatter.groupingSeparator = "."
+        
+            let TotalValueExpense = Formatter.string(from: TotalValue as NSNumber)
+            let attrStri = NSMutableAttributedString.init(string:"ALL ASSETS\n\(TotalValueExpense!)đ")
+            let nsRange = NSString(string: "ALL ASSETS\n\(TotalValueExpense!)đ").range(of: "\(TotalValueExpense!)đ", options: String.CompareOptions.caseInsensitive)
+            let FsRange = NSString(string: "ALL ASSETS\n\(TotalValueExpense!)đ").range(of: "ALL ASSETS", options: String.CompareOptions.caseInsensitive)
+            attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 20.0) as Any], range: FsRange)
+            attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 20.0) as Any], range: nsRange)
+            pieChart.centerAttributedText = attrStri
             pieChart.data = pieChartData
-          //  InComePieChart.data = pieChartData
+         
     }
     
     func AddConstraints(){
@@ -433,13 +449,14 @@ extension HomeView{
        constraints.append(ListAssets.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor))
         constraints.append(ListAssets.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor))
        constraints.append(ListAssets.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 0))
-        constraints.append(ListAssets.topAnchor.constraint(equalTo: searchController.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        constraints.append(ListAssets.topAnchor.constraint(equalTo: codeSegmented.safeAreaLayoutGuide.bottomAnchor,constant: 0))
         
         NSLayoutConstraint.activate(constraints)
     }
     
     func ConfigureDataDetail(){
       //  var DataBase = [Details]()
+//        var IncomeArray = [String]()
         let MonthSection = (buttonTime.titleLabel?.text)!
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!).child("\(MonthSection)").child("DataHomeView")
@@ -447,16 +464,36 @@ extension HomeView{
           // cập nhật data
             CategorySectionData = []
             ArrayCategory = []
+            InComeSection = []
             TotalExpense = 0.0
+            IncomeArray = []
+            TotalInCome = 0.0
             for children in snapshot.children {
               //  DataBase = []
                 if let postSnapshot = children as? DataSnapshot {
                    // let key = postSnapshot.key
              if let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
-                let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String{
-                TotalExpense += CalculateAmount(Value)
+                let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String,
+                let Detail = postSnapshot.childSnapshot(forPath: "Detail").value as? String{
+               // TotalExpense += CalculateAmount(Value)
 //                let Data = Details(Note: Note, Value: Value, Key: key, Date: Date, Account: Account, Detail: Detail)
                 print("TotalValue: \(Value)")
+                
+                if Category == "Income"{
+                    TotalInCome += CalculateAmount(Value)
+                    if IncomeArray.contains(Detail){
+                        for index in 0..<InComeSection.count{
+                           if InComeSection[index].Category == Detail{
+                                InComeSection[index].TotalValue += CalculateAmount(Value)
+                            }
+                      }
+                    }else{
+                        IncomeArray.append(Detail)
+                        let DataIncome = CategorySection(Category: Detail, TotalValue: CalculateAmount(Value))
+                        InComeSection.append(DataIncome)
+                    }
+                }else{
+                    TotalExpense += CalculateAmount(Value)
                 if ArrayCategory.contains(Category){
                     for index in 0..<CategorySectionData.count{
                         var TotalValue = 0.0
@@ -476,27 +513,38 @@ extension HomeView{
               } //CheckPoint
             }
           }
-            if CategorySectionData.isEmpty{
-               // self.pieChart.isHidden = true
-                self.NoDataLabel.isHidden = false
-            }else{
-              //  self.pieChart.isHidden = false
-                self.NoDataLabel.isHidden = true
             }
+//            if CategorySectionData.isEmpty{
+//               // self.pieChart.isHidden = true
+//                self.NoDataLabel.isHidden = false
+//            }else{
+//              //  self.pieChart.isHidden = false
+//                self.NoDataLabel.isHidden = true
+//            }
             var ArrayValue:[Double] = []
+            var ArrayValueforIncome:[Double] = []
+            
             for value in 0..<CategorySectionData.count{
                 let perCentValue = ((CategorySectionData[value].TotalValue/TotalExpense)*100).rounded(toPlaces: 2)
-                ArrayValue.append(perCentValue)
-            }
-            ConfigPieChart(data: ArrayCategory, ValueData: ArrayValue)
-            print("TotalExpense: \(TotalExpense)")
+                    ArrayValue.append(perCentValue)
+                }
+            
+            
+            ConfigPieChart(data: ArrayCategory, ValueData: ArrayValue, TotalValue: TotalExpense)
+            
+            for value in 0..<IncomeArray.count{
+                let PerCentValue = ((InComeSection[value].TotalValue/TotalInCome)*100).rounded(toPlaces: 2)
+                ArrayValueforIncome.append(PerCentValue)
+                }
+                
+            ConfigIncomePieChart(data: IncomeArray, ValueData: ArrayValueforIncome, TotalValue: TotalInCome)
             self.ListAssets.reloadData()
         })
     }
 
     @objc func HidingPickerView(sender: UIButton){
         picker.isHidden = !picker.isHidden
-        pieChart.isHidden = !pieChart.isHidden
+
     }
     
 
@@ -509,7 +557,6 @@ extension HomeView{
         ConfigureDataDetail()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.picker.isHidden = !self.picker.isHidden
-            self.pieChart.isHidden = !self.pieChart.isHidden
         }
     }
     
@@ -559,3 +606,5 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+

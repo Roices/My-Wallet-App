@@ -20,6 +20,10 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
     lazy var Path = ""
     lazy var TimeDeleted = ""
     lazy var CategorySection = ""
+    lazy var ValueTf = ""
+    lazy var Detail = ""
+    lazy var Datebt = ""
+    lazy var NoteTf = ""
     
     
     let transparentView = UIView()
@@ -385,6 +389,7 @@ extension SaveAndDeleteView{
         Calendar.isHidden = !Calendar.isHidden
         AccountButton.isHidden = !AccountButton.isHidden
         DoneButton.isHidden = !DoneButton.isHidden
+        DeleteButton.isHidden = !DeleteButton.isHidden
         noteTextfield.isHidden = !noteTextfield.isHidden
     }
     
@@ -504,6 +509,7 @@ extension SaveAndDeleteView{
     
     @objc func DeleteButtonAction(){
         DeleteData(childPath: TimeDeleted, key: key)
+        DeleteDataHomeView()
         let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
     let transition = CATransition.init()
     transition.duration = 0.5
@@ -517,7 +523,44 @@ extension SaveAndDeleteView{
     mapView.ButtonTime.setTitleColor(.blue, for: .normal)
     self.navigationController?.pushViewController(mapView, animated: true)
     }
-//    
+//
+    func DeleteDataHomeView(){
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
+        
+        refforHomeView.observe(.value, with: { [self] (snapshot) in
+          // cập nhật data
+          for children in snapshot.children {
+            if let postSnapshot = children as? DataSnapshot {
+                let key = postSnapshot.key
+                if let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String,
+                let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
+                let Detail = postSnapshot.childSnapshot(forPath: "Detail").value as? String,
+                let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
+                let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
+                let Account = postSnapshot.childSnapshot(forPath: "Account").value as? String{
+                    print(Category,Value,Detail,Note,Account,key)
+                    if Category == CategorySection && Value == ValueTf
+                        && Detail == self.Detail && Account == AccountChoiced
+                        && Note == NoteTf && Date == Datebt{
+                        
+                        let currentRef = refforHomeView.child(key)
+                        currentRef.removeValue{ (err, ref) in
+                          if let err = err {
+                            print(err)
+                          } else {
+                            // thành công, bỏ chọn trên UI
+                            print("Done")
+                          }
+                        }
+                        
+                    }
+                    
+              }
+            }
+          }
+        })
+    }
 }
 //
 //
@@ -553,7 +596,7 @@ extension SaveAndDeleteView:UITextFieldDelegate{
                 formatter.maximumFractionDigits = 0
                // Uses the grouping separator corresponding to your Locale
                // e.g. "," in the US, a space in France, and so on
-        if textField.text!.count < 19{
+        if textField.text!.count < 12{
               if let groupingSeparator = formatter.groupingSeparator{
                   if string == groupingSeparator {
                      return true

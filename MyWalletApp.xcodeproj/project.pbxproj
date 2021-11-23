@@ -31,6 +31,7 @@
 		1759C8D126A26C8100DFB7F8 /* AllAssetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */; };
 		1764683E268DCCE50060CBF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */; };
 		1782028F26F1936A006FD576 /* SpendingInWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782028E26F1936A006FD576 /* SpendingInWalletView.swift */; };
+		1792566E274D2D7C002675C9 /* SaveAndDeleteHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1792566D274D2D7C002675C9 /* SaveAndDeleteHomeView.swift */; };
 		17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B2C6F52698485D004C7D4F /* HomeView.swift */; };
 		17B4F69D26F5D354006634B4 /* SpendingInWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4F69B26F5D354006634B4 /* SpendingInWalletCell.swift */; };
 		17B4F69E26F5D354006634B4 /* SpendingInWalletCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B4F69C26F5D354006634B4 /* SpendingInWalletCell.xib */; };
@@ -101,6 +102,7 @@
 		1759C8CF26A26C8100DFB7F8 /* AllAssetsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAssetsCell.xib; sourceTree = "<group>"; };
 		1764683D268DCCE50060CBF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1782028E26F1936A006FD576 /* SpendingInWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingInWalletView.swift; sourceTree = "<group>"; };
+		1792566D274D2D7C002675C9 /* SaveAndDeleteHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAndDeleteHomeView.swift; sourceTree = "<group>"; };
 		17B2C6F52698485D004C7D4F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		17B4F69B26F5D354006634B4 /* SpendingInWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingInWalletCell.swift; sourceTree = "<group>"; };
 		17B4F69C26F5D354006634B4 /* SpendingInWalletCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpendingInWalletCell.xib; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 			children = (
 				17D0177A26A7BA770043FEE7 /* DetailSpending.swift */,
 				17B2C6F52698485D004C7D4F /* HomeView.swift */,
+				1792566D274D2D7C002675C9 /* SaveAndDeleteHomeView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 				172A9452268DC09D00774926 /* ViewController.swift in Sources */,
 				17D0178126A9A5CD0043FEE7 /* WalletViewController.swift in Sources */,
 				17D017A626B64A540043FEE7 /* CustomViewViewController.swift in Sources */,
+				1792566E274D2D7C002675C9 /* SaveAndDeleteHomeView.swift in Sources */,
 				17D0178626A9B8610043FEE7 /* AccountCell.swift in Sources */,
 				172A944E268DC09D00774926 /* AppDelegate.swift in Sources */,
 				172A9450268DC09D00774926 /* SceneDelegate.swift in Sources */,

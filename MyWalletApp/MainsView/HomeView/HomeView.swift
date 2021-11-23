@@ -41,6 +41,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         return button
     }()
     
+    
     let picker : MonthYearPickerView = {
         let picker = MonthYearPickerView(frame: CGRect(x: UIScreen.main.bounds.width/4, y: 100, width: UIScreen.main.bounds.width/2, height: 0.2*UIScreen.main.bounds.height))
         picker.addTarget(self, action: #selector (dateChanged), for: .valueChanged)
@@ -169,6 +170,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         return button
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         codeSegmented.delegate = self
@@ -203,6 +205,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         picker.isHidden = true
         self.hideKeyboardWhenTappedAround()
         InComeView.isHidden = true
+        self.navigationController?.navigationBar.isHidden = true
      //   ListIncome.isHidden = true
 //        InComePieChart.isHidden = true
                     
@@ -239,27 +242,22 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
 }
 
 
+
 extension HomeView:CustomSegmentedControlDelegate{
     func change(to index: Int) {
         switch index {
         case 0:
-//        ConfigureDataDetail()
-
             DataForTabel =  CategorySectionData + InComeSection
-
-            ListAssets.reloadData()
         case 1:
-           // ConfigureDataDetail()
             DataForTabel = CategorySectionData
-            ListAssets.reloadData()
         case 2:
-           // ConfigureDataDetail()
             DataForTabel = InComeSection
-            ListAssets.reloadData()
         default:
             print("Default")
-            ListAssets.reloadData()
+           // ListAssets.reloadData()
         }
+        ConfigureDataDetail()
+        ListAssets.reloadData()
     }
 }
 
@@ -291,8 +289,13 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
-        self.navigationController?.pushViewController(mapView, animated: true)
+        print("SelectRow")
+        let Mapview = self.storyboard?.instantiateViewController(identifier: "DetailSpending") as! DetailSpending
+        let Data = DataForTabel[indexPath.row]
+        let time = (buttonTime.titleLabel?.text)!
+        UserDefaults.standard.setValue(Data.Category, forKey: "Category")
+        UserDefaults.standard.setValue(time, forKey: "Time")
+        self.navigationController?.pushViewController(Mapview, animated: true)
         //let Data = DataForTabel[indexPath.row]
         
     }

@@ -96,7 +96,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Food" width="57" height="57"/>
+        <image name="Food" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

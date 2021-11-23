@@ -9,6 +9,12 @@ import UIKit
 
 class SpendingCell: UITableViewCell {
 
+    @IBOutlet var ImageView : UIImageView!
+    @IBOutlet var DetailLabel: UILabel!
+    @IBOutlet var NoteLabel: UILabel!
+    @IBOutlet var AccountLabel: UILabel!
+    @IBOutlet var ValueLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

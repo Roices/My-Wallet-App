@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9v-h2-nxq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zob-EK-WKO">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -113,7 +113,7 @@
             </objects>
             <point key="canvasLocation" x="5267" y="-698"/>
         </scene>
-        <!--Home-->
+        <!--Home View-->
         <scene sceneID="QD1-fe-tPx">
             <objects>
                 <viewController storyboardIdentifier="HomeView" id="wLh-Jp-WUO" customClass="HomeView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,11 +123,11 @@
                         <viewLayoutGuide key="safeArea" id="cCz-Kt-biW"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="f2t-tV-XZh"/>
+                    <navigationItem key="navigationItem" id="2RY-9r-Mvi"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SoM-ip-KLb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4755.072463768116" y="109.82142857142857"/>
+            <point key="canvasLocation" x="5665.217391304348" y="109.82142857142857"/>
         </scene>
         <!--Report-->
         <scene sceneID="3O5-OC-gWV">
@@ -158,7 +158,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3tc-e4-0nb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5565" y="110"/>
+            <point key="canvasLocation" x="6473.913043478261" y="109.82142857142857"/>
+        </scene>
+        <!--Save And Delete Home View-->
+        <scene sceneID="hck-UP-CDf">
+            <objects>
+                <viewController storyboardIdentifier="SaveAndDeleteHomeView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Zob-EK-WKO" customClass="SaveAndDeleteHomeView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fYK-BP-SeP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="gYo-Sc-EtX"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ULX-hj-6ez" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7351" y="110"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="Gss-1S-PiQ">
@@ -540,7 +555,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
-                        <segue destination="wLh-Jp-WUO" kind="relationship" relationship="viewControllers" id="wQO-us-0Ab"/>
+                        <segue destination="LI5-ti-K82" kind="relationship" relationship="viewControllers" id="wQO-us-0Ab"/>
                         <segue destination="8c7-cB-5Vz" kind="relationship" relationship="viewControllers" id="1at-Ft-v00"/>
                         <segue destination="OKX-Wb-xvL" kind="relationship" relationship="viewControllers" id="EVW-sc-2LD"/>
                         <segue destination="fx0-rr-a4h" kind="relationship" relationship="viewControllers" id="FNO-Am-voS"/>
@@ -649,6 +664,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pDG-Da-TOr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4402.898550724638" y="886.60714285714278"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="ku7-A1-H06">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LI5-ti-K82" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="f2t-tV-XZh"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="j1j-7y-NLe">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wLh-Jp-WUO" kind="relationship" relationship="rootViewController" id="jVC-CM-Aob"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WdB-ry-pSj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4755.072463768116" y="109.82142857142857"/>
         </scene>
     </scenes>
     <resources>

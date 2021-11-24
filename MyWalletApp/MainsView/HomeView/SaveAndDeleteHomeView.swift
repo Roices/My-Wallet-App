@@ -11,10 +11,7 @@ import Firebase
 
 class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationDelegate {
 
-    lazy var TheChoicedThing = ""
-    lazy var Time = ""
     lazy var AccountChoiced : String = ""
-//    lazy var TypeAccount : [(TypeAccount: String, Value: String)] = []
     lazy var isSelected = false
     lazy var key = ""
     lazy var Path = ""
@@ -24,6 +21,7 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
     lazy var Detail = ""
     lazy var Datebt = ""
     lazy var NoteTf = ""
+    lazy var Time = ""
     
     
     let transparentView = UIView()
@@ -57,9 +55,10 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         button.setTitleColor(.white, for: .normal)
         button.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 50, width: 150, height: 50)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-      //  button.addTarget(self, action: #selector(SelectedCategory), for: .touchUpInside)
+        button.addTarget(self, action: #selector(SelectedCategory), for: .touchUpInside)
         button.layer.cornerRadius = 15.0
         button.backgroundColor = UIColor(hexString: "163058")
+        button.setTitleColor(.white, for: .normal)
         return button
     }()
     
@@ -77,7 +76,7 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         button.setImage( UIImage(named: "Back"), for: .normal)
         button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
         button.imageView?.contentMode = .scaleAspectFit
-      //  button.addTarget(self, action: #selector(BacktoSpendingView), for: .touchUpInside)
+        button.addTarget(self, action: #selector(BacktoSpendingView), for: .touchUpInside)
         return button
     }()
     
@@ -101,7 +100,7 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         button.frame = CGRect(x: 30, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
-     //   button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
+        button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
         button.setTitle("--------Category--------", for: .normal)
         button.contentHorizontalAlignment = .center
         button.setTitleColor(.lightGray, for: .normal)
@@ -121,7 +120,7 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         button.setTitle("--------Date--------", for: .normal)
         button.contentHorizontalAlignment = .center
         button.setTitleColor(.lightGray, for: .normal)
-       // button.addTarget(self, action: #selector(ShowCalendar), for: .touchUpInside)
+        button.addTarget(self, action: #selector(ShowCalendar), for: .touchUpInside)
         return button
     }()
     
@@ -151,7 +150,6 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         button.frame = CGRect(x: 30, y: 0.475*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
         button.layer.cornerRadius = 15.0
-       // button.addTarget(self, action: #selector(ShowListAccount), for: .touchUpInside)
         button.setTitle("-----Account-----", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         return button
@@ -238,19 +236,19 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         MainView.addSubview(Calendar)
        
         
-      //  MainView.addSubview(Calendar)
-//        WarningView.isHidden = true
-//        WarningCompletelyView.isHidden = true
-//        
-//        MoneyInput.delegate = self
-//
-//        ListCategory.delegate = self
-//        ListCategory.dataSource = self
+        MainView.addSubview(Calendar)
+        WarningView.isHidden = true
+        WarningCompletelyView.isHidden = true
+        
+        MoneyInput.delegate = self
+
+        ListCategory.delegate = self
+        ListCategory.dataSource = self
         
 
-//        self.ListDetail.register(UITableViewCell.self, forCellReuseIdentifier: "ListDetail")
-//        ListDetail.delegate = self
-//        ListDetail.dataSource = self
+        self.ListDetail.register(UITableViewCell.self, forCellReuseIdentifier: "ListDetail")
+        ListDetail.delegate = self
+        ListDetail.dataSource = self
         
         
         Calendar.isHidden = true
@@ -262,7 +260,7 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         self.hideKeyboardWhenTappedAround()
         print("key: \(key)")
        
-        CategoryButton.setTitle(CategorySection, for: .normal)
+       // CategoryButton.setTitle(CategorySection, for: .normal)
         // Do any additional setup after loading the view.\
 //        let path = UserDefaults.standard.string(forKey: "Username")
 //            let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
@@ -282,20 +280,67 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
 }
     
 extension SaveAndDeleteHomeView: UITableViewDelegate, UITableViewDataSource{
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        if tableView == ListDetail{
+            if CategoryButton.titleLabel?.text == "Category"{
+            return Category["\(CategorySection)"]!.count
+            }else{
+                let CategorySection = (CategoryButton.titleLabel?.text)!
+                return Category["\(CategorySection)"]!.count
+            }
+        }else{
+            return SelectedCategoryArray.count
+        }
     }
     
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//    }
     
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == ListDetail{
+            let cell = ListDetail.dequeueReusableCell(withIdentifier: "ListDetail",for: indexPath)
+            var SelectedCategory = ""
+            if CategoryButton.titleLabel?.text == "Category"{
+                SelectedCategory = CategorySection
+            }else{
+                SelectedCategory = (CategoryButton.titleLabel?.text)!
+            }
+            cell.textLabel?.text = Category["\(SelectedCategory)"]![indexPath.row]
+            cell.textLabel?.textAlignment = .center
+            return cell
+        } else if tableView == ListCategory{
+            let cell = UITableViewCell()
+            cell.textLabel?.text = SelectedCategoryArray[indexPath.row]
+            cell.textLabel?.textAlignment = .center
+            return cell
+
+        }
+        return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == ListDetail{
+//            let CategorySelected = (CategoryButton.titleLabel?.text)!
+            var SelectedCategory = ""
+            if CategoryButton.titleLabel?.text == "Category"{
+                SelectedCategory = CategorySection
+            }else{
+                SelectedCategory = (CategoryButton.titleLabel?.text)!
+            }
+            ButtonList.setTitle(Category["\(SelectedCategory)"]![indexPath.row], for: .normal)
+            ButtonList.setTitleColor(.black, for: .normal)
+            ButtonList.titleLabel?.textAlignment = .center
+            removeTransparentView()
+//            TheChoicedThing = Category["\(CategorySelected)"]![indexPath.row]
+            
+        }else{
+            let Data = SelectedCategoryArray[indexPath.row]
+            CategoryButton.setTitle(Data, for: .normal)
+            ButtonList.setTitle("--------Category--------", for: .normal)
+            ButtonList.setTitleColor(.lightGray, for: .normal)
+
+            removeTransparentView()
+        }
+    }
 }
 
 extension SaveAndDeleteHomeView: FSCalendarDelegate, FSCalendarDataSource{
@@ -317,7 +362,7 @@ extension SaveAndDeleteHomeView{
 
     
     @objc func BacktoSpendingView(sender: UIButton){
-            let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
+            let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
         let transition = CATransition.init()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
@@ -325,9 +370,6 @@ extension SaveAndDeleteHomeView{
         transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
         transition.delegate = self
         view.window!.layer.add(transition, forKey: kCATransition)
-        mapView.Path = self.Path
-        mapView.ButtonTime.setTitle(TimeDeleted, for: .normal)
-        mapView.ButtonTime.setTitleColor(.blue, for: .normal)
         self.navigationController?.pushViewController(mapView, animated: true)
 
     }
@@ -396,12 +438,15 @@ extension SaveAndDeleteHomeView{
             return
         }else{
         //Creat a path for data
-        let path = UserDefaults.standard.string(forKey: "Username")
+           // let CategoryHomeView = UserDefaults.standard.string(forKey: "Category")
+            let Time = UserDefaults.standard.string(forKey: "Time")!
+            let path = UserDefaults.standard.string(forKey: "Username")
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
             
             let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
         // remove value
             DeleteData(childPath: TimeDeleted, key: key)
+            DeleteDataAccount()
 
             let newRef = ref.childByAutoId()
             let newRefforHomeView = refforHomeView.childByAutoId()
@@ -418,7 +463,7 @@ extension SaveAndDeleteHomeView{
         // push value
         newRef.setValue(val)
             newRefforHomeView.setValue(val)
-            let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
+            let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
         let transition = CATransition.init()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
@@ -426,9 +471,6 @@ extension SaveAndDeleteHomeView{
         transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
         transition.delegate = self
         view.window!.layer.add(transition, forKey: kCATransition)
-        mapView.Path = self.Path
-        mapView.ButtonTime.setTitle(TimeDeleted, for: .normal)
-        mapView.ButtonTime.setTitleColor(.blue, for: .normal)
         self.navigationController?.pushViewController(mapView, animated: true)
 
         }
@@ -437,8 +479,8 @@ extension SaveAndDeleteHomeView{
     
     @objc func DeleteButtonAction(){
         DeleteData(childPath: TimeDeleted, key: key)
-        DeleteDataHomeView()
-        let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
+        DeleteDataAccount()
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
     let transition = CATransition.init()
     transition.duration = 0.5
     transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
@@ -446,16 +488,13 @@ extension SaveAndDeleteHomeView{
     transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
     transition.delegate = self
     view.window!.layer.add(transition, forKey: kCATransition)
-    mapView.Path = self.Path
-    mapView.ButtonTime.setTitle(TimeDeleted, for: .normal)
-    mapView.ButtonTime.setTitleColor(.blue, for: .normal)
     self.navigationController?.pushViewController(mapView, animated: true)
     }
 //
     func DeleteData(childPath:String,key: String){
         // tạo ref tới dữ liệu cha
         let path = UserDefaults.standard.string(forKey: "Username")
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(childPath)").child(AccountChoiced)
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(childPath)").child("DataHomeView")
         
         // tạo ref đến dữ liệu có key thỏa mãn
         let currentRef = ref.child(key)
@@ -471,33 +510,36 @@ extension SaveAndDeleteHomeView{
         }
     }
     
-    func DeleteDataHomeView(){
+    func DeleteDataAccount(){
+       // let CategoryHomeView = UserDefaults.standard.string(forKey: "Category")
+        let Time = UserDefaults.standard.string(forKey: "Time")!
         let path = UserDefaults.standard.string(forKey: "Username")
-        let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
         
-        refforHomeView.observe(.value, with: { [self] (snapshot) in
+        ref.observe(.value, with: { [self] (snapshot) in
           // cập nhật data
           for children in snapshot.children {
             if let postSnapshot = children as? DataSnapshot {
-                let key = postSnapshot.key
+                let Key = postSnapshot.key
                 if let Category = postSnapshot.childSnapshot(forPath: "Category").value as? String,
                 let Value = postSnapshot.childSnapshot(forPath: "Value").value as? String,
                 let Detail = postSnapshot.childSnapshot(forPath: "Detail").value as? String,
                 let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String,
                 let Note = postSnapshot.childSnapshot(forPath: "Note").value as? String,
                 let Account = postSnapshot.childSnapshot(forPath: "Account").value as? String{
-                    print(Category,Value,Detail,Note,Account,key)
+                    print(Category,Value,Detail,Note,Account,Key)
                     if Category == CategorySection && Value == ValueTf
                         && Detail == self.Detail && Account == AccountChoiced
                         && Note == NoteTf && Date == Datebt{
                         
-                        let currentRef = refforHomeView.child(key)
+                        let currentRef = ref.child(Key)
                         currentRef.removeValue{ (err, ref) in
                           if let err = err {
                             print(err)
                           } else {
                             // thành công, bỏ chọn trên UI
                             print("Done")
+                            print("keyABC: \(Key)")
                           }
                         }
                         

@@ -148,4 +148,30 @@ extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let MapView = self.storyboard?.instantiateViewController(identifier: "SaveAndDeleteHomeView") as! SaveAndDeleteHomeView
+        let Data = CategoryData[indexPath.row]
+        let CategoryHomeView = UserDefaults.standard.string(forKey: "Category")!
+        let Time = UserDefaults.standard.string(forKey: "Time")!
+        MapView.MoneyInput.text = Data.Value
+        MapView.ButtonList.setTitle(Data.Detail, for: .normal)
+        MapView.ButtonList.setTitleColor(.black, for: .normal)
+        MapView.ScheduleButton.setTitle(Data.Date, for: .normal)
+        MapView.ScheduleButton.setTitleColor(.black, for: .normal)
+        MapView.noteTextfield.text = Data.Note
+        MapView.AccountButton.setTitle(Data.Account, for: .normal)
+        MapView.AccountButton.setTitleColor(.black, for: .normal)
+        MapView.key = Data.Key
+        MapView.Time = Time
+        MapView.TimeDeleted = Time
+        MapView.AccountChoiced = Data.Account
+        MapView.ValueTf = Data.Value
+        MapView.Datebt = Data.Date
+        MapView.NoteTf = Data.Note
+        MapView.Detail = Data.Detail
+        MapView.CategorySection = CategoryHomeView
+        MapView.CategoryButton.setTitle(CategoryHomeView, for: .normal)
+        self.navigationController?.pushViewController(MapView, animated: true)
+    }
 }

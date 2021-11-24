@@ -341,7 +341,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
             let ValueExpenseforAccount = formatter.string(from: TotalValue as NSNumber)
             LabelTotalValueIncome.text = ValueIncomeforAccount
             LabelTotalValueExpense.text = ValueExpenseforAccount
-                self.tableData.reloadData()
+            self.tableData.reloadData()
             
         })
     }

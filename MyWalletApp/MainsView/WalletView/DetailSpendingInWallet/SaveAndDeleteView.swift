@@ -474,6 +474,7 @@ extension SaveAndDeleteView{
             let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
         // remove value
             DeleteData(childPath: TimeDeleted, key: key)
+            DeleteDataHomeView()
 
             let newRef = ref.childByAutoId()
             let newRefforHomeView = refforHomeView.childByAutoId()
@@ -488,7 +489,7 @@ extension SaveAndDeleteView{
         ]
 
         // push value
-        newRef.setValue(val)
+            newRef.setValue(val)
             newRefforHomeView.setValue(val)
             let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
         let transition = CATransition.init()

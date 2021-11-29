@@ -9,7 +9,7 @@ import UIKit
 import FSCalendar
 import Firebase
 
-class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationDelegate {
+class SaveAndDeleteHomeView: UIViewController, CAAnimationDelegate {
 
     lazy var AccountChoiced : String = ""
     lazy var isSelected = false
@@ -258,24 +258,29 @@ class SaveAndDeleteHomeView: UIViewController, UITextFieldDelegate, CAAnimationD
         
         //call Function For UpdateData -> ListAccountTable
         self.hideKeyboardWhenTappedAround()
-        print("key: \(key)")
-       
-       // CategoryButton.setTitle(CategorySection, for: .normal)
-        // Do any additional setup after loading the view.\
-//        let path = UserDefaults.standard.string(forKey: "Username")
-//            let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
-//
-//            ref.observe(.value, with: { [self] (snapshot) in
-//              // cập nhật data
-//                for children in snapshot.children {
-//                    if let postSnapshot = children as? DataSnapshot {
-//                      if let Account = postSnapshot.childSnapshot(forPath: "Account").value as? String{
-//                        Path = Account
-//                  }
-//                }
-//              }
-//              // cập nhật u
-//            })
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1136:
+                    print("iPhone 5 or 5S or 5C or SE")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                default:
+                    print("Unknown")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 50, width: 150, height: 45)
+                    BackButton.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+                }
+            }
     }
 }
     
@@ -444,12 +449,15 @@ extension SaveAndDeleteHomeView{
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
             
             let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
+            
+            let refforNotification = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
         // remove value
             DeleteData(childPath: TimeDeleted, key: key)
             DeleteDataAccount()
 
             let newRef = ref.childByAutoId()
             let newRefforHomeView = refforHomeView.childByAutoId()
+            let NewRefforNotification = refforNotification.childByAutoId()
             //creat new data
         let val: [String : Any] = [
             "Category": CategoryButton.titleLabel?.text as Any,
@@ -459,10 +467,19 @@ extension SaveAndDeleteHomeView{
             "Account": AccountButton.titleLabel?.text as Any,
             "Detail": ButtonList.titleLabel?.text as Any
         ]
-
+            
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "yyyy/MM/dd HH:mm"
+            let date = Date()
+            let newDateformatter = dateFormatterPrint.string(from: date)
+            let valforNotification: [String : Any] = [
+                "Notification": "Cập nhật chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+                "Date": newDateformatter
+            ]
         // push value
-        newRef.setValue(val)
+            newRef.setValue(val)
             newRefforHomeView.setValue(val)
+            NewRefforNotification.setValue(valforNotification)
             let mapView = (self.storyboard?.instantiateViewController(identifier: "DetailSpending"))! as DetailSpending
         let transition = CATransition.init()
         transition.duration = 0.5
@@ -495,10 +512,21 @@ extension SaveAndDeleteHomeView{
         // tạo ref tới dữ liệu cha
         let path = UserDefaults.standard.string(forKey: "Username")
         let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(childPath)").child("DataHomeView")
-        
+        let refforNotification = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
         // tạo ref đến dữ liệu có key thỏa mãn
         let currentRef = ref.child(key)
+        let NewRefforNotification = refforNotification.childByAutoId()
         
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "yyyy/MM/dd HH:mm"
+        let date = Date()
+        let newDateformatter = dateFormatterPrint.string(from: date)
+        let valforNotification: [String : Any] = [
+            "Notification": "Xóa chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+            "Date": newDateformatter
+        ]
+
+        NewRefforNotification.setValue(valforNotification)
         // xóa
         currentRef.removeValue { (err, ref) in
           if let err = err {
@@ -549,5 +577,39 @@ extension SaveAndDeleteHomeView{
             }
           }
         })
+    }
+}
+
+extension SaveAndDeleteHomeView:UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+              let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.groupingSeparator = "."
+                formatter.locale = Locale.current
+                formatter.maximumFractionDigits = 0
+               // Uses the grouping separator corresponding to your Locale
+               // e.g. "," in the US, a space in France, and so on
+        if textField.text!.count < 12{
+              if let groupingSeparator = formatter.groupingSeparator{
+                  if string == groupingSeparator {
+                     return true
+                  }
+                  if let textWithoutGroupingSeparator = textField.text?.replacingOccurrences(of: groupingSeparator, with: "") {
+                      var totalTextWithoutGroupingSeparators = textWithoutGroupingSeparator + string
+                      if string.isEmpty { // pressed Backspace key
+                          totalTextWithoutGroupingSeparators.removeLast()
+                      }
+                      if let numberWithoutGroupingSeparator = formatter.number(from: totalTextWithoutGroupingSeparators),
+                          let formattedText = formatter.string(from: numberWithoutGroupingSeparator) {
+                          textField.text = formattedText
+                          return false
+                      }
+                  }
+              }
+        }else{
+            textField.deleteBackward()
+        }
+        return true
     }
 }

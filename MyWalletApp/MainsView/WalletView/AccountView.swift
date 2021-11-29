@@ -210,19 +210,17 @@ extension AccountView{
                 "Name": NameAccountTf.text as Any,
                 "TypeAccount": TypeAccountBT.titleLabel?.text as Any
             ]
-           var ListAccountForHomeView = UserDefaults.standard.stringArray(forKey: "ListAccount")!
+        
 
             //Push Data
             if Key.isEmpty{
                 let newRef = ref.childByAutoId()
                 newRef.setValue(val)
-                ListAccountForHomeView.append(NameAccountTf.text!)
+
                 
             }else{
                 let newRef = ref.child(Key)
                 newRef.setValue(val)
-                ListAccountForHomeView =  ListAccountForHomeView.filter{$0 != NameAccountTf.text!}
-                ListAccountForHomeView.append(NameAccountTf.text!)
             }
             
             //Push Notification
@@ -237,8 +235,7 @@ extension AccountView{
             TypeAccountBT.setTitleColor(.lightGray, for: .normal)
             NameAccountTf.text = ""
             Key = ""
-            UserDefaults.standard.stringArray(forKey: "ListAccount")
-            print("ListAccountForHomeView: \(ListAccountForHomeView)")
+
             
             
         }

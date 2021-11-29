@@ -108,10 +108,12 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
     
 
     lazy var ListAssets:UITableView = {
-        let OriginY = codeSegmented.frame.origin.y + 60
+        let OriginY = codeSegmented.frame.origin.y + 54
         let List = UITableView()
-        List.frame = CGRect(x: 0, y: OriginY, width: UIScreen.main.bounds.width, height: 282)
+        List.frame = CGRect(x: 0, y: OriginY, width: UIScreen.main.bounds.width, height: 300)
         List.translatesAutoresizingMaskIntoConstraints = false
+        List.backgroundColor = UIColor(hexString: "F1F0F6")
+        List.separatorStyle = .none
         return List
     }()
     
@@ -206,6 +208,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         self.hideKeyboardWhenTappedAround()
         InComeView.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
+//        UserDefaults.standard.setValue("tuan dep trai", forKey: "Username")
      //   ListIncome.isHidden = true
 //        InComePieChart.isHidden = true
                     

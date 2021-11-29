@@ -7,16 +7,14 @@
 
 import UIKit
 import Charts
+import Firebase
+import MonthYearPicker
+import UserNotifications
 
-class ReportViewController: UIViewController {
+class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
 
-
-    
-    let players = ["All Assets", "Loan"]
-    let goals = [400000, 800000]
-    
     //InCome and Expense
-    
+    lazy var NotifiArray : [(Noti: String, Time: String)] = []
     
     let Background : UIImageView = {
         let Background = UIImageView(image: UIImage(named: "Background"))
@@ -24,393 +22,281 @@ class ReportViewController: UIViewController {
         return Background
     }()
     
-    let scrollView : UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 2*UIScreen.main.bounds.height)
-       scrollView.backgroundColor = .white
-        scrollView.layer.cornerRadius = 15.0
-        
-       return scrollView
-    }()
-    
-    
-    
-    let IncomeLabel : UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: UIScreen.main.bounds.width/4 + 50 + 15, y: UIScreen.main.bounds.height/4 - 20 + 5, width: 150, height: 40)
-        label.text = "Income"
-       // label.backgroundColor = .blue
-        return label
-    }()
-    
-    let IncomeMoneyTitle: UILabel = {
-        let label = UILabel()
-        let green = UIColor(hexString: "5CDD5B")
-        label.frame = CGRect(x: UIScreen.main.bounds.width - 150 - 25, y: UIScreen.main.bounds.height/4 - 20 + 5, width: 150, height: 40)
-        label.text = "100.000.000đ"
-        label.textColor = green
-        label.textAlignment = .right
-        label.font = UIFont.boldSystemFont(ofSize: 17.0)
-
-        return label
-    }()
- 
-    let IncomeView : UIView = {
+    let MainView : UIView = {
         let view = UIView()
-        let green = UIColor(hexString: "5CDD5B")
-        view.frame = CGRect(x: UIScreen.main.bounds.width/4 + 50, y: UIScreen.main.bounds.height/4   , width: 10, height: 10)
-        view.backgroundColor = green
-      //  view.layer.cornerRadius = 7
-        return view
-    }()
-    
-    
-    let ExpenseLabel : UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: UIScreen.main.bounds.width/4 + 50 + 15, y: UIScreen.main.bounds.height/4 - 50 - 20 + 5, width: 150, height: 40)
-        label.text = "Expened"
-     //   label.backgroundColor = .red
-        return label
-    }()
-    
-    let ExpenseView : UIView = {
-        let view = UIView()
-        let red = UIColor(hexString: "E64947")
-        view.frame = CGRect(x: UIScreen.main.bounds.width/4 + 50, y: UIScreen.main.bounds.height/4 - 50, width: 10, height: 10)
-        view.backgroundColor = red
-   //     view.layer.cornerRadius = 7
-        return view
-    }()
-    
-    let ExpenseMoneyTitle: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: UIScreen.main.bounds.width - 150 - 25, y: UIScreen.main.bounds.height/4 - 50 - 20 + 5, width: 150, height: 40)
-        label.text = "100.000.000đ"
-        let red = UIColor(hexString: "E64947")
-        label.textColor = red
-        label.textAlignment = .right
-        label.font = UIFont.boldSystemFont(ofSize: 17.0)
-        return label
-    }()
-    
-    
-    
-    
-    lazy var BarChart : BarChartView = {
-        let BarChart = BarChartView()
-        BarChart.frame = CGRect(x: 25, y: 100, width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.height/4)
-      //  BarChart.frame = CGRect(x: 25, y: 300, width: UIScreen.main.bounds.width/2, height: UIScreen.main.bounds.height/2)
-        
-        var dataEntries: [BarChartDataEntry] = []
-        let dataPoints = players
-        let values = goals.map{ Double($0) }
-          for i in 0..<dataPoints.count {
-            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
-            dataEntries.append(dataEntry)
-          }
-        
-        BarChart.leftAxis.axisMinimum = 0
-        BarChart.rightAxis.axisMinimum = 0
-        BarChart.leftAxis.drawAxisLineEnabled = false
-        BarChart.rightAxis.drawAxisLineEnabled = false
-        BarChart.dragXEnabled = false
-     
-        
-        BarChart.xAxis.enabled = false
-        BarChart.leftAxis.enabled = false
-        BarChart.rightAxis.enabled = false
-        BarChart.drawBordersEnabled = false
-        BarChart.minOffset = 0
-        BarChart.legend.enabled = false
-//
-        
-        let red = UIColor(hexString: "E64947")
-        let green = UIColor(hexString: "5CDD5B")
-        let BarChartDataSet = BarChartDataSet(entries: dataEntries, label: nil)
-        BarChartDataSet.drawValuesEnabled = false
-        BarChartDataSet.valueFont = UIFont.systemFont(ofSize: 11)
-        BarChartDataSet.colors = [red,green]
-        
-        
-        
-        let BarChartData = BarChartData(dataSet: BarChartDataSet)
-        BarChart.data = BarChartData
-        
-        
-        return BarChart
-    }()
-    
-    
-    let Month: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 40, width: UIScreen.main.bounds.width, height: 20)
-        label.text = "September"
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        return label
-    }()
-    
-    let line1: UIView = {
-        let line = UIView()
-        line.frame = CGRect(x: 80, y: 65, width: UIScreen.main.bounds.width - 160, height: 1)
-        line.backgroundColor = .lightGray
-        return line
-    }()
-    
-    
-    let line2 : UIView = {
-        let line = UIView()
-        line.frame = CGRect(x: 0, y: UIScreen.main.bounds.height/4 + 150, width: UIScreen.main.bounds.width, height: 4)
-        line.backgroundColor = .lightGray
-        return line
-    }()
-    
-    
-    // Spending Limit
-    
-    let SpendingLimitLabel : UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 150 + 30, width: 200, height: 30)
-        label.text = "Spending limit"
-      //  label.textAlignment = .lef
-        
-        return label
-    }()
-    
-    let StuffView: UIImageView  = {
-        let view = UIImageView(image: UIImage(named: "Wallet"))
-        view.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 220, width: 60, height: 60)
-        return view
-    }()
-    
-    let UserAcountLabel : UILabel = {
-       let label = UILabel()
-        label.text = "User Acount"
-        label.frame = CGRect(x: 105, y: UIScreen.main.bounds.height/4 + 220, width: 200, height: 20)
-        return label
-    }()
-    
-    let MonthForSpending: UILabel = {
-        let label = UILabel()
-        label.text = "September"
-        label.frame = CGRect(x: 105, y: UIScreen.main.bounds.height/4 + 220 + 25, width: 85, height: 20)
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .lightGray
-        return label
-    }()
-    
-    let MoneyLimited : UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: UIScreen.main.bounds.width - 25 - 150, y: UIScreen.main.bounds.height/4 + 220 + 25, width: 150, height: 20)
-        label.text = "1.000.000.000đ"
-        label.textAlignment  = .right
-        return label
-    }()
-    
-    
-    let Progress: UIProgressView = {
-        let progress = UIProgressView()
-        progress.frame = CGRect(x: 20, y:  UIScreen.main.bounds.height/4 + 300, width: UIScreen.main.bounds.width - 40, height: 100)
-       // progress.backgroundColor = .purple
-      //  progress.tintColor = .green
-        progress.progress = 0.5
-        return progress
-    }()
-    
-    let RemainLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Remain:"
-        label.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 320, width: 75, height: 20)
-        return label
-    }()
-    
-    let MoneyRemain : UILabel = {
-        let label = UILabel()
-        label.text = "500.000.000đ"
-        label.frame = CGRect(x: UIScreen.main.bounds.width - 25 - 150, y: UIScreen.main.bounds.height/4 + 320, width: 150, height: 20)
-        label.textAlignment = .right
-        return label
-    }()
-    
-    
-    let line3 : UIView = {
-        let line = UIView()
-        line.frame = CGRect(x: 0, y: UIScreen.main.bounds.height/4 + 380, width: UIScreen.main.bounds.width, height: 4)
-        line.backgroundColor = .lightGray
-        return line
-    }()
-    //savings-book
-    
-    let Accumulate : UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 400, width: 150, height: 20)
-        label.text = "Accumulate"
-        return label
-    }()
-    
-    let frameAccountAccumulate : UIView = {
-        let view = UIView()
-        let green = UIColor(hexString: "5CDD5B")
-        view.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 440, width: UIScreen.main.bounds.width - 50, height: 160)
-        view.backgroundColor = green
-        view.layer.cornerRadius = 10.0
-        view.layer.borderWidth = 0.25
-        return view
-    }()
-    
-    let frameAccumulate : UIView = {
-        let view = UIView()
-        view.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 480, width: UIScreen.main.bounds.width - 50, height: 120)
+        view.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
         view.backgroundColor = .white
-        view.layer.borderWidth = 0.25
+        view.layer.cornerRadius = 15.0
+        view.layer.borderWidth = 0.5
         return view
     }()
-
     
-    let UserAccumulateAccount : UILabel = {
-        let label = UILabel()
-        label.text = "User Account"
-        label.frame = CGRect(x: 45, y: UIScreen.main.bounds.height/4 + 440 + 10, width: 150, height: 20)
-        return label
+    let WalletImage : UIImageView = {
+       let WalletImage = UIImageView(image: UIImage(named: "Alarm"))
+        WalletImage.frame = CGRect(x: 30, y: 120, width: 40, height: 40)
+       // WalletImage.backgroundColor = .red
+        return WalletImage
     }()
     
-    let AccumulateMoney : UILabel = {
-        let label = UILabel()
-        label.text  = "10.000.000đ"
-        label.frame = CGRect(x: 45, y: UIScreen.main.bounds.height/4 + 510, width: 150, height: 20)
-        return label
+    let AlertMainLabel : UILabel = {
+        let AlertLabel = UILabel()
+        AlertLabel.frame = CGRect(x: 80, y: 125, width: 200, height: 30)
+        AlertLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
+        AlertLabel.text = "Nhắc nhở nhập liệu"
+       // UserAccountLabel.textAlignment = .center
+        return AlertLabel
     }()
     
-    let AccProgress : UIProgressView = {
-        let progress = UIProgressView()
-        progress.progress = 0.5
-        progress.frame = CGRect(x: 45, y: UIScreen.main.bounds.height/4 + 540, width: UIScreen.main.bounds.width - 90, height: 50)
-        return progress
-    }()
-    
-    let Target : UILabel = {
-        let label = UILabel()
-        label.text = "Target: Buy a Car"
-        label.frame = CGRect(x: 45, y: UIScreen.main.bounds.height/4 + 560, width: 150, height: 20)
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = .gray
-      //  label.backgroundColor = .purple
-        return label
+    let SwichAlert : UISwitch = {
+        let Switch = UISwitch()
+        Switch.frame.origin.x = UIScreen.main.bounds.width - 80
+        Switch.frame.origin.y = 125
+        Switch.addTarget(self, action: #selector(TurnOnAlert), for: .valueChanged)
+        return Switch
     }()
     
     
-    let line4 : UIView = {
-        let line = UIView()
-        line.frame = CGRect(x: 0, y: UIScreen.main.bounds.height/4 + 660, width: UIScreen.main.bounds.width, height: 4)
-        line.backgroundColor = .lightGray
-        return line
+    let AlertExtraLabel : UILabel = {
+        let AlertLabel = UILabel()
+        AlertLabel.frame = CGRect(x: 80, y: 160, width: 300, height: 20)
+        AlertLabel.text = "Hệ thống sẽ nhắc nhở bạn nhập liệu thu chi mỗi ngày"
+        AlertLabel.font = UIFont.boldSystemFont(ofSize: 11.0)
+        AlertLabel.textColor = .lightGray
+       // UserAccountLabel.textAlignment = .center
+        return AlertLabel
+    }()
+    
+    lazy var TimeAlertView : UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 180, width: UIScreen.main.bounds.width, height: 40)
+        
+        let line = UIView(frame: CGRect(x: 80, y: 0, width: view.bounds.width - 110, height: 1))
+        line.backgroundColor = UIColor(hexString: "D6D6D6")
+        
+        let label = UILabel(frame: CGRect(x: 80, y: view.frame.height/2 - 5, width: 70, height: 15))
+        label.text = "Thời gian"
+        label.font =  UIFont.boldSystemFont(ofSize: 14.0)
+        
+        
+//        let UIDate = UIDatePicker()
+//        UIDate.frame.origin.x = UIScreen.main.bounds.width - 115
+//        UIDate.frame.origin.y = view.frame.height/2 - 13
+//        UIDate.datePickerMode = .time
+//        UIDate.addTarget(self, action: #selector(PushNotification), for: .valueChanged)
+        
+        view.addSubview(label)
+        view.addSubview(line)
+       // view.backgroundColor = .red
+        return view
+    }()
+    
+    lazy var Datepicker : UIDatePicker = {
+        let UIDate = UIDatePicker()
+        UIDate.frame.origin.x = UIScreen.main.bounds.width - 115
+        UIDate.frame.origin.y = TimeAlertView.frame.height/2 - 13
+        UIDate.datePickerMode = .time
+        UIDate.addTarget(self, action: #selector(PushNotificationValueChanged), for: .valueChanged)
+        return UIDate
+    }()
+    
+    let Line : UIView = {
+        let Line = UIView()
+        Line.backgroundColor = UIColor(hexString: "D6D6D6")
+        Line.frame = CGRect(x: 30, y: 195, width: UIScreen.main.bounds.width - 60, height: 1)
+        return Line
+    }()
+    
+    let TabelNotification : UITableView = {
+        let table = UITableView()
+        table.frame = CGRect(x: 0, y: 197, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
     }()
     
     
-    //Report 12 month
-    
-    lazy var MonthBarChart : BarChartView = {
-        let BarChart = BarChartView()
-        BarChart.frame = CGRect(x: 25, y: UIScreen.main.bounds.height/4 + 700, width: UIScreen.main.bounds.width - 50, height: UIScreen.main.bounds.height/4)
-      //  BarChart.frame = CGRect(x: 25, y: 300, width: UIScreen.main.bounds.width/2, height: UIScreen.main.bounds.height/2)
-        
-        var dataEntries: [BarChartDataEntry] = []
-        let dataPoints = players
-        let values = goals.map{ Double($0) }
-        for i in 1...12{
-            let dataEntry = BarChartDataEntry(x: Double(i), y: Double.random(in: 0...30))
-            dataEntries.append(dataEntry)
-          }
-        
-//        BarChart.leftAxis.axisMinimum = 1
-//        BarChart.rightAxis.axisMinimum =
-//        BarChart.leftAxis.drawAxisLineEnabled = false
-//        BarChart.rightAxis.drawAxisLineEnabled = false
-    //    BarChart.dragXEnabled = false
-     
-        
-//        BarChart.xAxis.enabled = false
-//        BarChart.leftAxis.enabled = false
-//        BarChart.rightAxis.enabled = false
-//        BarChart.drawBordersEnabled = false
-        BarChart.minOffset = 0
-        BarChart.legend.enabled = false
-//
-        
-        let red = UIColor(hexString: "E64947")
-        let green = UIColor(hexString: "5CDD5B")
-        let BarChartDataSet = BarChartDataSet(entries: dataEntries, label: nil)
-        BarChartDataSet.drawValuesEnabled = false
-        BarChartDataSet.valueFont = UIFont.systemFont(ofSize: 12)
-        BarChartDataSet.colors = [.systemPink]
-        
-        
-        
-        let BarChartData = BarChartData(dataSet: BarChartDataSet)
-        BarChart.data = BarChartData
-        
-        
-        return BarChart
-    }()
+    var savedNotificationDate: Date? {
+        get {
+            return UserDefaults.standard.object(forKey: "notificationDate") as? Date
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "notificationDate")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         view.addSubview(Background)
-        view.addSubview(scrollView)
- 
-        scrollView.addSubview(BarChart)
-        scrollView.addSubview(IncomeView)
-        scrollView.addSubview(ExpenseView)
-        scrollView.addSubview(IncomeLabel)
-        scrollView.addSubview(ExpenseLabel)
-        scrollView.addSubview(IncomeMoneyTitle)
-        scrollView.addSubview(ExpenseMoneyTitle)
-        scrollView.addSubview(Month)
-        scrollView.addSubview(line1)
-        scrollView.addSubview(line2)
-        
-        
-        //Spending Limit
-        scrollView.addSubview(SpendingLimitLabel)
-        scrollView.addSubview(StuffView)
-        scrollView.addSubview(UserAcountLabel)
-        scrollView.addSubview(MonthForSpending)
-        scrollView.addSubview(Progress)
-        scrollView.addSubview(MoneyLimited)
-        scrollView.addSubview(RemainLabel)
-        scrollView.addSubview(MoneyRemain)
-        scrollView.addSubview(line3)
-        
-        //Accumulate
-        scrollView.addSubview(Accumulate)
-        scrollView.addSubview(frameAccountAccumulate)
-        scrollView.addSubview(frameAccumulate)
-        scrollView.addSubview(UserAccumulateAccount)
-        scrollView.addSubview(AccumulateMoney)
-        scrollView.addSubview(AccProgress)
-        scrollView.addSubview(Target)
-        scrollView.addSubview(line4)
-        
-        //report12Month
-        scrollView.addSubview(MonthBarChart)
-    }
-    
-
- 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        view.addSubview(MainView)
+        view.addSubview(WalletImage)
+        view.addSubview(AlertMainLabel)
+        view.addSubview(AlertExtraLabel)
+        view.addSubview(SwichAlert)
+        view.addSubview(Line)
+        TimeAlertView.addSubview(Datepicker)
+        view.addSubview(TimeAlertView)
+        view.addSubview(TabelNotification)
+        //TimeAlertView.addSubview(Datepicker)
+   
+        TabelNotification.delegate = self
+        TabelNotification.dataSource = self
+        TabelNotification.separatorStyle = .none
+        TabelNotification.backgroundColor = UIColor(hexString: "F1F0F6")
+//        print("Height: \(test.frame.width)")
+        TimeAlertView.isHidden = true
+        ConfigureData()
+        SwichAlert.isOn =  UserDefaults.standard.bool(forKey: "switchState")
+        if SwichAlert.isOn{
+            TimeAlertView.isHidden = false
+            self.Line.frame.origin.y = 230
+            self.TabelNotification.frame.origin.y = 232
+            PushNotification()
+            if let savedNotificationDate = savedNotificationDate {
+                Datepicker.date = savedNotificationDate
+            }
+        }else{
+            
+        }
+        AddConstraints()
+}
 
 }
 
+extension ReportViewController{
+    
+    func AddConstraints(){
+        var constraints = [NSLayoutConstraint]()
+        
+       constraints.append(TabelNotification.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor))
+        constraints.append(TabelNotification.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor))
+       constraints.append(TabelNotification.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        constraints.append(TabelNotification.topAnchor.constraint(equalTo: Line.safeAreaLayoutGuide.bottomAnchor,constant: 0))
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    
+    func ConfigureData(){
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
+        ref.observe(.value, with: { [self] (snapshot) in
+          // cập nhật data
+          self.NotifiArray = [];
+          for children in snapshot.children {
+            if let postSnapshot = children as? DataSnapshot {
+                if let Noti = postSnapshot.childSnapshot(forPath: "Notification").value as? String,
+                let Date = postSnapshot.childSnapshot(forPath: "Date").value as? String{
+                    self.NotifiArray.append((Noti: Noti, Time: Date))
+              }
+            }
+          }
+          // cập nhật ui
+          self.TabelNotification.reloadData()
+        })
+    }
+    
+    @objc func TurnOnAlert(sender: UISwitch){
+        let center = UNUserNotificationCenter.current()
+        if sender.isOn{
+        TimeAlertView.isHidden = false
+        self.Line.frame.origin.y = 230
+            self.TabelNotification.frame.origin.y = 232
+            savedNotificationDate = Datepicker.date
+            center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+                //  Enable or disable features based on authorization.
+                 if(!granted){
+                     print("not accept authorization")
+                 }else{
+                     print("accept authorization")
+
+                     center.delegate = self
+                    UNUserNotificationCenter.current().delegate = self
+
+                 }
+
+             }
+            PushNotification()
+    }else{
+            //UIApplication.shared.unregisterForRemoteNotifications()
+            center.removeAllPendingNotificationRequests()
+            TimeAlertView.isHidden = true
+            self.Line.frame.origin.y = 195
+            self.TabelNotification.frame.origin.y = 197
+        }
+        UserDefaults.standard.set(sender.isOn, forKey: "switchState")
+    }
+    
+     func PushNotification(){
+        let content = UNMutableNotificationContent()
+                content.title = NSString.localizedUserNotificationString(forKey: "We have a new message for you", arguments: nil)
+                content.body = NSString.localizedUserNotificationString(forKey: "Open the app for see", arguments: nil)
+                content.sound = UNNotificationSound.default
+
+        let dateFormatr = DateFormatter()
+        dateFormatr.dateFormat = "h"
+        let hour = dateFormatr.string(from: (Datepicker.date))
+        
+        dateFormatr.dateFormat = "m"
+        let minute = dateFormatr.string(from: (Datepicker.date))
+
+//        let center = UNUserNotificationCenter.current()
+        let center = UNUserNotificationCenter.current()
+        var dateInfo = DateComponents()
+        dateInfo.hour = Int(hour)!
+        dateInfo.minute = Int(minute)!
+
+        print("dateInfo: \(dateInfo)")
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: true)
+
+    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        //let center = UNUserNotificationCenter.current()
+        center.add(request) { (error) in
+            if let error = error {
+                print("ErrorABC \(error.localizedDescription)")
+            }else{
+                print("send!!")
+            }
+        }
 
 
+    }
+    
+    
+    
+ @objc func PushNotificationValueChanged(sender: UIDatePicker){
+    //let center = UNUserNotificationCenter.current()
+   // center.removeAllPendingNotificationRequests()
+    savedNotificationDate = sender.date
+    PushNotification()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print(notification.request.content.title)
+        // Play a sound.
+//        completionHandler(UNNotificationPresentationOptions.sound)
+        completionHandler([.banner, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.title)
+    }
+}
+
+extension ReportViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        NotifiArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = NotificationViewCell.cellForTableView(tableView: TabelNotification)
+        let Data = NotifiArray[indexPath.row]
+        cell.DateLabel.text = "Thời gian: " + Data.Time
+        cell.NotiLabel.text = Data.Noti
+        return cell
+    }
+}

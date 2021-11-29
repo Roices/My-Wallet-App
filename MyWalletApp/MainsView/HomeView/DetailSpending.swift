@@ -51,6 +51,8 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
         table.layer.cornerRadius = 15.0
         table.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = UIColor(hexString: "F1F0F6")
+        table.separatorStyle = .none
         return table
     }()
     override func viewDidLoad() {
@@ -68,6 +70,25 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
         UpdateData()
         tableDetail.delegate = self
         tableDetail.dataSource = self
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1136:
+                    print("iPhone 5 or 5S or 5C or SE")
+                    CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                default:
+                    print("Unknown")
+                    CategoryLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+                }
+            }
     }
 }
 
@@ -138,6 +159,7 @@ extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
         cell.AccountLabel.text = "Account: " + Data.Account
         cell.ImageView.image = UIImage(named: Data.Detail)
         cell.NoteLabel.text = "Note: " + Data.Note
+        cell.ValueLabel.text = Data.Value + "đ"
         return cell
     }
     

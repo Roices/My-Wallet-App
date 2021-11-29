@@ -147,10 +147,18 @@ class WalletViewController: UIViewController {
         
         tableWallet.delegate = self
         tableWallet.dataSource = self
+        tableWallet.separatorStyle = .none
+        tableWallet.backgroundColor = UIColor(hexString: "F1F0F6")
+        
         SavingPlanTable.delegate = self
         SavingPlanTable.dataSource = self
+        SavingPlanTable.separatorStyle = .none
+        SavingPlanTable.backgroundColor = UIColor(hexString: "F1F0F6")
+        
         AccumulationPlanTable.delegate = self
         AccumulationPlanTable.dataSource = self
+        AccumulationPlanTable.separatorStyle = .none
+        AccumulationPlanTable.backgroundColor = UIColor(hexString: "F1F0F6")
         //Configure data for Accoutlist,SavingPlanList,AccumulationPlanList
         UpdateDataforAccoutList()
         UpdateDataForSavingPlan()

@@ -58,22 +58,32 @@
                                 <color key="textColor" systemColor="systemGray3Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yLJ-Yg-GVL">
+                                <rect key="frame" x="0.0" y="85" width="340" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="GWh-TI-9As"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="AkV-cf-3MG" firstAttribute="leading" secondItem="qJ1-Pk-bVM" secondAttribute="leading" constant="18" id="3Vl-oU-unh"/>
-                            <constraint firstAttribute="bottom" secondItem="IXY-ff-qPG" secondAttribute="bottom" constant="23" id="3gQ-Q7-xw1"/>
-                            <constraint firstAttribute="bottom" secondItem="EML-5l-qYq" secondAttribute="bottom" constant="34" id="6K2-lt-z7A"/>
                             <constraint firstItem="AkV-cf-3MG" firstAttribute="top" secondItem="qJ1-Pk-bVM" secondAttribute="top" constant="23" id="8Tm-rY-Rf3"/>
-                            <constraint firstAttribute="bottom" secondItem="AkV-cf-3MG" secondAttribute="bottom" constant="23" id="GmZ-Lw-4vg"/>
                             <constraint firstItem="Aqc-LI-jdw" firstAttribute="leading" secondItem="AkV-cf-3MG" secondAttribute="trailing" constant="10" id="JeQ-27-8i5"/>
                             <constraint firstItem="EML-5l-qYq" firstAttribute="leading" secondItem="Aqc-LI-jdw" secondAttribute="trailing" constant="8" symbolic="YES" id="PCf-qt-9tN"/>
                             <constraint firstItem="IXY-ff-qPG" firstAttribute="top" secondItem="Aqc-LI-jdw" secondAttribute="bottom" constant="4" id="cLZ-YY-cLC"/>
                             <constraint firstItem="EML-5l-qYq" firstAttribute="top" secondItem="qJ1-Pk-bVM" secondAttribute="top" constant="35" id="ebD-kx-TfT"/>
                             <constraint firstItem="IXY-ff-qPG" firstAttribute="leading" secondItem="AkV-cf-3MG" secondAttribute="trailing" constant="10" id="h0K-Qp-2Hy"/>
+                            <constraint firstItem="yLJ-Yg-GVL" firstAttribute="top" secondItem="IXY-ff-qPG" secondAttribute="bottom" constant="22" id="kSo-87-uzb"/>
                             <constraint firstAttribute="trailing" secondItem="IXY-ff-qPG" secondAttribute="trailing" constant="125" id="lFp-vG-b8z"/>
+                            <constraint firstItem="yLJ-Yg-GVL" firstAttribute="leading" secondItem="qJ1-Pk-bVM" secondAttribute="leading" id="n8u-dp-oQM"/>
+                            <constraint firstItem="yLJ-Yg-GVL" firstAttribute="top" secondItem="EML-5l-qYq" secondAttribute="bottom" constant="33" id="nTj-Wp-dIx"/>
+                            <constraint firstAttribute="trailing" secondItem="yLJ-Yg-GVL" secondAttribute="trailing" id="o0n-ea-uxB"/>
                             <constraint firstItem="Aqc-LI-jdw" firstAttribute="top" secondItem="qJ1-Pk-bVM" secondAttribute="top" constant="26" id="spn-1L-D7q"/>
+                            <constraint firstItem="yLJ-Yg-GVL" firstAttribute="top" secondItem="AkV-cf-3MG" secondAttribute="bottom" constant="22" id="vTn-pJ-Nnv"/>
                             <constraint firstAttribute="trailing" secondItem="EML-5l-qYq" secondAttribute="trailing" constant="8" id="xML-wt-KQo"/>
+                            <constraint firstAttribute="bottom" secondItem="yLJ-Yg-GVL" secondAttribute="bottom" id="xRf-wE-Obb"/>
                         </constraints>
                     </view>
                 </subviews>

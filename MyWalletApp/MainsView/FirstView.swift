@@ -56,6 +56,7 @@ class FirstView: UIViewController,UITextFieldDelegate {
         view.addSubview(TextFld_Account)
         view.addSubview(label)
         view.addSubview(StartButton)
+        UserDefaults.standard.setValue("tuan dep trai", forKey: "Username")
         // Do any additional setup after loading the view.
     }
 

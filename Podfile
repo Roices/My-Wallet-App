@@ -8,6 +8,7 @@ target 'MyWalletApp' do
    pod 'Firebase/Auth'
    pod 'Firebase/Core'
    pod 'Firebase/Database'
+   pod 'Firebase/Messaging'
    pod 'Charts'
    pod 'FSCalendar'
    pod 'MonthYearPicker'

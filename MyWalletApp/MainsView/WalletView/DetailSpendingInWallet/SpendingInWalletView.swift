@@ -69,7 +69,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     
     let LineView : UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0.075*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.025*UIScreen.main.bounds.height))
-        let color = UIColor(hexString: "D6D6D6")
+        let color = UIColor(hexString: "F1F0F6")
         view.backgroundColor =  color
         return view
     }()
@@ -147,6 +147,8 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         picker.isHidden = true
         tableData.delegate = self
         tableData.dataSource = self
+        tableData.backgroundColor = UIColor(hexString: "F1F0F6")
+        tableData.separatorStyle = .none
         
         TotalValue = UserDefaults.standard.string(forKey: "\(Path)")!
         totalValueLabel.text = "Total: " + "\(TotalValue)đ"
@@ -211,6 +213,24 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         MainView.addSubview(ExpenseIncomeView)
         addConstraints()
         
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1136:
+                    print("iPhone 5 or 5S or 5C or SE")
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                default:
+                    print("Unknown")
+                    AccountTitleLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+                }
+            }
     }
     
     func addConstraints(){
@@ -375,7 +395,7 @@ extension SpendingInWalletView:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
            let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0.025*UIScreen.main.bounds.height))
-           let color = UIColor(hexString: "D6D6D6")
+           let color = UIColor(hexString: "F1F0F6")
            view.backgroundColor =  color
 
 

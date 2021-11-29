@@ -18,7 +18,7 @@ class SavingView: UIViewController, CAAnimationDelegate {
     
     let ScrollView : UIScrollView = {
         let ScrollView = UIScrollView()
-        ScrollView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+        ScrollView.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
         return ScrollView
     }()
     

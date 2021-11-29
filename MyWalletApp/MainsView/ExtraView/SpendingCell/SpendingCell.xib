@@ -72,6 +72,13 @@
                                 <color key="textColor" systemColor="systemGray3Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fom-UE-ujb">
+                                <rect key="frame" x="0.0" y="97" width="374" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="8y6-6F-C6b"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -80,8 +87,11 @@
                             <constraint firstItem="akh-wN-BN0" firstAttribute="top" secondItem="ONi-ho-uIa" secondAttribute="top" constant="20" symbolic="YES" id="7ID-fU-8ho"/>
                             <constraint firstItem="4Io-aL-FNl" firstAttribute="top" secondItem="zYb-OL-tUJ" secondAttribute="bottom" constant="3" id="9V2-Xn-1Mo"/>
                             <constraint firstAttribute="bottom" secondItem="akh-wN-BN0" secondAttribute="bottom" constant="22" id="BiE-Sf-a2t"/>
-                            <constraint firstAttribute="bottom" secondItem="rna-Tv-3zT" secondAttribute="bottom" constant="22" id="C7E-VH-DTr"/>
                             <constraint firstAttribute="trailing" secondItem="rna-Tv-3zT" secondAttribute="trailing" constant="140" id="DvH-3e-Lzm"/>
+                            <constraint firstItem="Fom-UE-ujb" firstAttribute="top" secondItem="rna-Tv-3zT" secondAttribute="bottom" constant="21" id="MFo-Ki-bz2"/>
+                            <constraint firstAttribute="trailing" secondItem="Fom-UE-ujb" secondAttribute="trailing" id="Mt1-a9-uut"/>
+                            <constraint firstAttribute="bottom" secondItem="Fom-UE-ujb" secondAttribute="bottom" id="UGZ-sJ-2mT"/>
+                            <constraint firstItem="Fom-UE-ujb" firstAttribute="leading" secondItem="ONi-ho-uIa" secondAttribute="leading" id="Z1B-1Z-6yA"/>
                             <constraint firstItem="rna-Tv-3zT" firstAttribute="top" secondItem="4Io-aL-FNl" secondAttribute="bottom" constant="3" id="ZRe-1F-fTl"/>
                             <constraint firstItem="4Io-aL-FNl" firstAttribute="leading" secondItem="akh-wN-BN0" secondAttribute="trailing" constant="8" symbolic="YES" id="Zzj-es-fVx"/>
                             <constraint firstItem="akh-wN-BN0" firstAttribute="leading" secondItem="ONi-ho-uIa" secondAttribute="leading" constant="17" id="eIM-p4-S3p"/>

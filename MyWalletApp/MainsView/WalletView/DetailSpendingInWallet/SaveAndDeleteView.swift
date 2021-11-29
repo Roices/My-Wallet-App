@@ -260,6 +260,30 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         Calendar.dataSource = self
 
         
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1136:
+                    print("iPhone 5 or 5S or 5C or SE")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                    
+
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                default:
+                    print("Unknown")
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 50, width: 150, height: 45)
+                    BackButton.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+                }
+            }
+        
         //call Function For UpdateData -> ListAccountTable
         self.hideKeyboardWhenTappedAround()
         print("key: \(key)")
@@ -472,12 +496,15 @@ extension SaveAndDeleteView{
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
             
             let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
+            
+            let refforNotification = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
         // remove value
             DeleteData(childPath: TimeDeleted, key: key)
             DeleteDataHomeView()
 
             let newRef = ref.childByAutoId()
             let newRefforHomeView = refforHomeView.childByAutoId()
+            let NewRefforNotification = refforNotification.childByAutoId()
             //creat new data
         let val: [String : Any] = [
             "Category": CategoryButton.titleLabel?.text as Any,
@@ -487,10 +514,19 @@ extension SaveAndDeleteView{
             "Account": AccountButton.titleLabel?.text as Any,
             "Detail": ButtonList.titleLabel?.text as Any
         ]
-
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "yyyy/MM/dd HH:mm"
+            let date = Date()
+            let newDateformatter = dateFormatterPrint.string(from: date)
+            let valforNotification: [String : Any] = [
+                "Notification": "Cập nhật chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+                "Date": newDateformatter
+            ]
+            
         // push value
             newRef.setValue(val)
             newRefforHomeView.setValue(val)
+            NewRefforNotification.setValue(valforNotification)
             let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
         let transition = CATransition.init()
         transition.duration = 0.5
@@ -511,6 +547,21 @@ extension SaveAndDeleteView{
     @objc func DeleteButtonAction(){
         DeleteData(childPath: TimeDeleted, key: key)
         DeleteDataHomeView()
+        let path = UserDefaults.standard.string(forKey: "Username")
+        let refforNotification = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
+        // tạo ref đến dữ liệu có key thỏa mãn
+        let NewRefforNotification = refforNotification.childByAutoId()
+        
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "yyyy/MM/dd HH:mm"
+        let date = Date()
+        let newDateformatter = dateFormatterPrint.string(from: date)
+        let valforNotification: [String : Any] = [
+            "Notification": "Xóa chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+            "Date": newDateformatter
+        ]
+
+        NewRefforNotification.setValue(valforNotification)
         let mapView = (self.storyboard?.instantiateViewController(identifier: "SpendingInWalletView"))! as SpendingInWalletView
     let transition = CATransition.init()
     transition.duration = 0.5

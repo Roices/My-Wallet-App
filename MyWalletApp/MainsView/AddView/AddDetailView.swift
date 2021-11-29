@@ -408,9 +408,12 @@ extension AddDetailView{
             let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("\(AccountChoiced)")
             
             let refforHomeView = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("\(Time)").child("DataHomeView")
+            
+            let refforNotification = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath:path!).child("Notification")
 
         let newRef = ref.childByAutoId()
         let newRefforHomeView = refforHomeView.childByAutoId()
+        let NewRefforNotification = refforNotification.childByAutoId()
         // creat new value
             
         let val: [String : Any] = [
@@ -421,10 +424,18 @@ extension AddDetailView{
             "Account": AccountButton.titleLabel?.text as Any,
             "Detail": ButtonList.titleLabel?.text as Any
         ]
-
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "yyyy/MM/dd HH:mm"
+            let date = Date()
+            let newDateformatter = dateFormatterPrint.string(from: date)
+            let valforNotification: [String : Any] = [
+                "Notification": "Bạn đã nhập \((MoneyInput.text)!)đ cho mục \((ButtonList.titleLabel?.text)!) của ví \((AccountButton.titleLabel?.text)!)",
+                "Date": newDateformatter
+            ]
         // push value
             newRef.setValue(val)
             newRefforHomeView.setValue(val)
+            NewRefforNotification.setValue(valforNotification)
             
             MoneyInput.text = ""
             ButtonList.setTitle("--------Category--------", for: .normal)

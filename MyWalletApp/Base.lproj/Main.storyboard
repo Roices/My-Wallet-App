@@ -145,6 +145,22 @@
             </objects>
             <point key="canvasLocation" x="6572.4637681159429" y="886.60714285714278"/>
         </scene>
+        <!--Item-->
+        <scene sceneID="mU3-Zt-npB">
+            <objects>
+                <viewController storyboardIdentifier="LogOutView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6fj-UG-XrB" customClass="LogOutView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9w9-Z7-rDt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="oXf-oE-u5C"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="gM7-vH-Nec"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Caw-wn-bKG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7626" y="896"/>
+        </scene>
         <!--Detail Spending-->
         <scene sceneID="KBx-1R-Gd5">
             <objects>
@@ -559,6 +575,7 @@
                         <segue destination="8c7-cB-5Vz" kind="relationship" relationship="viewControllers" id="1at-Ft-v00"/>
                         <segue destination="OKX-Wb-xvL" kind="relationship" relationship="viewControllers" id="EVW-sc-2LD"/>
                         <segue destination="fx0-rr-a4h" kind="relationship" relationship="viewControllers" id="FNO-Am-voS"/>
+                        <segue destination="6fj-UG-XrB" kind="relationship" relationship="viewControllers" id="Wbn-K6-g3U"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bNA-P4-PA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -39,6 +39,7 @@
 		17B4F6A227000B50006634B4 /* DetailAccumulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4F6A127000B4F006634B4 /* DetailAccumulation.swift */; };
 		17CEC586275471FD00BD9B03 /* NotificationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CEC584275471FD00BD9B03 /* NotificationViewCell.swift */; };
 		17CEC587275471FD00BD9B03 /* NotificationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17CEC585275471FD00BD9B03 /* NotificationViewCell.xib */; };
+		17CEC58B2755BFD700BD9B03 /* LogOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CEC58A2755BFD700BD9B03 /* LogOutView.swift */; };
 		17D0177B26A7BA770043FEE7 /* DetailSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177A26A7BA770043FEE7 /* DetailSpending.swift */; };
 		17D0177E26A7BC420043FEE7 /* SpendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0177C26A7BC420043FEE7 /* SpendingCell.swift */; };
 		17D0177F26A7BC420043FEE7 /* SpendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D0177D26A7BC420043FEE7 /* SpendingCell.xib */; };
@@ -110,6 +111,7 @@
 		17B4F6A127000B4F006634B4 /* DetailAccumulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAccumulation.swift; sourceTree = "<group>"; };
 		17CEC584275471FD00BD9B03 /* NotificationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewCell.swift; sourceTree = "<group>"; };
 		17CEC585275471FD00BD9B03 /* NotificationViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationViewCell.xib; sourceTree = "<group>"; };
+		17CEC58A2755BFD700BD9B03 /* LogOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutView.swift; sourceTree = "<group>"; };
 		17D0177A26A7BA770043FEE7 /* DetailSpending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSpending.swift; sourceTree = "<group>"; };
 		17D0177C26A7BC420043FEE7 /* SpendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingCell.swift; sourceTree = "<group>"; };
 		17D0177D26A7BC420043FEE7 /* SpendingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpendingCell.xib; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				17E9BF3626A5C7DE00E6155B /* FirstView.swift */,
+				17CEC5892755BDE800BD9B03 /* LogOutView */,
 				174CA5A326DDC1DB0061E240 /* ReportView */,
 				174CA5A226DDC1C60061E240 /* HomeView */,
 				174CA59D26D69B4A0061E240 /* AddView */,
@@ -332,6 +335,14 @@
 				17CEC585275471FD00BD9B03 /* NotificationViewCell.xib */,
 			);
 			path = NotificationCell;
+			sourceTree = "<group>";
+		};
+		17CEC5892755BDE800BD9B03 /* LogOutView */ = {
+			isa = PBXGroup;
+			children = (
+				17CEC58A2755BFD700BD9B03 /* LogOutView.swift */,
+			);
+			path = LogOutView;
 			sourceTree = "<group>";
 		};
 		17D0178C26B051CE0043FEE7 /* AddCell */ = {
@@ -586,6 +597,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17CEC58B2755BFD700BD9B03 /* LogOutView.swift in Sources */,
 				172A947F268DC10900774926 /* LoginViewController.swift in Sources */,
 				17E9BF3726A5C7DE00E6155B /* FirstView.swift in Sources */,
 				17B2C6F62698485D004C7D4F /* HomeView.swift in Sources */,

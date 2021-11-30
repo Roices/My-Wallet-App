@@ -84,7 +84,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
     let MainView : UIView = {
         let MainView = UIView()
         MainView.backgroundColor  = .white
-        MainView.layer.cornerRadius = 15.0
+        MainView.layer.cornerRadius = 10.0
         MainView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100 )
         return MainView
     }()

@@ -11,17 +11,17 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController,UITextFieldDelegate{
 
-    @IBOutlet weak var ScrollView: UIScrollView!
-    @IBOutlet var Email:UITextField!
-    @IBOutlet var PassWord:UITextField!
-    @IBOutlet var ButtonLogin:UIButton!
-    @IBOutlet var ViewImage:UIImageView!
-    @IBOutlet var LabelText:UILabel!
-    @IBOutlet weak var ButtonKeyboard: UIButton!
-    @IBOutlet weak var DontHaveAccount: UILabel!
-    @IBOutlet weak var SignUpButton: UIButton!
-    @IBOutlet weak var ForgotButton: UIButton!
-    @IBOutlet weak var MadebyMeLabel: UILabel!
+   // let ScrollView = UIScrollView()
+    let Email = UITextField()
+    let PassWord = UITextField()
+    let ButtonLogin = UIButton()
+    let ViewImage = UIImageView()
+    let LabelText = UILabel()
+   // let ButtonKeyboard = UIButton
+    let DontHaveAccount = UILabel()
+    let SignUpButton = UIButton()
+    let ForgotButton = UIButton()
+    let MadebyMeLabel = UILabel()
     
     
     override func viewDidLoad() {
@@ -32,6 +32,18 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillHideNotification, object: nil)
+        
+        view.addSubview(Email)
+        view.addSubview(PassWord)
+        view.addSubview(ButtonLogin)
+        view.addSubview(ViewImage)
+        view.addSubview(LabelText)
+        view.addSubview(DontHaveAccount)
+        view.addSubview(SignUpButton)
+        view.addSubview(ForgotButton)
+        view.addSubview(MadebyMeLabel)
+        
+        
         CustomUI()
         if FirebaseAuth.Auth.auth().currentUser != nil{
             //Change ->View
@@ -46,13 +58,18 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
     
     
     
-    @IBAction func Login(_ sender: Any) {
+    @objc func Login(sender: UIButton) {
+        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
         guard let email = Email.text, !email.isEmpty,
               let password = PassWord.text,!password.isEmpty else{
             print("Missing field data")
             //Missing data!!!!!
             
-            //code here
+            let controller = UIAlertController.init(title: "", message: "Password or account invalid", preferredStyle: .alert)
+            controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                }))
+                self.present(controller, animated: true, completion: nil)
+                
             
             //
             return
@@ -63,71 +80,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
             }
             guard error == nil else{
                 // show accout creation
-
+                let controller = UIAlertController.init(title: "", message: "Password or account invalid", preferredStyle: .alert)
+                controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                    }))
+                self!.present(controller, animated: true, completion: nil)
                 return
             }
             print("U have signed in")
             //Change -> View
-            
-//            let path = UserDefaults.standard.string(forKey: "Username")
-//            let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
-//
-//            // tạo ref đến dữ liệu mới
-//    //        let newRef = ref.child("Internet")
-//
-//            // tạo value cho dữ liệu mới
-//            let val: [String : Any] = [
-//              "Account": "",
-//              "Sinh Hoạt": "",
-//              "Dịch vụ": "",
-//                "Con cái": "",
-//                "Học tập": "",
-//                "Du lịch": "",
-//                "Đi lại": "",
-//                "Shopping": "",
-//                "Nhà cửa": "",
-//                "Sức khỏe": "",
-//                "Hiếu hỉ": "",
-//                "Ngân hàng": ""
-//
-//            ]
-//
-//            // đẩy dữ liệu
-//         //  newRef.setValue(val)
-//         ref.setValue(val)
+
+            self?.navigationController?.pushViewController(mapview, animated: true)
         })
-        
-        let path = UserDefaults.standard.string(forKey: "Username")
-        let ref = Database.database(url: "https://mywallet-c06cf-default-rtdb.asia-southeast1.firebasedatabase.app").reference(withPath: path!)
-
-        // tạo value cho dữ liệu mới
-        let val: [String : Any] = [
-          "Account": ""
-        ]
-
-        // đẩy dữ liệu
-     //  newRef.setValue(val)
-     ref.setValue(val)
-        
-        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
-        self.navigationController?.pushViewController(mapview, animated: true)
+//        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
+//        self.navigationController?.pushViewController(mapview, animated: true)
     }
     
 
     
-    @IBAction func SignUp(){
+    @objc func SignUp(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "RegistrationView"))! as RegistrationViewcontroller
                  self.navigationController?.pushViewController(mapView, animated: true)
     }
     
-    @IBAction func ResetPassword(){
+    @objc func ResetPassword(sender: UIButton){
         let mapView = (self.storyboard?.instantiateViewController(identifier: "ResetViewcontroller"))! as ResetView
             self.navigationController?.pushViewController(mapView, animated: true)
     }
     
    
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            
             self.view.endEditing(true)
              return false
     }
@@ -164,34 +145,58 @@ extension LoginViewController{
         Email.layer.borderColor = UIColor.lightGray.cgColor
         Email.layer.cornerRadius = Email.frame.size.height/2
         Email.clipsToBounds = true
+        Email.placeholder = "Email"
+        Email.withImage(direction: .Left, image: UIImage(named: "Gmail")!)
+        Email.layer.cornerRadius = 10.0
         
         
-    
         PassWord.frame = CGRect(x: ScreenWitdh/10, y: 0.5*ScreenHeight, width: (ScreenWitdh*4)/5, height: 0.08*ScreenHeight)
         PassWord.layer.borderWidth = 0.65
         PassWord.layer.borderColor = UIColor.lightGray.cgColor
         PassWord.layer.cornerRadius = PassWord.frame.size.height/2
         PassWord.clipsToBounds = true
+        PassWord.withImage(direction: .Left, image: UIImage(named: "Password")!)
+        PassWord.placeholder = "Password"
+        PassWord.layer.cornerRadius = 10.0
         
         
-        
-        let color = UIColor(hexString: "3D87ED")
         ButtonLogin.frame = CGRect(x: ScreenWitdh/10, y: 0.65*ScreenHeight, width: (ScreenWitdh*4)/5, height: 0.08*ScreenHeight)
         ButtonLogin.layer.cornerRadius = ButtonLogin.frame.size.height/2
-        ButtonLogin.backgroundColor = color
+        ButtonLogin.backgroundColor = UIColor(hexString: "090F52")
+        ButtonLogin.addTarget(self, action: #selector(Login), for: .touchUpInside)
+        ButtonLogin.setTitle("SIGN IN", for: .normal)
+        ButtonLogin.setTitleColor(.white, for: .normal)
+        ButtonLogin.layer.cornerRadius = 10.0
+        ButtonLogin.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
         
-
-        DontHaveAccount.frame.origin.x = 0.347*ScreenWitdh
-        DontHaveAccount.frame.origin.y = 0.825*ScreenHeight
+        ForgotButton.frame = CGRect(x: 0.5 * ScreenWitdh  , y: 0.58*ScreenHeight, width: 0.4*ScreenWitdh, height: 0.033*ScreenHeight)
+        ForgotButton.setTitle("Forgot password", for: .normal)
+        ForgotButton.setTitleColor(.lightGray, for: .normal)
+        ForgotButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13.0)
+        ForgotButton.contentHorizontalAlignment = .right
+        ForgotButton.addTarget(self, action: #selector(ResetPassword), for: .touchUpInside)
+        
+        
+        DontHaveAccount.frame = CGRect(x: 0.3*ScreenWitdh, y: 0.825*ScreenHeight, width: 0.4*ScreenWitdh, height: 40)
+        DontHaveAccount.text = "Don't have an account?"
+        DontHaveAccount.font = UIFont.boldSystemFont(ofSize: 12.0)
+        DontHaveAccount.textColor = .lightGray
+        DontHaveAccount.textAlignment = .center
         
         SignUpButton.frame.origin.x = 0.385*ScreenWitdh
         SignUpButton.frame.origin.y = 0.84*ScreenHeight
+        SignUpButton.frame = CGRect(x: 0.3*ScreenWitdh, y: 0.84*ScreenHeight, width: 0.4*ScreenWitdh, height: 50)
+        SignUpButton.setTitle("SIGN UP", for: .normal)
+        SignUpButton.setTitleColor(UIColor(hexString: "4369DE"), for: .normal)
+        SignUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+        SignUpButton.addTarget(self, action: #selector(SignUp), for: .touchUpInside)
         
-        ForgotButton.frame = CGRect(x: 0.5 * ScreenWitdh  , y: 0.58*ScreenHeight, width: 0.4*ScreenWitdh, height: 0.033*ScreenHeight)
         
-       
-        MadebyMeLabel.frame.origin.x = 0.432*ScreenWitdh
-        MadebyMeLabel.frame.origin.y = 0.935*ScreenHeight
+        MadebyMeLabel.frame = CGRect(x: 0.3*ScreenWitdh, y: 0.935*ScreenHeight, width: 0.4*ScreenWitdh, height: 50)
+        MadebyMeLabel.text = "Made by me"
+        MadebyMeLabel.textAlignment = .center
+        MadebyMeLabel.textColor = .lightGray
+        MadebyMeLabel.font = UIFont.boldSystemFont(ofSize: 10.0)
         
        
     }

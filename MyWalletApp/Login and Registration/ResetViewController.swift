@@ -12,14 +12,14 @@ import FirebaseAuth
 
 class ResetView: UIViewController,UITextFieldDelegate {
 
-    @IBOutlet weak var EmailTField: UITextField!
-    @IBOutlet weak var ResetPassWord: UIButton!
-    @IBOutlet weak var NoticeLabel: UILabel!
-    @IBOutlet weak var DontHaveAcountLabel: UILabel!
+    let EmailTField = UITextField()
+    let ResetPassWord = UIButton()
+    let NoticeLabel = UILabel()
+    let DontHaveAcountLabel = UILabel()
     
-    @IBOutlet weak var SignUpButton: UIButton!
-    @IBOutlet weak var BackButton: UIButton!
-    @IBOutlet weak var LoginLabel: UILabel!
+    let SignUpButton = UIButton()
+    let BackButton = UIButton()
+    let LoginLabel =  UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

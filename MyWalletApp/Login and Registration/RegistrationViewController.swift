@@ -14,16 +14,16 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     
     //cmt
     
-    @IBOutlet weak var EmailField: UITextField!
-    @IBOutlet weak var UserNameField: UITextField!
-    @IBOutlet weak var PasswordTextField: UITextField!
-    @IBOutlet weak var ConfirmPasswordField: UITextField!
-    @IBOutlet weak var SignUp: UIButton!
-    @IBOutlet weak var BackButton: UIButton!
-    @IBOutlet weak var RegistrationLabel: UILabel!
-    @IBOutlet weak var LoginLabel: UILabel!
+    let EmailField = UITextField()
+    let UserNameField = UITextField()
+    let PasswordTextField = UITextField()
+    let ConfirmPasswordField = UITextField()
+    let SignUp = UIButton()
+    let BackButton = UIButton()
+    let RegistrationLabel = UILabel()
+    let LoginLabel = UILabel()
     
-    @IBOutlet weak var ScrollView: UIScrollView!
+    let ScrollView = UIScrollView()
     var isSecureText = false
     var isSecureText2 = false
     
@@ -32,7 +32,16 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
+        view.addSubview(ScrollView)
+        ScrollView.addSubview(EmailField)
+        ScrollView.addSubview(UserNameField)
+        ScrollView.addSubview(PasswordTextField)
+        ScrollView.addSubview(ConfirmPasswordField)
+        ScrollView.addSubview(SignUp)
+        ScrollView.addSubview(BackButton)
+        ScrollView.addSubview(RegistrationLabel)
+        ScrollView.addSubview(LoginLabel)
+        
         ref = Database.database().reference()
         EmailField.delegate = self
         UserNameField.delegate = self
@@ -58,14 +67,25 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
     }
 
 
-    @IBAction func SignUpAction(_ sender: Any) {
+    @objc func SignUpAction(sender: UIButton) {
         guard let email = EmailField.text, !email.isEmpty, let password = PasswordTextField.text,!password.isEmpty else {
             //Missing data!!!!!
             
-            //codehere
-            
-            //
+            // show accout creation
+            let controller = UIAlertController.init(title: "", message: "Missing field data", preferredStyle: .alert)
+            controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                }))
+            self.present(controller, animated: true, completion: nil)
             return
+            
+            
+        }
+        
+        if PasswordTextField.text != ConfirmPasswordField.text{
+            let controller = UIAlertController.init(title: "", message: "Can't confirm password", preferredStyle: .alert)
+            controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                }))
+            self.present(controller, animated: true, completion: nil)
         }
     
         FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {[weak self]result, error in
@@ -74,14 +94,26 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
                 return
             }
             guard error == nil else{
-                
+                let controller = UIAlertController.init(title: "", message: "Please enter the correct information", preferredStyle: .alert)
+                controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                    }))
                 return
             }
             print("success")
             let alert = UIAlertController(title: "Success", message: "You have successfully registered!", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK",style: .default))
+            alert.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+                let mapView = self?.storyboard?.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+                let transition = CATransition.init()
+                transition.duration = 0.5
+                transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+                transition.type = CATransitionType.push //Transition you want like Push, Reveal
+                transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+                transition.delegate = self as! CAAnimationDelegate
+                self!.view.window!.layer.add(transition, forKey: kCATransition)
+                self?.navigationController?.pushViewController(mapView, animated: true)
+            }))
             self!.present(alert, animated: true, completion: nil)
-         
+            
             print("Succsess")
             UserDefaults.standard.setValue(self!.UserNameField.text, forKey: "Username")
         })
@@ -96,16 +128,17 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
 }
     
     
-    
-   @IBAction func backtoLogin(){
-        let mapview = (self.storyboard?.instantiateViewController(identifier: "LoginViewController"))! as LoginViewController
-       self.navigationController?.pushViewController(mapview, animated: true)
+    @objc func backtoLogin(sender: UIButton){
+        let mapView = self.storyboard?.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+        let transition = CATransition.init()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
+        transition.type = CATransitionType.push //Transition you want like Push, Reveal
+        transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
+        transition.delegate = (self as! CAAnimationDelegate)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(mapView, animated: true)
     }
-    
-    
-//    @objc func myTargetFunction(textField: UITextField) {
-//        registerNotifications()
-//    }
     
     @objc func keyboardWillShow(notification: Notification) {
              guard let userInfo = notification.userInfo,
@@ -131,44 +164,58 @@ extension RegistrationViewcontroller{
         let ScreenWitdh = UIScreen.main.bounds.width
         let ScreenHeight = UIScreen.main.bounds.height
         
+        ScrollView.frame = CGRect(x: 0, y: 0, width: ScreenWitdh, height: ScreenHeight)
+        
         EmailField.frame = CGRect(x: 0.075*ScreenWitdh, y: 0.33*ScreenHeight, width: ScreenWitdh*0.85, height: 0.08*ScreenHeight)
         EmailField.layer.borderWidth = 0.65
         EmailField.layer.borderColor = UIColor.lightGray.cgColor
-        EmailField.layer.cornerRadius = EmailField.frame.size.height/2
         EmailField.clipsToBounds = true
+        EmailField.withImage(direction: .Left, image: UIImage(named: "Gmail")!)
+        EmailField.placeholder = "Email"
+        EmailField.layer.cornerRadius = 10
+        EmailField.autocapitalizationType = .none
         
         
         UserNameField.frame = CGRect(x: ScreenWitdh*0.075, y: 0.435*ScreenHeight, width: ScreenWitdh*0.85, height: 0.08*ScreenHeight)
         UserNameField.layer.borderWidth = 0.65
         UserNameField.layer.borderColor = UIColor.lightGray.cgColor
-        UserNameField.layer.cornerRadius = EmailField.frame.size.height/2
         UserNameField.clipsToBounds = true
-        
+        UserNameField.withImage(direction: .Left, image: UIImage(named: "User")!)
+        UserNameField.placeholder = "Username"
+        UserNameField.layer.cornerRadius = 10
+        UserNameField.autocapitalizationType = .none
         
         
         PasswordTextField.frame = CGRect(x: ScreenWitdh*0.075, y: 0.54*ScreenHeight, width: ScreenWitdh*0.85, height: 0.08*ScreenHeight)
         PasswordTextField.layer.borderWidth = 0.65
         PasswordTextField.layer.borderColor = UIColor.lightGray.cgColor
-        PasswordTextField.layer.cornerRadius = PasswordTextField.frame.size.height/2
         PasswordTextField.clipsToBounds = true
         PasswordTextField.isSecureTextEntry = true
+        PasswordTextField.withImage(direction: .Left, image: UIImage(named: "Password")!)
+        PasswordTextField.placeholder = "Password"
+        PasswordTextField.layer.cornerRadius = 10.0
+        PasswordTextField.autocapitalizationType = .none
         
         
         
         ConfirmPasswordField.frame = CGRect(x: ScreenWitdh*0.075, y: 0.645*ScreenHeight, width: ScreenWitdh*0.85, height: 0.08*ScreenHeight)
         ConfirmPasswordField.layer.borderWidth = 0.65
         ConfirmPasswordField.layer.borderColor = UIColor.lightGray.cgColor
-        ConfirmPasswordField.layer.cornerRadius = ConfirmPasswordField.frame.size.height/2
         ConfirmPasswordField.clipsToBounds = true
         ConfirmPasswordField.isSecureTextEntry = true
+        ConfirmPasswordField.withImage(direction: .Left, image: UIImage(named: "Password")!)
+        ConfirmPasswordField.placeholder = "Confirm password"
+        ConfirmPasswordField.layer.cornerRadius = 10.0
+        ConfirmPasswordField.autocapitalizationType = .none
         
-        
-        let color = UIColor(hexString: "3D87ED")
+    
         SignUp.frame = CGRect(x: ScreenWitdh*0.075, y: 0.75*ScreenHeight, width: ScreenWitdh*0.85, height: 0.08*ScreenHeight)
-        SignUp.layer.cornerRadius = SignUp.frame.size.height/2
-        SignUp.backgroundColor = color
+        SignUp.layer.cornerRadius = 10.0
+        SignUp.backgroundColor = UIColor(hexString: "090F52")
         SignUp.setTitleColor(.white, for: .normal)
-        
+        SignUp.setTitle("SIGN UP", for: .normal)
+        SignUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+        SignUp.addTarget(self, action: #selector(SignUpAction), for: .touchUpInside)
         
         
         let button = UIButton(type: .custom)
@@ -181,26 +228,29 @@ extension RegistrationViewcontroller{
         PasswordTextField.rightViewMode = .always
         
         
-        
         let Button = UIButton(type: .custom)
         ConfirmPasswordField.rightViewMode = .unlessEditing
-        Button.setImage(UIImage(named: "eye"), for: .normal)
         Button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
         Button.addTarget(self, action: #selector(SecureText2(sender:)), for: .touchUpInside)
+        Button.setImage(UIImage(named: "eye")!, for: .normal)
         ConfirmPasswordField.rightView = Button
         ConfirmPasswordField.rightViewMode = .always
-        
-        
+        //ConfirmPasswordField.withImage(direction: .Right, image: UIImage(named: "eye")!)
         
         BackButton.frame = CGRect(x: 0.021*ScreenWitdh, y: 0.07*ScreenHeight, width: 0.2*ScreenWitdh, height: 0.079*ScreenHeight)
-        
-        
+        BackButton.setImage( UIImage(named:"BacktoLogin")!, for: .normal)
         
         RegistrationLabel.frame = CGRect(x: ScreenWitdh*0.075, y: 0.23*ScreenHeight, width:ScreenWitdh*0.85, height: 0.05*ScreenHeight)
+        RegistrationLabel.text = "REGISTRATION"
+        RegistrationLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        RegistrationLabel.textAlignment = .center
+        RegistrationLabel.textColor = .black
         
-        
-        
+    
         LoginLabel.frame = CGRect(x: 0.19*ScreenWitdh, y: 0.09*ScreenHeight, width: 0.25*ScreenWitdh, height: 0.04*ScreenHeight)
+        LoginLabel.text = "LOGIN"
+        LoginLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        LoginLabel.textColor = .black
     }
     @objc func SecureText(sender: UIButton){
         isSecureText = !isSecureText
@@ -213,7 +263,7 @@ extension RegistrationViewcontroller{
     }
     @objc func SecureText2(sender: UIButton){
         isSecureText2 = !isSecureText2
-        if isSecureText == true{
+        if isSecureText2 == true{
             ConfirmPasswordField.isSecureTextEntry = false
         }else{
             ConfirmPasswordField.isSecureTextEntry = true

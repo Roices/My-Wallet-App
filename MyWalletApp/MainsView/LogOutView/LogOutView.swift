@@ -23,13 +23,13 @@ class LogOutView: UIViewController {
         let MainView = UIView()
         MainView.backgroundColor  = .white
         MainView.layer.cornerRadius = 10.0
-        MainView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100 )
+        MainView.frame = CGRect(x: 0, y: 0.111*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.889)
         return MainView
     }()
     
     let WalletImage : UIImageView = {
        let WalletImage = UIImageView(image: UIImage(named: "Wallet"))
-        WalletImage.frame = CGRect(x: 30, y: 120, width: 40, height: 40)
+        WalletImage.frame = CGRect(x: 30, y: 0.134*UIScreen.main.bounds.height, width: 0.04*UIScreen.main.bounds.height, height: 0.04*UIScreen.main.bounds.height)
       //  WalletImage.backgroundColor = .red
         return WalletImage
     }()
@@ -45,7 +45,7 @@ class LogOutView: UIViewController {
     
     lazy var AlertMainLabel : UILabel = {
         let AlertLabel = UILabel()
-        AlertLabel.frame = CGRect(x: 90, y: 125, width: 200, height: 30)
+        AlertLabel.frame = CGRect(x: 90, y: 0.14*UIScreen.main.bounds.height, width: 200, height: 30)
         AlertLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
         AlertLabel.text = UserDefaults.standard.string(forKey: "Username")
        // UserAccountLabel.textAlignment = .center
@@ -54,7 +54,7 @@ class LogOutView: UIViewController {
     
     let AboutLabel : UILabel = {
         let label = UILabel()
-        label.frame = CGRect(x: 30, y: 190, width: 150, height: 40)
+        label.frame = CGRect(x: 30, y: 0.212*UIScreen.main.bounds.height, width: 150, height: 0.04*UIScreen.main.bounds.height)
         label.text = "About"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 20.0)
@@ -63,48 +63,48 @@ class LogOutView: UIViewController {
     
     lazy var AboutView: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 30, y: 230, width: UIScreen.main.bounds.width - 60, height: 180)
+        view.frame = CGRect(x: 30, y: 0.256*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.2*UIScreen.main.bounds.height)
       //  view.backgroundColor = .red
         
-        let label = UILabel(frame: CGRect(x: 0, y: 15, width: 150, height: 30))
+        let label = UILabel(frame: CGRect(x: 0, y: 0.0167*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label.text = "Currency"
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let VNDLabel = UILabel(frame: CGRect(x: view.frame.width - 80, y: 15, width: 50, height: 40))
+        let VNDLabel = UILabel(frame: CGRect(x: view.frame.width - 80, y: 0.0167*UIScreen.main.bounds.height, width: 50, height: 0.04*UIScreen.main.bounds.height))
         VNDLabel.text = "VND"
         VNDLabel.textAlignment = .right
         VNDLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
         
-        let IconRightImage = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 25, width: 20, height: 20))
+        let IconRightImage = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.028*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         IconRightImage.image = UIImage(named: "icons8-forward-60")
-        let line1 = UIView(frame: CGRect(x: 0, y: 59, width: view.frame.width, height: 1))
+        let line1 = UIView(frame: CGRect(x: 0, y: 0.065*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line1.backgroundColor = .lightGray
         line1.alpha = 0.5
         
         //2
-        let label2 = UILabel(frame: CGRect(x: 0, y: 75, width: 150, height: 30))
+        let label2 = UILabel(frame: CGRect(x: 0, y: 0.083*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label2.text = "Privacy Policy"
         label2.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let IconRightImage2 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 75, width: 20, height: 20))
+        let IconRightImage2 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.083*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         IconRightImage2.image = UIImage(named: "icons8-forward-60")
         
-        let line2 = UIView(frame: CGRect(x: 0, y: 119, width: view.frame.width, height: 1))
+        let line2 = UIView(frame: CGRect(x: 0, y: 0.132*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line2.backgroundColor = .lightGray
         line2.alpha = 0.5
         
         //3
-        let label3 = UILabel(frame: CGRect(x: 0, y: 135, width: 150, height: 30))
+        let label3 = UILabel(frame: CGRect(x: 0, y: 0.15*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label3.text = "Terms of use"
         label3.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let IconRightImage3 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 145, width: 20, height: 20))
+        let IconRightImage3 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.161*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         IconRightImage3.image = UIImage(named: "icons8-forward-60")
         
-        let line3 = UIView(frame: CGRect(x: 0, y: 179, width: view.frame.width, height: 1))
+        let line3 = UIView(frame: CGRect(x: 0, y: 0.199*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line3.backgroundColor = .lightGray
         line3.alpha = 0.5
         
@@ -124,7 +124,7 @@ class LogOutView: UIViewController {
     
     let AppLabel : UILabel = {
         let label = UILabel()
-        label.frame = CGRect(x: 30, y: 430, width: 150, height: 40)
+        label.frame = CGRect(x: 30, y: 0.48*UIScreen.main.bounds.height, width: 150, height: 0.04*UIScreen.main.bounds.height)
         label.text = "App"
         label.textColor = .lightGray
         //label.backgroundColor = .red
@@ -133,55 +133,55 @@ class LogOutView: UIViewController {
     
     lazy var AppView: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 30, y: 470, width: UIScreen.main.bounds.width - 60, height: 240)
+        view.frame = CGRect(x: 30, y: 0.52*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.267*UIScreen.main.bounds.height)
       //  view.backgroundColor = .red
         
-        let label = UILabel(frame: CGRect(x: 0, y: 15, width: 150, height: 30))
+        let label = UILabel(frame:  CGRect(x: 0, y: 0.0167*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label.text = "Touch ID"
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         
-        let Switch = UISwitch(frame: CGRect(x: view.frame.width - 50, y: 15, width: 20, height: 50))
+        let Switch = UISwitch(frame: CGRect(x: view.frame.width - 50, y: 0.0156*UIScreen.main.bounds.height, width: 20, height: 0.05*UIScreen.main.bounds.height))
         
-        let line1 = UIView(frame: CGRect(x: 0, y: 59, width: view.frame.width, height: 1))
+        let line1 = UIView(frame: CGRect(x: 0, y: 0.065*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line1.backgroundColor = .lightGray
         line1.alpha = 0.5
         
         //2
-        let label2 = UILabel(frame: CGRect(x: 0, y: 75, width: 150, height: 30))
+        let label2 = UILabel(frame: CGRect(x: 0, y: 0.083*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label2.text = "Support"
         label2.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let IconRightImage2 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 75, width: 20, height: 20))
+        let IconRightImage2 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.083*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         IconRightImage2.image = UIImage(named: "icons8-forward-60")
         
-        let line2 = UIView(frame: CGRect(x: 0, y: 119, width: view.frame.width, height: 1))
+        let line2 = UIView(frame:  CGRect(x: 0, y: 0.132*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line2.backgroundColor = .lightGray
         line2.alpha = 0.5
         
         //3
-        let label3 = UILabel(frame: CGRect(x: 0, y: 135, width: 150, height: 30))
+        let label3 = UILabel(frame: CGRect(x: 0, y: 0.15*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label3.text = "Report a Bug"
         label3.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let IconRightImage3 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 145, width: 20, height: 20))
+        let IconRightImage3 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.161*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         IconRightImage3.image = UIImage(named: "icons8-forward-60")
         
-        let line3 = UIView(frame: CGRect(x: 0, y: 179, width: view.frame.width, height: 1))
+        let line3 = UIView(frame: CGRect(x: 0, y: 0.199*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line3.backgroundColor = .lightGray
         line3.alpha = 0.5
         
         //4
-        let label4 = UILabel(frame: CGRect(x: 0, y: 205, width: 150, height: 30))
+        let label4 = UILabel(frame: CGRect(x: 0, y: 0.218*UIScreen.main.bounds.height, width: 150, height: 0.033*UIScreen.main.bounds.height))
         label4.text = "App Version 1.0"
         label4.font = UIFont.boldSystemFont(ofSize: 16.0)
 
         
-        let IconRightImage4 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 215, width: 20, height: 20))
+        let IconRightImage4 = UIImageView(frame: CGRect(x: view.frame.width - 20, y: 0.224*UIScreen.main.bounds.height, width:  0.022*UIScreen.main.bounds.height, height:  0.022*UIScreen.main.bounds.height))
         IconRightImage4.image = UIImage(named: "icons8-forward-60")
         
-        let line4 = UIView(frame: CGRect(x: 0, y: 239, width: view.frame.width, height: 1))
+        let line4 = UIView(frame: CGRect(x: 0, y: 0.266*UIScreen.main.bounds.height, width: view.frame.width, height: 1))
         line4.backgroundColor = .lightGray
         line4.alpha = 0.5
         
@@ -201,13 +201,13 @@ class LogOutView: UIViewController {
     }()
     
     let LogOutIcon : UIImageView = {
-        let Icon = UIImageView(frame: CGRect(x: 30, y: 730, width: 20, height: 20))
+        let Icon = UIImageView(frame: CGRect(x: 30, y: 0.814*UIScreen.main.bounds.height, width: 0.022*UIScreen.main.bounds.height, height: 0.022*UIScreen.main.bounds.height))
         Icon.image = UIImage(named: "Logout")
         return Icon
     }()
     
     let LogoutButton : UIButton = {
-        let button = UIButton(frame: CGRect(x: 45, y: 730, width: 100, height: 20))
+        let button = UIButton(frame: CGRect(x: 45, y: 0.814*UIScreen.main.bounds.height, width: 100, height: 0.022*UIScreen.main.bounds.height))
         button.setTitle("Logout", for: .normal)
         button.setTitleColor(.red, for: .normal)
         button.addTarget(self, action: #selector(LogOut), for: .touchUpInside)
@@ -218,17 +218,13 @@ class LogOutView: UIViewController {
         super.viewDidLoad()
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
-                case 1136:
-                    print("iPhone 5 or 5S or 5C or SE")
-                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
-
                 case 1334:
                     print("iPhone 6/6S/7/8")
-                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
 
                 case 1920, 2208:
                     print("iPhone 6+/6S+/7+/8+")
-                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
                 default:
                     print("Unknown")
                     Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 40, width: 150, height: 45)
@@ -262,7 +258,12 @@ class LogOutView: UIViewController {
                 catch { print("already logged out") }
                 self.navigationController?.pushViewController(mapView, animated: true)
           }))
+        let Cancel = UIAlertController.init(title: "", message: "", preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "Cancel",style: .cancel,handler: { (_) in
+            print("OKOKOK")
+        }))
         self.present(controller, animated: true, completion: nil)
+        self.present(Cancel, animated: true, completion: nil)
         //self.navigationController?.pushViewController(mapView, animated: true)
         
     }

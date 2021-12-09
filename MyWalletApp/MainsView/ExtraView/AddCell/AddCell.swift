@@ -63,7 +63,10 @@ class AddCell: UICollectionViewCell {
         super.layoutSubviews()
       
         view.frame  = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+        
         Label.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: 30)
+        //Label.layer.cornerRadius = 5.0
+       // Label.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
         ImageView.frame = CGRect(x: 0, y: 30, width: contentView.frame.size.width, height: contentView.frame.size.height - 30)
         

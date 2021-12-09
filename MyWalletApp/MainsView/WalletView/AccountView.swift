@@ -68,6 +68,7 @@ class AccountView: UIViewController, CAAnimationDelegate {
         let imageVND = UIImage(named: "VND")!
         tf.withImage(direction: .Left, image: imageUSD)
         tf.withImage(direction: .Right, image: imageVND)
+        tf.keyboardType = .decimalPad
         return tf
     }()
     

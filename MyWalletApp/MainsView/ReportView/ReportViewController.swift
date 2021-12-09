@@ -24,11 +24,20 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
     
     let MainView : UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
+        view.frame = CGRect(x: 0, y: 0.111*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.889)
         view.backgroundColor = .white
-        view.layer.cornerRadius = 15.0
+        view.layer.cornerRadius = 10.0
         view.layer.borderWidth = 0.5
         return view
+    }()
+    
+    let Title : UILabel = {
+        let title = UILabel()
+        title.text = "Report"
+        title.font = UIFont.boldSystemFont(ofSize: 20.0)
+        title.textColor = .white
+        title.textAlignment = .center
+        return title
     }()
     
     let WalletImage : UIImageView = {
@@ -59,7 +68,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
     let AlertExtraLabel : UILabel = {
         let AlertLabel = UILabel()
         AlertLabel.frame = CGRect(x: 80, y: 160, width: 300, height: 20)
-        AlertLabel.text = "Hệ thống sẽ nhắc nhở bạn nhập liệu thu chi mỗi ngày"
+        AlertLabel.text = "Hệ thống sẽ nhắc nhở bạn mỗi ngày"
         AlertLabel.font = UIFont.boldSystemFont(ofSize: 11.0)
         AlertLabel.textColor = .lightGray
        // UserAccountLabel.textAlignment = .center
@@ -108,7 +117,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
     
     let TabelNotification : UITableView = {
         let table = UITableView()
-        table.frame = CGRect(x: 0, y: 197, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        table.frame = CGRect(x: 0, y: 198, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -129,6 +138,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
         // Do any additional setup after loading the view.
         view.addSubview(Background)
         view.addSubview(MainView)
+        view.addSubview(Title)
         view.addSubview(WalletImage)
         view.addSubview(AlertMainLabel)
         view.addSubview(AlertExtraLabel)
@@ -137,6 +147,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
         TimeAlertView.addSubview(Datepicker)
         view.addSubview(TimeAlertView)
         view.addSubview(TabelNotification)
+        
         //TimeAlertView.addSubview(Datepicker)
    
         TabelNotification.delegate = self
@@ -159,6 +170,21 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
             
         }
         AddConstraints()
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+                default:
+                    print("Unknown")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 40, width: 150, height: 45)
+                }
+            }
 }
 
 }

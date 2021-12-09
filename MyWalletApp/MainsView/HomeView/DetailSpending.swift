@@ -11,6 +11,9 @@ import Firebase
 class DetailSpending: UIViewController, CAAnimationDelegate {
 
     lazy var CategoryData : [(Detail: String, Value: String, Note: String, Date: String,Account: String, Key: String)] = []
+    lazy var IncomeData : [(Detail: String, Value: String, Note: String, Date: String,Account: String, Key: String)] = []
+    lazy var DataForTabel : [(Detail: String, Value: String, Note: String, Date: String,Account: String, Key: String)] = []
+
     let backGround:UIImageView = {
         let background = UIImageView(image: UIImage(named: "Background"))
         background.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -20,7 +23,7 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
     let BackButton : UIButton = {
         let button = UIButton()
         button.setImage( UIImage(named: "Back"), for: .normal)
-        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+//        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(BacktoWallet), for: .touchUpInside)
         return button
@@ -40,7 +43,7 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
         let MainView = UIView()
        // MainView.backgroundColor  = .lightGray
         MainView.layer.cornerRadius = 15.0
-        MainView.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
+        MainView.frame = CGRect(x: 0, y: 0.134*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.866)
         
         return MainView
     }()
@@ -73,20 +76,19 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
         
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
-                case 1136:
-                    print("iPhone 5 or 5S or 5C or SE")
-                    CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
-
                 case 1334:
                     print("iPhone 6/6S/7/8")
                     CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 35, height: 50)
 
                 case 1920, 2208:
                     print("iPhone 6+/6S+/7+/8+")
                     CategoryLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
                 default:
                     print("Unknown")
                     CategoryLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
                 }
             }
     }
@@ -139,22 +141,28 @@ extension DetailSpending{
                 let Account = postSnapshot.childSnapshot(forPath: "Account").value as? String{
                 if Category == CategoryHomeView{
                     self.CategoryData.append((Detail: Detail, Value: Value, Note: Note, Date: Date,Account: Account, Key: key))
-                }else{
-                    print("Error")
+                }else if Category == "Income"{
+                    self.IncomeData.append((Detail: Detail, Value: Value, Note: Note, Date: Date, Account: Account, Key: key))
                 }
               }
             }
           }
           // cập nhật u
         // self.tableDetail.frame.size.height = CGFloat(100 * CategoryData.count)
+            print(IncomeData)
           self.tableDetail.reloadData()
         })
     }
 }
 extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if CategoryData.isEmpty{
+            DataForTabel = IncomeData
+        }else{
+            DataForTabel = CategoryData
+        }
         let cell = SpendingCell.cellForTableView(tableView: tableDetail)
-        let Data = CategoryData[indexPath.row]
+        let Data = DataForTabel[indexPath.row]
         cell.DetailLabel.text = Data.Detail
         cell.AccountLabel.text = "Account: " + Data.Account
         cell.ImageView.image = UIImage(named: Data.Detail)
@@ -164,7 +172,12 @@ extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CategoryData.count
+        if CategoryData.isEmpty{
+            DataForTabel = IncomeData
+        }else{
+            DataForTabel = CategoryData
+        }
+        return DataForTabel.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -173,7 +186,12 @@ extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let MapView = self.storyboard?.instantiateViewController(identifier: "SaveAndDeleteHomeView") as! SaveAndDeleteHomeView
-        let Data = CategoryData[indexPath.row]
+        if CategoryData.isEmpty{
+            DataForTabel = IncomeData
+        }else{
+            DataForTabel = CategoryData
+        }
+        let Data = DataForTabel[indexPath.row]
         let CategoryHomeView = UserDefaults.standard.string(forKey: "Category")!
         let Time = UserDefaults.standard.string(forKey: "Time")!
         MapView.MoneyInput.text = Data.Value

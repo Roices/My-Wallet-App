@@ -93,7 +93,9 @@ extension FirstView{
 
         // tạo value cho dữ liệu mới
         let val: [String : Any] = [
-          "Cash": Value
+            "Value": Value,
+            "Name": "UserAccount",
+            "TypeAccount": "Cash"
         ]
 
         // đẩy dữ liệu

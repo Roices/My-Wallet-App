@@ -19,11 +19,12 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
     lazy var InComeSection = [CategorySection]()
     lazy var ColorForEachCategorySection: [String: UIColor] = [:]
     lazy var ColorForEachInComeSection: [String: UIColor] = [:]
-  //  lazy var ColorForIconTable: [String: UIColor] = [:]
+    lazy var ColorForIconTable: [String: UIColor] = [:]
     lazy var TotalExpense = 0.0
     lazy var TotalInCome = 0.0
     
     lazy var DataForTabel = [CategorySection]()
+    lazy var TotalForTabel = 0.0
     
     let buttonTime : UIButton = {
         let button = UIButton()
@@ -46,6 +47,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         let picker = MonthYearPickerView(frame: CGRect(x: UIScreen.main.bounds.width/4, y: 100, width: UIScreen.main.bounds.width/2, height: 0.2*UIScreen.main.bounds.height))
         picker.addTarget(self, action: #selector (dateChanged), for: .valueChanged)
         picker.layer.borderWidth = 0.25
+        picker.backgroundColor = .white
         return picker
     }()
     
@@ -54,7 +56,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
   //  pieChart.legend.enabled = false
     pieChart.legend.horizontalAlignment = .center
     pieChart.legend.font = UIFont.systemFont(ofSize: 11)
-    pieChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * UIScreen.main.bounds.width, height: 0.85 * UIScreen.main.bounds.width)
+    pieChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * InComeView.frame.width, height: 0.85 * InComeView.frame.width)
     //pieChart.center = ViewForChart.center
     pieChart.holeRadiusPercent = 0.68
     pieChart.drawEntryLabelsEnabled = false
@@ -74,7 +76,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
    //View for PieChart
     lazy var ViewForChart : UIView = {
         let ViewForChart = UIView()
-        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2 + 30)
+        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: 0.4*UIScreen.main.bounds.height)
         //ViewForChart.backgroundColor = .purple
         return ViewForChart
     }()
@@ -85,18 +87,19 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         let MainView = UIView()
         MainView.backgroundColor  = .white
         MainView.layer.cornerRadius = 10.0
-        MainView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100 )
+        MainView.frame = CGRect(x: 0, y: 0.111*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.889)
         return MainView
     }()
     
 
     let codeSegmented : CustomSegmentedControl = {
-        let y = (UIScreen.main.bounds.height - 200)/2 + 120
-        let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: y, width: UIScreen.main.bounds.width, height: 50), buttonTitle: ["All Assets","Spending","Income"])
+        let y = UIScreen.main.bounds.height*0.522
+        let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: y, width: UIScreen.main.bounds.width, height: 0.0558*UIScreen.main.bounds.height), buttonTitle: ["All Assets","Spending","Income"])
         
         let color = UIColor(hexString: "797979")
         let colorForLine = UIColor(hexString: "C0C0C0")
         let blue = UIColor(hexString: "116AEE")
+        
         
         codeSegmented.backgroundColor = .clear
         codeSegmented.textColor = color
@@ -110,7 +113,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
     lazy var ListAssets:UITableView = {
         let OriginY = codeSegmented.frame.origin.y + 54
         let List = UITableView()
-        List.frame = CGRect(x: 0, y: OriginY, width: UIScreen.main.bounds.width, height: 300)
+        List.frame = CGRect(x: 0, y: OriginY, width: UIScreen.main.bounds.width, height: 0.334*UIScreen.main.bounds.height)
         List.translatesAutoresizingMaskIntoConstraints = false
         List.backgroundColor = UIColor(hexString: "F1F0F6")
         List.separatorStyle = .none
@@ -132,7 +135,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
     
     let InComeView : UIView = {
         let ViewForChart = UIView()
-        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height - 225)/2 - 30)
+        ViewForChart.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: 0.4*UIScreen.main.bounds.height)
         //ViewForChart.backgroundColor = .yellow
         return ViewForChart
     }()
@@ -142,7 +145,7 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
       piEChart.legend.enabled = true
       piEChart.legend.horizontalAlignment = .center
       piEChart.legend.font = UIFont.systemFont(ofSize: 11)
-      piEChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * UIScreen.main.bounds.width, height: 0.85 * UIScreen.main.bounds.width)
+      //  piEChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 150, width: 0.8 * InComeView.frame.width, height: 0.85 * InComeView.frame.width)
         
    //   piEChart.center = InComeView.center
       piEChart.holeRadiusPercent = 0.68
@@ -187,20 +190,28 @@ class HomeView: UIViewController,ChartViewDelegate, CAAnimationDelegate{
         
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
-                case 1136:
-                    print("iPhone 5 or 5S or 5C or SE")
-                    buttonTime.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
-
                 case 1334:
                     print("iPhone 6/6S/7/8")
-                    buttonTime.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    buttonTime.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 20, width: 150, height: 40)
+                    InComePieChart.frame = CGRect(x: InComeView.frame.size.width * 0.15, y: InComeView.frame.size.height/2 - 0.3625 * InComeView.frame.width, width: 0.725 * InComeView.frame.width, height: 0.725 * InComeView.frame.width)
+                    InComePieChart.holeRadiusPercent = 0.65
+                    
+                    pieChart.frame = CGRect(x: ViewForChart.frame.size.width * 0.15, y: ViewForChart.frame.size.height/2 - 0.3625 * ViewForChart.frame.width, width: 0.725 * ViewForChart.frame.width, height: 0.725 * ViewForChart.frame.width)
+                    pieChart.holeRadiusPercent = 0.65
 
+                    Left.frame = CGRect(x: 5, y: 0.281 * UIScreen.main.bounds.height, width: 30, height: 30)
+                    Right.frame = CGRect(x: UIScreen.main.bounds.width - 35, y: 0.281 * UIScreen.main.bounds.height, width: 30, height: 30)
+                    
+                    codeSegmented.frame.origin.y =  UIScreen.main.bounds.height*0.522 + 13
                 case 1920, 2208:
                     print("iPhone 6+/6S+/7+/8+")
                     buttonTime.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    
                 default:
                     print("Unknown")
                     buttonTime.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 40, width: 150, height: 45)
+                    InComePieChart.frame = CGRect(x: InComeView.frame.size.width * 0.1, y: InComeView.frame.size.height/2 - 160, width: 0.8 * InComeView.frame.width, height: 0.85 * InComeView.frame.width)
+                    pieChart.frame = CGRect(x: ViewForChart.frame.size.width * 0.1, y: ViewForChart.frame.size.height/2 - 160, width: 0.8 * ViewForChart.frame.width, height: 0.85 * ViewForChart.frame.width)
                 }
             }
         ConfigureDataDetail()
@@ -251,10 +262,48 @@ extension HomeView:CustomSegmentedControlDelegate{
         switch index {
         case 0:
             DataForTabel =  CategorySectionData + InComeSection
+            TotalForTabel = TotalExpense + TotalInCome
+            let color1 = UIColor(hexString: "FF6E2E")
+            let color2 = UIColor(hexString: "00B358")
+            let color3 = UIColor(hexString: "137FEC")
+            let color4 = UIColor.red
+            let color5 = UIColor.purple
+            let color6 = UIColor.gray
+            let color7 = UIColor(hexString: "945200")
+            let color8 = UIColor(hexString: "FF40FF")
+            let color9 = UIColor(hexString: "941751")
+            let color10 = UIColor(hexString: "76D6FF")
+            let color11 = UIColor(hexString: "AA7942")
+            let color12 = UIColor(hexString: "FF2F92")
+            let color13 = UIColor(hexString: "7A81FF")
+            let color14 = UIColor(hexString: "009193")
+            let color15 = UIColor(hexString: "945200")
+            let color16 = UIColor(hexString: "00B358")
+            self.ColorForIconTable = ["Children": color1,
+                                        "Service": color12,
+                                        "Study": color3,
+                                        "Health": color4,
+                                        "Food": color5,
+                                        "Vehicles": color6,
+                                        "House": color7,
+                                        "Gift": color8,
+                                        "Bank": color9,
+                                        "Entertain": color10,
+                                        "Loan": color11,
+                                        "Income": color2,
+                                        "Wage": color13,
+                                        "Bonus": color14,
+                                        "Interest": color15,
+                                            "Other": color16]
+            
         case 1:
             DataForTabel = CategorySectionData
+            TotalForTabel = TotalExpense
+            ColorForIconTable = ColorForEachCategorySection
         case 2:
             DataForTabel = InComeSection
+            TotalForTabel = TotalInCome
+            ColorForIconTable = ColorForEachInComeSection
         default:
             print("Default")
            // ListAssets.reloadData()
@@ -271,7 +320,7 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
         let cell = AllAssetsCell.cellForTableView(tableView: ListAssets)
         let Data = DataForTabel[indexPath.row]
         cell.CategoryLabel.text = Data.Category
-        cell.ProgressValue.progress = Float(Data.TotalValue/TotalExpense)
+        cell.ProgressValue.progress = Float(Data.TotalValue/TotalForTabel)
         
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -279,11 +328,11 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
         let ValueIncomeforAccount = formatter.string(from: Data.TotalValue as NSNumber)
         cell.Value.text = ValueIncomeforAccount! + "đ"
         formatter.groupingSeparator = ","
-        let perCentValue = ((Data.TotalValue/TotalExpense)*100).rounded(toPlaces: 2)
+        let perCentValue = ((Data.TotalValue/TotalForTabel)*100).rounded(toPlaces: 2)
         let NewPercentValue = formatter.string(from: perCentValue as NSNumber)
         cell.ValuePercent.text = "(" + NewPercentValue! + "%)"
         cell.IconImage.image = UIImage(named: "\(Data.Category)")
-        cell.IconImage.backgroundColor = ColorForEachCategorySection[Data.Category]
+        cell.IconImage.backgroundColor = ColorForIconTable[Data.Category]
         return cell
     }
     
@@ -322,10 +371,10 @@ extension HomeView{
             dataEntries.append(dataEntry)
           }
           // 2. Set ChartDataSet
-        let color1 = UIColor(hexString: "FF6E2E")
-        let color2 = UIColor(hexString: "00B358")
-        let color3 = UIColor(hexString: "137FEC")
-        let color4 = UIColor.red
+        let color1 = UIColor(hexString: "7A81FF")
+        let color2 = UIColor(hexString: "009193")
+        let color3 = UIColor(hexString: "945200")
+        let color4 = UIColor(hexString: "00B358")
         self.ColorForEachInComeSection = ["Wage": color1,
                                     "Bonus": color2,
                                     "Interest": color3,
@@ -364,8 +413,8 @@ extension HomeView{
         let attrStri = NSMutableAttributedString.init(string:"ALL INCOME\n \(TotalValueIncome!)đ")
         let nsRange = NSString(string: "ALL INCOME\n \(TotalValueIncome!)đ").range(of: "\(TotalValueIncome!)đ", options: String.CompareOptions.caseInsensitive)
         let FsRange = NSString(string: "ALL INCOME\n \(TotalValueIncome!)đ").range(of: "ALL INCOME", options: String.CompareOptions.caseInsensitive)
-        attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 20.0) as Any], range: FsRange)
-        attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 19.0) as Any], range: nsRange)
+        attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 19.0) as Any], range: FsRange)
+        attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 18.0) as Any], range: nsRange)
         InComePieChart.centerAttributedText = attrStri
 
           //  pieChart.centerAttributedText = myTotalValue
@@ -442,8 +491,8 @@ extension HomeView{
             let attrStri = NSMutableAttributedString.init(string:"ALL ASSETS\n\(TotalValueExpense!)đ")
             let nsRange = NSString(string: "ALL ASSETS\n\(TotalValueExpense!)đ").range(of: "\(TotalValueExpense!)đ", options: String.CompareOptions.caseInsensitive)
             let FsRange = NSString(string: "ALL ASSETS\n\(TotalValueExpense!)đ").range(of: "ALL ASSETS", options: String.CompareOptions.caseInsensitive)
-            attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 20.0) as Any], range: FsRange)
-            attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 20.0) as Any], range: nsRange)
+            attrStri.addAttributes([NSAttributedString.Key.foregroundColor : UIColor(hexString: "707070"),NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Light", size: 19) as Any], range: FsRange)
+            attrStri.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "HelveticaNeue-Bold", size: 19) as Any], range: nsRange)
             pieChart.centerAttributedText = attrStri
             pieChart.data = pieChartData
          

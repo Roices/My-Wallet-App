@@ -21,8 +21,7 @@ class CustomSegmentedControl: UIView{
     var selectorViewColor: UIColor = .red
     var selectorTextColor: UIColor = .red
     var LineViewColor:UIColor = .red
-    
-    
+    var sizeOffont = 15.0
      var delegate:CustomSegmentedControlDelegate?
     
      var selectedIndex : Int = 0
@@ -49,6 +48,7 @@ class CustomSegmentedControl: UIView{
         let button = buttons[index]
         selectedIndex = index
         button.setTitleColor(selectorTextColor, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: CGFloat(sizeOffont))
         let selectorPosition = frame.width/CGFloat(buttonTitles.count) * CGFloat(index)
         UIView.animate(withDuration: 0.2) {
             self.selectorView.frame.origin.x = selectorPosition

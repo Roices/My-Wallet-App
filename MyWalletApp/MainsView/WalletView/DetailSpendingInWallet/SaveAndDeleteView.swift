@@ -65,7 +65,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
     
     let MainView : UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
+        view.frame = CGRect(x: 0, y: 0.134*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.866)
         view.backgroundColor = .white
         view.layer.cornerRadius = 15.0
         view.layer.borderWidth = 0.5
@@ -100,7 +100,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
         button.setTitle("--------Category--------", for: .normal)
         button.contentHorizontalAlignment = .center
@@ -117,7 +117,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.275*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.setTitle("--------Date--------", for: .normal)
         button.contentHorizontalAlignment = .center
         button.setTitleColor(.lightGray, for: .normal)
@@ -137,7 +137,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let Tf = UITextField()
         Tf.frame = CGRect(x: 30, y: 0.375*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.borderWidth = 0.5
-        Tf.layer.cornerRadius = 15.0
+        Tf.layer.cornerRadius = 10.0
         Tf.placeholder = "Note"
         let image = UIImage(named: "Note")
         Tf.withImage(direction: .Left, image: image!)
@@ -150,7 +150,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.475*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
      //   button.addTarget(self, action: #selector(ShowListAccount), for: .touchUpInside)
         button.setTitle("-----Account-----", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
@@ -167,7 +167,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.frame = CGRect(x: UIScreen.main.bounds.width/2 + 5, y: 0.575*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width/2 - 35, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.backgroundColor = UIColor(hexString: "090F52")
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.addTarget(self, action: #selector(Save), for: .touchUpInside)
@@ -179,7 +179,7 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.575*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width/2 - 35, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.layer.borderColor = UIColor.red.cgColor   //  button.backgroundColor = UIColor(hexString: "090F52")
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.setTitle("Delete", for: .normal)
@@ -262,16 +262,10 @@ class SaveAndDeleteView: UIViewController, CAAnimationDelegate {
         
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
-                case 1136:
-                    print("iPhone 5 or 5S or 5C or SE")
-                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
-                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
-                    
-
                 case 1334:
                     print("iPhone 6/6S/7/8")
-                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
-                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                    CategoryButton.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 25, width: 50, height: 50)
 
                 case 1920, 2208:
                     print("iPhone 6+/6S+/7+/8+")
@@ -519,7 +513,7 @@ extension SaveAndDeleteView{
             let date = Date()
             let newDateformatter = dateFormatterPrint.string(from: date)
             let valforNotification: [String : Any] = [
-                "Notification": "Cập nhật chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+                "Notification": "You updated \(ValueTf)đ for \(Detail) in  \((AccountButton.titleLabel?.text)!)",
                 "Date": newDateformatter
             ]
             
@@ -557,7 +551,7 @@ extension SaveAndDeleteView{
         let date = Date()
         let newDateformatter = dateFormatterPrint.string(from: date)
         let valforNotification: [String : Any] = [
-            "Notification": "Xóa chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+            "Notification": "You deleted the spending \(ValueTf)đ of \(Detail) in \((AccountButton.titleLabel?.text)!)",
             "Date": newDateformatter
         ]
 

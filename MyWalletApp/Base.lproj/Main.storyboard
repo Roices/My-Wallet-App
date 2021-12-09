@@ -145,7 +145,7 @@
             </objects>
             <point key="canvasLocation" x="6572.4637681159429" y="886.60714285714278"/>
         </scene>
-        <!--Item-->
+        <!--More-->
         <scene sceneID="mU3-Zt-npB">
             <objects>
                 <viewController storyboardIdentifier="LogOutView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6fj-UG-XrB" customClass="LogOutView" customModule="MyWalletApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -155,7 +155,7 @@
                         <viewLayoutGuide key="safeArea" id="oXf-oE-u5C"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="gM7-vH-Nec"/>
+                    <tabBarItem key="tabBarItem" title="More" image="More" id="gM7-vH-Nec"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Caw-wn-bKG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -230,92 +230,10 @@
                     <view key="view" contentMode="scaleToFill" id="RUS-1S-vqy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zSU-Mm-sfL">
-                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
-                            </button>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L0r-zh-b05" customClass="ImageTextField" customModule="ImageTextField">
-                                <rect key="frame" x="37" y="205" width="335" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="fieldImage" value="mail" catalog="system"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="padding">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sHI-on-pTi">
-                                <rect key="frame" x="183" y="338" width="49" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="ResetPassword:" destination="RGo-9R-Nu6" eventType="touchUpInside" id="FhN-OR-6sO"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FORGOT PASSWORD ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZN7-vW-ISQ">
-                                <rect key="frame" x="37" y="148" width="335" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Don't have an acount?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0xZ-kC-yjO">
-                                <rect key="frame" x="114" y="789" width="126" height="15"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" red="0.74513429399999997" green="0.74482011800000003" blue="0.7647090554" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UeQ-UB-P5i">
-                                <rect key="frame" x="129" y="800" width="97" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <state key="normal" title="SIGN UP NOW">
-                                    <color key="titleColor" red="0.24571111800000001" green="0.48948597910000002" blue="0.74120932819999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
-                                <connections>
-                                    <action selector="SignUp" destination="RGo-9R-Nu6" eventType="touchUpInside" id="EC3-l1-FX4"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yms-Sl-2Mz">
-                                <rect key="frame" x="9" y="64" width="81" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <state key="normal" title="Button" image="BacktoLogin"/>
-                                <connections>
-                                    <action selector="backtoLogin" destination="RGo-9R-Nu6" eventType="touchUpInside" id="hCA-QJ-5Y8"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RfR-wc-Q2f">
-                                <rect key="frame" x="63" y="78" width="71" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="24"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="9cc-Pu-t3A"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="zSU-Mm-sfL" firstAttribute="leading" secondItem="9cc-Pu-t3A" secondAttribute="leading" id="1xV-Q0-DHK"/>
-                            <constraint firstItem="zSU-Mm-sfL" firstAttribute="trailing" secondItem="9cc-Pu-t3A" secondAttribute="trailing" id="dBq-hd-fNE"/>
-                            <constraint firstItem="zSU-Mm-sfL" firstAttribute="top" secondItem="9cc-Pu-t3A" secondAttribute="top" id="dpu-8k-72K"/>
-                            <constraint firstAttribute="bottom" secondItem="zSU-Mm-sfL" secondAttribute="bottom" id="xjH-mA-K3U"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pft-eF-hmV"/>
-                    <connections>
-                        <outlet property="BackButton" destination="yms-Sl-2Mz" id="kYK-B6-ohq"/>
-                        <outlet property="DontHaveAcountLabel" destination="0xZ-kC-yjO" id="FCo-bW-oET"/>
-                        <outlet property="EmailTField" destination="L0r-zh-b05" id="LdN-Vp-UFK"/>
-                        <outlet property="LoginLabel" destination="RfR-wc-Q2f" id="BmP-5k-gLm"/>
-                        <outlet property="NoticeLabel" destination="ZN7-vW-ISQ" id="Rad-FH-rw4"/>
-                        <outlet property="ResetPassWord" destination="sHI-on-pTi" id="dHS-Di-YnK"/>
-                        <outlet property="SignUpButton" destination="UeQ-UB-P5i" id="ksN-eT-e2r"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zN2-tC-JAq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -473,7 +391,6 @@
         <!--Home-->
         <scene sceneID="ku7-A1-H06">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WdB-ry-pSj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LI5-ti-K82" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="f2t-tV-XZh"/>
                     <toolbarItems/>
@@ -486,17 +403,17 @@
                         <segue destination="wLh-Jp-WUO" kind="relationship" relationship="rootViewController" id="jVC-CM-Aob"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WdB-ry-pSj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4755.072463768116" y="109.82142857142857"/>
         </scene>
     </scenes>
     <resources>
         <image name="Add" width="20" height="20"/>
-        <image name="BacktoLogin" width="96" height="96"/>
+        <image name="More" width="20" height="20"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="icons8-report-file-96" width="20" height="20"/>
         <image name="icons8-wallet-24" width="20" height="20"/>
-        <image name="mail" catalog="system" width="128" height="93"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

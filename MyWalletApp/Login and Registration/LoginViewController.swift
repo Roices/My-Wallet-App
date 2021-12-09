@@ -22,7 +22,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
     let SignUpButton = UIButton()
     let ForgotButton = UIButton()
     let MadebyMeLabel = UILabel()
-    
+    var isSecureText = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,23 +43,28 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         view.addSubview(ForgotButton)
         view.addSubview(MadebyMeLabel)
         
-        
         CustomUI()
         if FirebaseAuth.Auth.auth().currentUser != nil{
             //Change ->View
-//            let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
-//            self.navigationController?.pushViewController(mapview, animated: true)
-            
-            
+            let mapview = (self.storyboard?.instantiateViewController(identifier: "MainsView"))! as UITabBarController
+            self.navigationController?.pushViewController(mapview, animated: true)
             //
         }
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    
+    @objc func SecureText(sender: UIButton){
+        isSecureText = !isSecureText
+        if isSecureText == true{
+            PassWord.isSecureTextEntry = false
+        }else{
+            PassWord.isSecureTextEntry = true
+        }
+        
+    }
     
     @objc func Login(sender: UIButton) {
-        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
+        let mapView = (self.storyboard?.instantiateViewController(identifier: "MainsView"))! as UITabBarController
         guard let email = Email.text, !email.isEmpty,
               let password = PassWord.text,!password.isEmpty else{
             print("Missing field data")
@@ -89,7 +94,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
             print("U have signed in")
             //Change -> View
 
-            self?.navigationController?.pushViewController(mapview, animated: true)
+            self?.navigationController?.pushViewController(mapView, animated: true)
         })
 //        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
 //        self.navigationController?.pushViewController(mapview, animated: true)
@@ -148,7 +153,7 @@ extension LoginViewController{
         Email.placeholder = "Email"
         Email.withImage(direction: .Left, image: UIImage(named: "Gmail")!)
         Email.layer.cornerRadius = 10.0
-        
+        Email.autocapitalizationType = .none
         
         PassWord.frame = CGRect(x: ScreenWitdh/10, y: 0.5*ScreenHeight, width: (ScreenWitdh*4)/5, height: 0.08*ScreenHeight)
         PassWord.layer.borderWidth = 0.65
@@ -158,6 +163,16 @@ extension LoginViewController{
         PassWord.withImage(direction: .Left, image: UIImage(named: "Password")!)
         PassWord.placeholder = "Password"
         PassWord.layer.cornerRadius = 10.0
+        PassWord.autocapitalizationType = .none
+        let button = UIButton(type: .custom)
+        PassWord.rightViewMode = .unlessEditing
+        button.setImage(UIImage(named: "eye"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
+//        button.frame = CGRect(x: PasswordTextField.frame.size.width - 15, y: 5, width: 15, height: 15)
+        button.addTarget(self, action: #selector(SecureText(sender:)), for: .touchUpInside)
+        PassWord.rightView = button
+        PassWord.rightViewMode = .always
+        PassWord.isSecureTextEntry = true
         
         
         ButtonLogin.frame = CGRect(x: ScreenWitdh/10, y: 0.65*ScreenHeight, width: (ScreenWitdh*4)/5, height: 0.08*ScreenHeight)

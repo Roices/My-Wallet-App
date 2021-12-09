@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
-class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
+class RegistrationViewcontroller: UIViewController,UITextFieldDelegate, CAAnimationDelegate{
     
     //cmt
     
@@ -88,6 +88,14 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
             self.present(controller, animated: true, completion: nil)
         }
     
+//        FirebaseAuth.Auth.auth().fetchSignInMethods(forEmail: EmailField.text!, completion: { (signInMethods, error) in
+//            let controller = UIAlertController.init(title: "", message: "Email was registered", preferredStyle: .alert)
+//            controller.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
+//                }))
+//            self.present(controller, animated: true, completion: nil)
+//
+//        })
+        
         FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {[weak self]result, error in
             guard self != nil else{
                 print("error")
@@ -108,7 +116,7 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
                 transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
                 transition.type = CATransitionType.push //Transition you want like Push, Reveal
                 transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
-                transition.delegate = self as! CAAnimationDelegate
+                transition.delegate = self
                 self!.view.window!.layer.add(transition, forKey: kCATransition)
                 self?.navigationController?.pushViewController(mapView, animated: true)
             }))
@@ -135,7 +143,7 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate{
         transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
         transition.type = CATransitionType.push //Transition you want like Push, Reveal
         transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
-        transition.delegate = (self as! CAAnimationDelegate)
+        transition.delegate = self
         view.window!.layer.add(transition, forKey: kCATransition)
         self.navigationController?.pushViewController(mapView, animated: true)
     }
@@ -239,6 +247,7 @@ extension RegistrationViewcontroller{
         
         BackButton.frame = CGRect(x: 0.021*ScreenWitdh, y: 0.07*ScreenHeight, width: 0.2*ScreenWitdh, height: 0.079*ScreenHeight)
         BackButton.setImage( UIImage(named:"BacktoLogin")!, for: .normal)
+        BackButton.addTarget(self, action: #selector(backtoLogin), for: .touchUpInside)
         
         RegistrationLabel.frame = CGRect(x: ScreenWitdh*0.075, y: 0.23*ScreenHeight, width:ScreenWitdh*0.85, height: 0.05*ScreenHeight)
         RegistrationLabel.text = "REGISTRATION"

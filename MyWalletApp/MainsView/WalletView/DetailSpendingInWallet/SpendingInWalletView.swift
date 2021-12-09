@@ -38,8 +38,8 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
     let MainView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
-        view.layer.cornerRadius = 15.0
+        view.frame = CGRect(x: 0, y: 0.134*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.866)
+        view.layer.cornerRadius = 10.0
         return view
     }()
     
@@ -168,7 +168,7 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         
         let LabelExpense = UILabel()
         LabelExpense.frame = CGRect(x: ExpenseIncomeView.frame.width/2 + 0.5, y: 0.2*ExpenseIncomeView.frame.height, width: ExpenseIncomeView.frame.width/2 - 0.5, height: 0.25*ExpenseIncomeView.frame.height)
-        LabelExpense.text = "Total Spending: "
+        LabelExpense.text = "Total Expense: "
         LabelExpense.textAlignment = .center
         LabelExpense.textColor = .black
         ExpenseIncomeView.addSubview(LabelExpense)
@@ -215,17 +215,17 @@ class SpendingInWalletView: UIViewController, CAAnimationDelegate {
         
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
-                case 1136:
-                    print("iPhone 5 or 5S or 5C or SE")
-                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
-
                 case 1334:
                     print("iPhone 6/6S/7/8")
-                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 25, width: 50, height: 50)
+                    LabelTotalValueIncome.font = UIFont.systemFont(ofSize: 13.0)
+                    LabelTotalValueExpense.font = UIFont.systemFont(ofSize: 13.0)
 
                 case 1920, 2208:
                     print("iPhone 6+/6S+/7+/8+")
                     AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
                 default:
                     print("Unknown")
                     AccountTitleLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)

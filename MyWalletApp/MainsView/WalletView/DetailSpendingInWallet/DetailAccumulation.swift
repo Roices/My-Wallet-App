@@ -36,8 +36,8 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
     let MainView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        view.layer.cornerRadius = 15.0
+        view.frame = CGRect(x: 0, y: 0.134*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.866)
+        view.layer.cornerRadius = 10.0
         return view
     }()
     
@@ -72,7 +72,7 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
         let button = UIButton()
         button.backgroundColor = UIColor(hexString: "090F52")
         button.addTarget(self, action: #selector(Sent), for: .touchUpInside)
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 10
         button.setTitle("Send", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
@@ -118,11 +118,16 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
         RestValueLabel.font = UIFont.systemFont(ofSize: 12)
         RestValueLabel.textColor = .lightGray
         let RestValue = CalculateAmount(Value) - CalculateAmount(CompletedValue)
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = "."
-        let RestAmount = formatter.string(from: RestValue as NSNumber)
-        RestValueLabel.text = "Need more: \(RestAmount!)đ"
+        var RestAmount = ""
+        if RestValue <= 0.0{
+            RestAmount = "Completed"
+        }else{
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.groupingSeparator = "."
+            RestAmount = formatter.string(from: RestValue as NSNumber)!
+        }
+        RestValueLabel.text = "Need more: \(RestAmount)đ"
         
         let CompletedLabel = UILabel(frame: CGRect(x: 20, y: 0.65*ProgressView.bounds.height, width: 0.5*ProgressView.bounds.width - 40, height: 0.2*ProgressView.bounds.height))
         CompletedLabel.textColor = .green
@@ -138,7 +143,22 @@ class DetailAccumulation: UIViewController, CAAnimationDelegate {
         SentButton.frame = CGRect(x: 20, y: tabarY - 0.1*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 40, height: 0.075*UIScreen.main.bounds.height)
         view.addSubview(SentButton)
 
-        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    TitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 25, width: 50, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    TitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                default:
+                    print("Unknown")
+                    TitleLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+                }
+            }
     }
     
 

@@ -28,21 +28,30 @@ class WalletViewController: UIViewController {
     let MainView : UIView = {
         let MainView = UIView()
         MainView.backgroundColor = .white
-        MainView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)
-        MainView.layer.cornerRadius = 15.0
+        MainView.frame = CGRect(x: 0, y: 0.111*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.889)
+        MainView.layer.cornerRadius = 10.0
         MainView.backgroundColor = .white
         return MainView
     }()
     
     let WalletImage : UIImageView = {
        let WalletImage = UIImageView(image: UIImage(named: "Wallet"))
-        WalletImage.frame = CGRect(x: 30, y: 120, width: 60, height: 60)
+        WalletImage.frame = CGRect(x: 30, y: 0.134*UIScreen.main.bounds.height, width: 0.066*UIScreen.main.bounds.height, height: 0.066*UIScreen.main.bounds.height)
         return WalletImage
+    }()
+    
+    let Title : UILabel = {
+        let title = UILabel()
+        title.text = "Wallet"
+        title.font = UIFont.boldSystemFont(ofSize: 20.0)
+        title.textColor = .white
+        title.textAlignment = .center
+        return title
     }()
     
     let UserAccountLabel : UILabel = {
         let UserAccountLabel = UILabel()
-        UserAccountLabel.frame = CGRect(x: 90, y: 135, width: 250, height: 30)
+        UserAccountLabel.frame = CGRect(x: 90, y: 0.15*UIScreen.main.bounds.height, width: 250, height: 0.033*UIScreen.main.bounds.height)
         UserAccountLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         UserAccountLabel.text = "USER's ACCOUNT"
         UserAccountLabel.textAlignment = .center
@@ -53,13 +62,13 @@ class WalletViewController: UIViewController {
     let Line : UIView = {
         let Line = UIView()
         Line.backgroundColor = UIColor(hexString: "D6D6D6")
-        Line.frame = CGRect(x: 30, y: 205, width: UIScreen.main.bounds.width - 60, height: 1)
+        Line.frame = CGRect(x: 30, y: 0.228*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 1)
         return Line
     }()
     
     let MoneyLabel : UILabel = {
         let MoneyLabel = UILabel()
-        MoneyLabel.frame = CGRect(x: 0, y: 205 + 32, width: UIScreen.main.bounds.width, height: 30)
+        MoneyLabel.frame = CGRect(x: 0, y: 0.264*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.033*UIScreen.main.bounds.height)
       //  MoneyLabel.text = "Total: 100.000.000đ"
         MoneyLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
         MoneyLabel.textAlignment = .center
@@ -69,7 +78,7 @@ class WalletViewController: UIViewController {
     
     let Segment:UISegmentedControl = {
         let Segment = UISegmentedControl()
-        Segment.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: 60)
+        Segment.frame = CGRect(x: 0, y: 0.334*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: 0.066*UIScreen.main.bounds.height)
         Segment.insertSegment(withTitle: "Account", at: 0, animated: true)
         Segment.insertSegment(withTitle: "Saving", at: 1, animated: true)
         Segment.insertSegment(withTitle: "Accumulation", at: 2, animated: true)
@@ -85,21 +94,21 @@ class WalletViewController: UIViewController {
     
     let tableWallet : UITableView = {
         let tableWallet = UITableView()
-       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableWallet.frame = CGRect(x: 0, y: 0.401*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
     
     let SavingPlanTable : UITableView = {
         let tableWallet = UITableView()
-       tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+       tableWallet.frame = CGRect(x: 0, y: 0.401*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
     
     let AccumulationPlanTable : UITableView = {
         let tableWallet = UITableView()
-        tableWallet.frame = CGRect(x: 0, y: 360, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableWallet.frame = CGRect(x: 0, y: 0.401*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         tableWallet.translatesAutoresizingMaskIntoConstraints = false
         return tableWallet
     }()
@@ -121,6 +130,7 @@ class WalletViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(backGround)
         view.addSubview(MainView)
+        view.addSubview(Title)
         view.addSubview(WalletImage)
         view.addSubview(UserAccountLabel)
         view.addSubview(Line)
@@ -164,6 +174,20 @@ class WalletViewController: UIViewController {
         UpdateDataForSavingPlan()
         UpdateDataForAccumulationPlan()
        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+                default:
+                    print("Unknown")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 40, width: 150, height: 45)
+                }
+            }
     }
     
     func addConstraints(){

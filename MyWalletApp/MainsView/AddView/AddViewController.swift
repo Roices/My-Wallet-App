@@ -25,12 +25,20 @@ class AddViewController: UIViewController {
     let Mainview : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 15.0
-        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
+        view.layer.cornerRadius = 10
+        view.frame = CGRect(x: 0, y: 0.111*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.889)
         return view
     }()
     
-
+    let Title : UILabel = {
+        let title = UILabel()
+        title.text = "Add"
+        title.font = UIFont.boldSystemFont(ofSize: 20.0)
+        title.textColor = .white
+        title.textAlignment = .center
+        return title
+    }()
+    
     
     var CollectionStuff : UICollectionView!
     
@@ -39,13 +47,14 @@ class AddViewController: UIViewController {
 
         view.addSubview(background)
         view.addSubview(Mainview)
+        view.addSubview(Title)
 //        view.addSubview(CollectionStuff)
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 80, height: 80)
-        layout.minimumLineSpacing = 40
-        CollectionStuff = UICollectionView(frame: CGRect(x: 40, y: 80, width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.height - 150), collectionViewLayout: layout)
+        layout.itemSize = CGSize(width: 0.089*UIScreen.main.bounds.height, height: 0.089*UIScreen.main.bounds.height)
+        layout.minimumLineSpacing = 0.044*UIScreen.main.bounds.height
+        CollectionStuff = UICollectionView(frame: CGRect(x: 40, y: 0.09*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.height - 150), collectionViewLayout: layout)
         CollectionStuff.register(AddCell.self, forCellWithReuseIdentifier: AddCell.identifier)
         CollectionStuff.delegate = self
         CollectionStuff.dataSource = self
@@ -79,6 +88,21 @@ class AddViewController: UIViewController {
                                     "Loan": color11,
                                     "Income": color2]
         // Do any additional setup after loading the view.
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 15, width: 150, height: 50)
+                default:
+                    print("Unknown")
+                    Title.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 40, width: 150, height: 45)
+                }
+            }
     }
 
 }

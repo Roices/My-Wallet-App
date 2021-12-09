@@ -473,7 +473,7 @@ extension SaveAndDeleteHomeView{
             let date = Date()
             let newDateformatter = dateFormatterPrint.string(from: date)
             let valforNotification: [String : Any] = [
-                "Notification": "Cập nhật chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+                "Notification": "You updated \(ValueTf)đ for \(Detail) in  \((AccountButton.titleLabel?.text)!)",
                 "Date": newDateformatter
             ]
         // push value
@@ -522,7 +522,7 @@ extension SaveAndDeleteHomeView{
         let date = Date()
         let newDateformatter = dateFormatterPrint.string(from: date)
         let valforNotification: [String : Any] = [
-            "Notification": "Xóa chi tiêu \(ValueTf)đ cho mục \(Detail) của ví \((AccountButton.titleLabel?.text)!)",
+            "Notification": "You deleted the spending \(ValueTf)đ of \(Detail) in \((AccountButton.titleLabel?.text)!)",
             "Date": newDateformatter
         ]
 

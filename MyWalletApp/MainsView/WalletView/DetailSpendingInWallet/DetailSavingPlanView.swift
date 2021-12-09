@@ -34,8 +34,8 @@ class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
     let MainView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        view.layer.cornerRadius = 15.0
+        view.frame = CGRect(x: 0, y: 0.134*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.866)
+        view.layer.cornerRadius = 10.0
         return view
     }()
     
@@ -191,6 +191,23 @@ class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
         ValueProfitView.addSubview(ValueProfit)
         
         AccountTitleLabel.text = Title
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 25, width: 50, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    AccountTitleLabel.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 35, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 35, width: 50, height: 50)
+                default:
+                    print("Unknown")
+                    AccountTitleLabel.frame = CGRect(x: 0.3*UIScreen.main.bounds.width, y: 50, width: 0.4*UIScreen.main.bounds.width, height: 50)
+                }
+            }
     }
 
 
@@ -211,14 +228,38 @@ class DetailSavingPlanView: UIViewController, CAAnimationDelegate {
             return Value + "đ"
         }else{
         let rate = Double(Rate)!
-        let value = Double(Value)!
+        let value = CalculateAmount(Value)
         let period = Double(Period)!
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.groupingSeparator = "."
-            let Value =  value * pow(1+rate/100,period)
+            let Value =  value * rate/100 * period
             let Profit = formatter.string(from: Value as NSNumber)
+            print(Value)
+            print(rate,value,period,Profit!)
             return Profit!
         }
     }
+    
+    func CalculateAmount(_ Value: String) ->Double{
+        var string = Value
+        var amount:Double = 0
+        let occurrencies = string.filter { $0 == "." }.count
+        for index in 0...occurrencies{
+            
+            if let lastIndex = string.lastIndex(of: "."){
+            let last = string.endIndex
+                var subString2 = string[lastIndex..<last]
+                string = string.replacingOccurrences(of: subString2, with: "", range: lastIndex..<last)
+                subString2.remove(at: subString2.startIndex)
+                
+                amount += Double(subString2)! * pow(1000, Double(index))
+                
+            }else{
+                amount += Double(string)! * pow(1000, Double(index))
+            }
+        }
+        return amount
+    }
+    
 }

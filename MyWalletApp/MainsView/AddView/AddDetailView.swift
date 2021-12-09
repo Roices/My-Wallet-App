@@ -57,9 +57,9 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
     }()
     let MainView : UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 120)
+        view.frame = CGRect(x: 0, y: 0.13*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.87)
         view.backgroundColor = .white
-        view.layer.cornerRadius = 15.0
+        view.layer.cornerRadius = 10.0
         view.layer.borderWidth = 0.5
         return view
     }()
@@ -67,7 +67,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
     let BackButton : UIButton = {
         let button = UIButton()
         button.setImage( UIImage(named: "Back"), for: .normal)
-        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+//        button.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(BackToAddView), for: .touchUpInside)
         return button
@@ -77,7 +77,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let Tf = UITextField()
         Tf.frame = CGRect(x: 30, y: 0.075*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.borderWidth = 0.5
-        Tf.layer.cornerRadius = 15.0
+        Tf.layer.cornerRadius = 10.0
         let image = UIImage(named: "USD")
         let VND = UIImage(named: "VND")
         Tf.withImage(direction: .Right, image: VND!)
@@ -92,7 +92,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.175*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.addTarget(self, action: #selector(HidingTable), for: .touchUpInside)
         button.setTitle("--------Category--------", for: .normal)
         button.contentHorizontalAlignment = .center
@@ -109,7 +109,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.275*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.setTitle("--------Date--------", for: .normal)
         button.contentHorizontalAlignment = .center
         button.setTitleColor(.lightGray, for: .normal)
@@ -129,7 +129,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let Tf = UITextField()
         Tf.frame = CGRect(x: 30, y: 0.375*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         Tf.layer.borderWidth = 0.5
-        Tf.layer.cornerRadius = 15.0
+        Tf.layer.cornerRadius = 10.0
         Tf.placeholder = "Note"
         let image = UIImage(named: "Note")
         Tf.withImage(direction: .Left, image: image!)
@@ -142,7 +142,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.475*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.addTarget(self, action: #selector(ShowListAccount), for: .touchUpInside)
         button.setTitle("-----Account-----", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
@@ -159,7 +159,7 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         let button = UIButton()
         button.frame = CGRect(x: 30, y: 0.575*UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 60, height: 0.075*UIScreen.main.bounds.height)
         button.layer.borderWidth = 0.5
-        button.layer.cornerRadius = 15.0
+        button.layer.cornerRadius = 10.0
         button.backgroundColor = UIColor(hexString: "090F52")
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.addTarget(self, action: #selector(Save), for: .touchUpInside)
@@ -244,6 +244,28 @@ class AddDetailView: UIViewController, CAAnimationDelegate{
         self.hideKeyboardWhenTappedAround()
        
         // Do any additional setup after loading the view.
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1136:
+                    print("iPhone 5 or 5S or 5C or SE")
+                    TitleLB.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 0.065*UIScreen.main.bounds.height - 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 0.065*UIScreen.main.bounds.height - 25, width: 50, height: 50)
+
+                case 1334:
+                    print("iPhone 6/6S/7/8")
+                    TitleLB.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 0.065*UIScreen.main.bounds.height - 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 0.065*UIScreen.main.bounds.height - 25, width: 50, height: 50)
+
+                case 1920, 2208:
+                    print("iPhone 6+/6S+/7+/8+")
+                    TitleLB.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 0.065*UIScreen.main.bounds.height - 25, width: 150, height: 50)
+                    BackButton.frame = CGRect(x: 15, y: 0.065*UIScreen.main.bounds.height - 25, width: 50, height: 50)
+                default:
+                    print("Unknown")
+                    TitleLB.frame = CGRect(x: UIScreen.main.bounds.width/2 - 75, y: 50, width: 150, height: 45)
+                    BackButton.frame = CGRect(x: 15, y: 50, width: 50, height: 50)
+                }
+            }
     }
     
    
@@ -429,7 +451,7 @@ extension AddDetailView{
             let date = Date()
             let newDateformatter = dateFormatterPrint.string(from: date)
             let valforNotification: [String : Any] = [
-                "Notification": "Bạn đã nhập \((MoneyInput.text)!)đ cho mục \((ButtonList.titleLabel?.text)!) của ví \((AccountButton.titleLabel?.text)!)",
+                "Notification": "You entered \((MoneyInput.text)!)đ for \((ButtonList.titleLabel?.text)!) of wallet \((AccountButton.titleLabel?.text)!)",
                 "Date": newDateformatter
             ]
         // push value

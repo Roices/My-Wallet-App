@@ -47,6 +47,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
         if FirebaseAuth.Auth.auth().currentUser != nil{
             //Change ->View
             let mapview = (self.storyboard?.instantiateViewController(identifier: "MainsView"))! as UITabBarController
+            let userID =  Auth.auth().currentUser!.uid
+            UserDefaults.standard.setValue(userID, forKey: "Username")
             self.navigationController?.pushViewController(mapview, animated: true)
             //
         }
@@ -94,10 +96,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate{
             print("U have signed in")
             //Change -> View
 
+            let userID =  Auth.auth().currentUser!.uid
+            UserDefaults.standard.setValue(userID, forKey: "Username")
             self?.navigationController?.pushViewController(mapView, animated: true)
         })
-//        let mapview = (self.storyboard?.instantiateViewController(identifier: "FirstView"))! as FirstView
-//        self.navigationController?.pushViewController(mapview, animated: true)
     }
     
 

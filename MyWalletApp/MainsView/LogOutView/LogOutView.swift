@@ -47,7 +47,7 @@ class LogOutView: UIViewController {
         let AlertLabel = UILabel()
         AlertLabel.frame = CGRect(x: 90, y: 0.14*UIScreen.main.bounds.height, width: 200, height: 30)
         AlertLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-        AlertLabel.text = UserDefaults.standard.string(forKey: "Username")
+        AlertLabel.text = "Wallet App"
        // UserAccountLabel.textAlignment = .center
         return AlertLabel
     }()

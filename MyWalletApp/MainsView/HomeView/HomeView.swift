@@ -347,6 +347,7 @@ extension HomeView:UITableViewDelegate,UITableViewDataSource{
         let time = (buttonTime.titleLabel?.text)!
         UserDefaults.standard.setValue(Data.Category, forKey: "Category")
         UserDefaults.standard.setValue(time, forKey: "Time")
+        Mapview.ColorForIconTable = self.ColorForIconTable
         self.navigationController?.pushViewController(Mapview, animated: true)
         //let Data = DataForTabel[indexPath.row]
         

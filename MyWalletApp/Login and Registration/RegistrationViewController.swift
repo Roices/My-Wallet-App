@@ -110,20 +110,13 @@ class RegistrationViewcontroller: UIViewController,UITextFieldDelegate, CAAnimat
             print("success")
             let alert = UIAlertController(title: "Success", message: "You have successfully registered!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK",style: .default,handler: { (_) in
-                let mapView = self?.storyboard?.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
-                let transition = CATransition.init()
-                transition.duration = 0.5
-                transition.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.default)
-                transition.type = CATransitionType.push //Transition you want like Push, Reveal
-                transition.subtype = CATransitionSubtype.fromLeft // Direction like Left to Right, Right to Left
-                transition.delegate = self
-                self!.view.window!.layer.add(transition, forKey: kCATransition)
+                let mapView = self?.storyboard?.instantiateViewController(identifier: "MainsView") as! UITabBarController
                 self?.navigationController?.pushViewController(mapView, animated: true)
             }))
             self!.present(alert, animated: true, completion: nil)
             
             print("Succsess")
-            UserDefaults.standard.setValue(self!.UserNameField.text, forKey: "Username")
+            //UserDefaults.standard.setValue(self!.UserNameField.text, forKey: "Username")
         })
         
         

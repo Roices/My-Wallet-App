@@ -51,7 +51,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
         let AlertLabel = UILabel()
         AlertLabel.frame = CGRect(x: 80, y: 125, width: 200, height: 30)
         AlertLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
-        AlertLabel.text = "Nhắc nhở nhập liệu"
+        AlertLabel.text = "Expense input reminder"
        // UserAccountLabel.textAlignment = .center
         return AlertLabel
     }()
@@ -68,7 +68,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
     let AlertExtraLabel : UILabel = {
         let AlertLabel = UILabel()
         AlertLabel.frame = CGRect(x: 80, y: 160, width: 300, height: 20)
-        AlertLabel.text = "Hệ thống sẽ nhắc nhở bạn mỗi ngày"
+        AlertLabel.text = "The system will remind you every day"
         AlertLabel.font = UIFont.boldSystemFont(ofSize: 11.0)
         AlertLabel.textColor = .lightGray
        // UserAccountLabel.textAlignment = .center
@@ -83,7 +83,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
         line.backgroundColor = UIColor(hexString: "D6D6D6")
         
         let label = UILabel(frame: CGRect(x: 80, y: view.frame.height/2 - 5, width: 70, height: 15))
-        label.text = "Thời gian"
+        label.text = "Time"
         label.font =  UIFont.boldSystemFont(ofSize: 14.0)
         
         
@@ -122,13 +122,13 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
         return table
     }()
     
-    
+    let userID = UserDefaults.standard.string(forKey: "Username")
     var savedNotificationDate: Date? {
         get {
-            return UserDefaults.standard.object(forKey: "notificationDate") as? Date
+            return UserDefaults.standard.object(forKey: "Time\(userID!)") as? Date
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "notificationDate")
+            UserDefaults.standard.set(newValue, forKey: "Time\(userID!)")
         }
     }
     
@@ -157,7 +157,7 @@ class ReportViewController: UIViewController, UNUserNotificationCenterDelegate {
 //        print("Height: \(test.frame.width)")
         TimeAlertView.isHidden = true
         ConfigureData()
-        SwichAlert.isOn =  UserDefaults.standard.bool(forKey: "switchState")
+        SwichAlert.isOn =  UserDefaults.standard.bool(forKey: "switchState\(userID!)")
         if SwichAlert.isOn{
             TimeAlertView.isHidden = false
             self.Line.frame.origin.y = 230
@@ -255,8 +255,8 @@ extension ReportViewController{
     
      func PushNotification(){
         let content = UNMutableNotificationContent()
-                content.title = NSString.localizedUserNotificationString(forKey: "We have a new message for you", arguments: nil)
-                content.body = NSString.localizedUserNotificationString(forKey: "Open the app for see", arguments: nil)
+                content.title = NSString.localizedUserNotificationString(forKey: "Do you have any income or expenses today?", arguments: nil)
+                content.body = NSString.localizedUserNotificationString(forKey: "Please enter it in the payment book", arguments: nil)
                 content.sound = UNNotificationSound.default
 
         let dateFormatr = DateFormatter()
@@ -321,7 +321,7 @@ extension ReportViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = NotificationViewCell.cellForTableView(tableView: TabelNotification)
         let Data = NotifiArray[indexPath.row]
-        cell.DateLabel.text = "Thời gian: " + Data.Time
+        cell.DateLabel.text = "Date: " + Data.Time
         cell.NotiLabel.text = Data.Noti
         return cell
     }

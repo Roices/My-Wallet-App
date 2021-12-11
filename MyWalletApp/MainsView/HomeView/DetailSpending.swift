@@ -14,6 +14,7 @@ class DetailSpending: UIViewController, CAAnimationDelegate {
     lazy var IncomeData : [(Detail: String, Value: String, Note: String, Date: String,Account: String, Key: String)] = []
     lazy var DataForTabel : [(Detail: String, Value: String, Note: String, Date: String,Account: String, Key: String)] = []
 
+    lazy var ColorForIconTable: [String: UIColor] = [:]
     let backGround:UIImageView = {
         let background = UIImageView(image: UIImage(named: "Background"))
         background.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -161,13 +162,17 @@ extension DetailSpending: UITableViewDelegate, UITableViewDataSource{
         }else{
             DataForTabel = CategoryData
         }
+        let CategoryHomeView = UserDefaults.standard.string(forKey: "Category")!
         let cell = SpendingCell.cellForTableView(tableView: tableDetail)
         let Data = DataForTabel[indexPath.row]
         cell.DetailLabel.text = Data.Detail
         cell.AccountLabel.text = "Account: " + Data.Account
-        cell.ImageView.image = UIImage(named: Data.Detail)
+        cell.ImageView.image = UIImage(named: "\(CategoryHomeView)")
         cell.NoteLabel.text = "Note: " + Data.Note
         cell.ValueLabel.text = Data.Value + "đ"
+        cell.ImageView.backgroundColor = ColorForIconTable["\(CategoryHomeView)"]
+        cell.ImageView?.layer.borderWidth = 0.25
+        cell.ImageView?.layer.cornerRadius = 10.0
         return cell
     }
     
